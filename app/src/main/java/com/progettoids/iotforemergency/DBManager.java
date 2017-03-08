@@ -18,15 +18,15 @@ public class DBManager
     public DBManager(DBHelper dbhelper)
     {
         this.dbhelper=dbhelper;
-        Log.i("DBManager:","rrrrasdsadadujujujrr");
     }
 
 
-
+    /*
+    metodo per insert o update
+     */
     public void save(String codice,String id_beacon,String posizione_x,String posizione_y,
                      String quota,String stato,String temperatura,String luminosita,
                      String accelerazione,String numero_persone,String orario_ultima_ricezione){
-        Log.i("DBManager:","1111");
         SQLiteDatabase db=dbhelper.getWritableDatabase();
 
         ContentValues cv=new ContentValues();
@@ -45,7 +45,6 @@ public class DBManager
         cv.put(DatabaseStrings.FIELD_NUMERO_PERSONE, numero_persone);
         cv.put(DatabaseStrings.FIELD_ORARIO_ULTIMA_RICEZIONE, orario_ultima_ricezione);
 
-        Log.i("DBManager:","2222");
 
         try
         {
@@ -77,6 +76,9 @@ public class DBManager
     */
 
 
+    /*
+    metodo per la select
+     */
     public Cursor query(){
         Cursor crs=null;
         try
@@ -85,9 +87,6 @@ public class DBManager
             crs=db.query(DatabaseStrings.TBL_NAME, null, null, null, null, null, null, null);
             crs.moveToLast();
             String s=crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_CODICE));
-            Log.i("DBMANAGER","55555");
-            Log.i("DBMANAGER",s);
-
         }
         catch(SQLiteException sqle)
         {
