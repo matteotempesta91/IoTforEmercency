@@ -22,7 +22,6 @@ public class LoginActivity extends AppCompatActivity {
     private CheckBox ricordami;
     private Login log;
     private boolean flag1stLog;
-    DBManager dbManager;
 
         @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
         login();
         loginGuest();
         registrazione();
-        gestioneCreazineDB();
+        //gestioneCreazineDB();
     }
 
     public void login() {
@@ -143,24 +142,37 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    /*
-    crea il db, l'onCreate del DBHelper (e quindi la costruzione del db) viene attivato solo la prima volta parte l'app
-     */
     public void gestioneCreazineDB(){
-        DBHelper dBhelper=new DBHelper(this);
-        this.dbManager=new DBManager(dBhelper);
 
-        /*
-        ********** SERVIRA IN FUTURO PER FARE LE QUERY AL DB *************
+        DBManager dbManager;
+
+        DBHelper dBhelper=new DBHelper(this);
+        dbManager=new DBManager(dBhelper);
+
+
         final int NUMERO_NODI=65;
-        for (int i=0;i<NUMERO_NODI;i++){
+        if(true /*isFirst(this)*/){
+            for (int i=0;i<NUMERO_NODI;i++){
                 String codice=DatabaseStrings.codice[i];
                 String posizione_x=String.valueOf(DatabaseStrings.posizione_x[i]);
                 String posizione_y=String.valueOf(DatabaseStrings.posizione_y[i]);
                 Log.i("Login:",codice);
                 //dbManager.save(codice,null,posizione_x,posizione_y,null,null,null,null,null,null,null);
+            }
         }
+
         dbManager.query();
-        */
+    }
+
+
+    public static boolean isFirst(Context context){
+        final SharedPreferences reader = context.getSharedPreferences("PROVA", Context.MODE_PRIVATE);
+        final boolean first = reader.getBoolean("is_first", true);
+        if(first){
+            final SharedPreferences.Editor editor = reader.edit();
+            editor.putBoolean("is_first", false);
+            editor.commit();
+        }
+        return first;
     }
 }

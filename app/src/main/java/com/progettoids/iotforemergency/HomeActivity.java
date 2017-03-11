@@ -2,9 +2,11 @@ package com.progettoids.iotforemergency;
 
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
@@ -14,6 +16,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
     private TextView txtWelcome;
@@ -92,6 +96,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 HomeActivity.this.finish();
+                bleList.Scansione(false);
             }
         });
     }
@@ -112,8 +117,11 @@ public class HomeActivity extends AppCompatActivity {
     // Abilita il gps con il consenso dell'utente
     public void EnableGPS() {
         // Controlla se il bluetooth è attivo.
-        // Nel caso non lo sia ne richiede l'attivazione
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LocationManager locMan =  (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
+        if (!locMan.isProviderEnabled(LocationManager.NETWORK_PROVIDER) ||
+                !locMan.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            // Nel caso non lo sia ne richiede l'attivazione
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("Attivare i servizi di geolocalizzazione")
                     .setCancelable(false)
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -127,7 +135,8 @@ public class HomeActivity extends AppCompatActivity {
                             dialog.cancel();
                         }
                     });
-        AlertDialog alert = builder.create();
-        alert.show();
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
     }
 }
