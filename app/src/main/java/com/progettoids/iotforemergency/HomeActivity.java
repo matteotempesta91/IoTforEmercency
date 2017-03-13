@@ -2,9 +2,11 @@ package com.progettoids.iotforemergency;
 
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Build;
@@ -50,6 +52,17 @@ public class HomeActivity extends AppCompatActivity {
             EnableGPS();
             bleList.Scansione(true);
         }
+
+        // Registra il ricevitore per le notifiche di stato
+        IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
+        registerReceiver(mReceiver, filter);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // Cancella il ricevitore dalle notifiche di stato
+        unregisterReceiver(mReceiver);
     }
 
     // Gestisce il risultato della richiesta dei permessi
@@ -74,7 +87,8 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    // Gestisce il risultato della richiesta di attivazione del bluetooth
+    /* Gestisce il risultato della richiesta di attivazione del bluetooth
+    Questa soluzione non permette di attendere che il ble sia effettivamente attivo
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
@@ -88,7 +102,27 @@ public class HomeActivity extends AppCompatActivity {
                 return;
             }
         }
-    }
+    }*/
+
+    // Permette di ricevere notifice sullo stato del dispositivo
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+
+            if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
+                final int bluetoothState = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE,
+                        BluetoothAdapter.ERROR);
+                switch (bluetoothState) {
+                    case BluetoothAdapter.STATE_ON:
+                        EnableGPS();
+                        bleList.Scansione(true);
+                        break;
+                }
+                // Aggiungere azione in caso l'utente spenga il ble con app attiva
+            }
+        }
+    };
 
     public void logout(){
         btnLogout = (Button)findViewById(R.id.logout);

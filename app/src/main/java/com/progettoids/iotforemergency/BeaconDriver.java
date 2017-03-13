@@ -87,11 +87,10 @@ public class BeaconDriver extends AsyncTask<BluetoothDevice, Void, Object[]> {
     @Override
     protected Object[] doInBackground(BluetoothDevice... faro) {
         gattBLE = faro[0].connectGatt(context, false, gattCB);
-        // Attende lettura completa
-        while (attesa) {
+        // Attende lettura completa per max 5*2,5 sec
+        for (int i=0; attesa && i < 5;  i++) {
             try {
                 Thread.sleep(2500);
-
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 break;
@@ -106,6 +105,7 @@ public class BeaconDriver extends AsyncTask<BluetoothDevice, Void, Object[]> {
                 gattBLE.readCharacteristic(data);
             }
         }
+        if (attesa) { Log.i("attesa", "massime iterazioni"); }
         gattBLE.disconnect();
         gattBLE.close();
         return sensorData;
@@ -114,12 +114,15 @@ public class BeaconDriver extends AsyncTask<BluetoothDevice, Void, Object[]> {
     // Questo codice è eseguito nel thread chiamente al termine del task
     @Override
     protected void onPostExecute(Object[] sensorData) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setMessage("Sensore: " + gattBLE.getDevice().toString() +
-                "\n" + "Temp: " + String.valueOf((double)sensorData[0]))
-                .setTitle("Dati sensore letti");
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        // ogni tanto il context è null ...
+        if (context != null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setMessage("Sensore: " + gattBLE.getDevice().toString() +
+                    "\n" + "Temp: " + String.valueOf((double) sensorData[0]))
+                    .setTitle("Dati sensore letti");
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        } else { Log.i("context ", "null"); }
     }
 
     // Attiva i sensori del beacon

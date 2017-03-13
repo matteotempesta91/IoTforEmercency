@@ -48,8 +48,6 @@ public class BeaconListener {
     public BeaconListener(Context context) {
         bluetoothManager =
                 (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
-        BluetoothAdapter blAdapter = bluetoothManager.getAdapter();
-        scanner = blAdapter.getBluetoothLeScanner();
         this.context = context;
         statoScan = false;
         // Implementa cosa fare per i vari casi di callback
@@ -79,18 +77,25 @@ public class BeaconListener {
 
     // Questo metodo avvia e ferma la scansione periodica, in base al booleano in ingresso
     public void Scansione(Boolean enable) {
-        Log.i("Scanning", enable.toString());
-        if (enable) {
-            goScanH.postDelayed(start,5000);
-        } else {
-            goScanH.removeCallbacks(start);
-            altScanH.removeCallbacks(stop);
-            //verifica quando è già spento
-            if (statoScan) {
-                scanner.stopScan(mScanCB);
-                Log.i("Scanning", "Stop");
-            }
+        // Lo scanner è invocato solo prima della scansione per attendere che il ble sia attivo
+        if (scanner == null) {
+            BluetoothAdapter blAdapter = bluetoothManager.getAdapter();
+            scanner = blAdapter.getBluetoothLeScanner();
         }
+        if (scanner != null) {
+            Log.i("Scanning", enable.toString());
+            if (enable) {
+                goScanH.post(start);
+            } else {
+                goScanH.removeCallbacks(start);
+                altScanH.removeCallbacks(stop);
+                //verifica quando è già spento
+                if (statoScan) {
+                    scanner.stopScan(mScanCB);
+                    Log.i("Scanning", "Stop");
+                }
+            }
+        } else { Log.i("Scanner ", "null"); }
     }
 
     // Aggiungi ciclicamente i nuovi disp. BLE, senza ripetizioni
