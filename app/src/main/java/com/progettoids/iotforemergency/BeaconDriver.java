@@ -68,39 +68,48 @@ public class BeaconDriver extends AsyncTask<BluetoothDevice, Void, Object[]> {
             @Override
             public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic car, int status) {
                 if (status == BluetoothGatt.GATT_SUCCESS) {
-                    int offset = 0;
-                    Integer lowerByte = car.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, offset);
-                    Integer upperByte = car.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, offset + 1); // Note: interpret MSB as unsigned.
-                    double temp = ((upperByte << 8) + lowerByte) / 128.0;
 
-                    //metodo per leggere il sensore di movimento
-                    int x = car.getIntValue(BluetoothGattCharacteristic.FORMAT_SINT8,0);
-                    int y = car.getIntValue(BluetoothGattCharacteristic.FORMAT_SINT8,1);
-                    int z = car.getIntValue(BluetoothGattCharacteristic.FORMAT_SINT8,2) * -1;
+                    String servizio = car.getUuid().toString().substring(0,7);
 
-                    double scaledX = x / 64.0;
-                    double scaledY = y / 64.0;
-                    double scaledZ = z / 64.0;
+                    switch (servizio) {
+                        // Temperatura
+                        case ("f000aa01") :
+                            Integer lowerByte = car.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0);
+                            Integer upperByte = car.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 1); // Note: interpret MSB as unsigned.
+                            double temp = ((upperByte << 8) + lowerByte) / 128.0;
 
-                    double[] mov = new double[]{scaledX,scaledY,scaledZ};
+                            // Ripete fino al primo valore non nullo
+                            if (letture > 10 || temp != 0 ) {
+                                attesa = false;
+                                sensorData[0] = temp;
 
-                    //metodo per leggere il sensore dell'umidità
-                    //int a = shortUnsignedAtOffset(car, 2);
+                            }
+                            letture++;
+                            break;
+                        // Accelerometro
+                        case ("f000aa81") :
+                            //metodo per leggere il sensore di movimento
+                            int x = car.getIntValue(BluetoothGattCharacteristic.FORMAT_SINT8,0);
+                            int y = car.getIntValue(BluetoothGattCharacteristic.FORMAT_SINT8,1);
+                            int z = car.getIntValue(BluetoothGattCharacteristic.FORMAT_SINT8,2) * -1;
 
-                    //Integer lowersByte = car.getIntValue(FORMAT_UINT8, offset);
-                    //Integer uppersByte = car.getIntValue(FORMAT_UINT8, offset + 1); // Note: interpret MSB as unsigned.
+                            double scaledX = x / 64.0;
+                            double scaledY = y / 64.0;
+                            double scaledZ = z / 64.0;
 
+                            double[] mov = new double[]{scaledX,scaledY,scaledZ};
 
+                            sensorData[1] = mov;
+                            break;
+                        // Humidostato
+                        case ("f000aa21") :
+                            Integer lowersByte = car.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0);
+                            Integer uppersByte = car.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0 + 1); // Note: interpret MSB as unsigned.
+                            double tempH = ((uppersByte << 8) + lowersByte) / 128.0;
 
-                    // Ripete fino al primo valore non nullo
-                    if (letture > 10 || temp != 0 ) {
-                        attesa = false;
-                        sensorData[0] = temp;
-                        sensorData[1] = mov;
-                        //sensorData[]
-
+                            sensorData[2] = tempH;
+                            break;
                     }
-                    letture++;
                 }
                 else { attesa = false; }
             }
@@ -111,6 +120,14 @@ public class BeaconDriver extends AsyncTask<BluetoothDevice, Void, Object[]> {
     @Override
     protected Object[] doInBackground(BluetoothDevice... faro) {
         gattBLE = faro[0].connectGatt(context, false, gattCB);
+
+        UUID mtempServiceUuid = UUID.fromString("f000aa00-0451-4000-b000-000000000000");
+        UUID mtempDataUuid = UUID.fromString("f000aa01-0451-4000-b000-000000000000");
+        UUID mmovServiceUuid = UUID.fromString("f000aa80-0451-4000-b000-000000000000");
+        UUID mmovDataUuid = UUID.fromString("f000aa81-0451-4000-b000-000000000000");
+        UUID mhumServiceUuid = UUID.fromString("f000aa20-0451-4000-b000-000000000000");
+        UUID mhumDataUuid = UUID.fromString("f000aa21-0451-4000-b000-000000000000");
+
         // Attende lettura completa per max 5*2,5 sec
         for (int i=0; attesa && i < 5;  i++) {
             try {
@@ -122,20 +139,18 @@ public class BeaconDriver extends AsyncTask<BluetoothDevice, Void, Object[]> {
             // Attende sensore attivo
             if (sensOn) {
                 // Lettura sensore Temperatura
-                UUID mtempServiceUuid = UUID.fromString("f000aa00-0451-4000-b000-000000000000");
-                UUID mtempDataUuid = UUID.fromString("f000aa01-0451-4000-b000-000000000000");
-                UUID mmovServiceUuid = UUID.fromString("f000aa80-0451-4000-b000-000000000000");
-                UUID mmovDataUuid = UUID.fromString("f000aa81-0451-4000-b000-000000000000");
-                UUID mhumServiceUuid = UUID.fromString("f000aa20-0451-4000-b000-000000000000");
-                UUID mhumDataUuid = UUID.fromString("f000aa21-0451-4000-b000-000000000000");
                 BluetoothGattService temp = gattBLE.getService(mtempServiceUuid);
                 BluetoothGattCharacteristic datatemp = temp.getCharacteristic(mtempDataUuid);
+                gattBLE.readCharacteristic(datatemp);
+
+                // Lettura sensore Accelerometro
                 BluetoothGattService mov = gattBLE.getService(mmovServiceUuid);
                 BluetoothGattCharacteristic datamov = mov.getCharacteristic(mmovDataUuid);
-                BluetoothGattService hum = gattBLE.getService(mhumServiceUuid);
-                BluetoothGattCharacteristic datahum = mov.getCharacteristic(mhumDataUuid);
-                gattBLE.readCharacteristic(datatemp);
                 gattBLE.readCharacteristic(datamov);
+
+                // Lettura sensore Umidità
+                BluetoothGattService hum = gattBLE.getService(mhumServiceUuid);
+                BluetoothGattCharacteristic datahum = hum.getCharacteristic(mhumDataUuid);
                 gattBLE.readCharacteristic(datahum);
             }
         }
@@ -160,7 +175,8 @@ public class BeaconDriver extends AsyncTask<BluetoothDevice, Void, Object[]> {
             builder.setMessage("Sensore: " + gattBLE.getDevice().toString() +
                     "\n" + "Temp: " + String.valueOf((double) sensorData[0]) +
                     "\n" + "Moviment:"+ String.valueOf(((double[]) sensorData[1])[0]) + " " + String.valueOf(((double[]) sensorData[1])[1])
-                    + " " + String.valueOf(((double[]) sensorData[1])[2]))
+                    + " " + String.valueOf(((double[]) sensorData[1])[2]) +
+                    "\n" + "TempH: " + String.valueOf((double) sensorData[2]) )
                     .setTitle("Dati sensore letti");
             AlertDialog dialog = builder.create();
             dialog.show();
@@ -182,17 +198,28 @@ public class BeaconDriver extends AsyncTask<BluetoothDevice, Void, Object[]> {
         BluetoothGattService mov = gatt.getService(mmovServiceUuid);
         BluetoothGattService hum = gatt.getService(mhumServiceUuid);
 
+        BluetoothGattCharacteristic config = null;
         // Nel caso il service non esiste, ritorna null
-        if (temp != null && mov != null) {
-            BluetoothGattCharacteristic config = temp.getCharacteristic(mtempConfigUuid);
-            BluetoothGattCharacteristic config1 = mov.getCharacteristic(mmovConfigUuid);
-            BluetoothGattCharacteristic config2 = hum.getCharacteristic(mhumConfigUuid);
+
+        // Sensore temperatura
+        if (temp != null) {
+            config = temp.getCharacteristic(mtempConfigUuid);
             config.setValue(new byte[]{1});
-            config1.setValue(new byte[]{1});
-            config2.setValue(new byte[]{1});
             gatt.writeCharacteristic(config);
-            gatt.writeCharacteristic(config1);
-            gatt.writeCharacteristic(config2);
+        } else { attesa = false; }
+
+        //sensore accelerometro
+        if (mov != null) {
+            config = mov.getCharacteristic(mmovConfigUuid);
+            config.setValue(new byte[]{000111});
+            gatt.writeCharacteristic(config);
+        } else { attesa = false; }
+
+        // Sensore umidità
+        if (hum != null) {
+            config = hum.getCharacteristic(mhumConfigUuid);
+            config.setValue(new byte[]{1});
+            gatt.writeCharacteristic(config);
         } else { attesa = false; }
 
         // Init Sensore ...

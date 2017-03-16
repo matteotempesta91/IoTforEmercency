@@ -19,8 +19,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.List;
-
 public class HomeActivity extends AppCompatActivity {
     private TextView txtWelcome;
     private Button btnLogout;
@@ -81,7 +79,7 @@ public class HomeActivity extends AppCompatActivity {
                     } else {
                         Log.i("Localizzazione", "Permessi di localizzazione negati");
                     }
-                    return;
+                    break;
                 }
             }
         }
