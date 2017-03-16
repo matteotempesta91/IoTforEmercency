@@ -3,111 +3,21 @@
 
     <item
         is-multidex="true"
-        jar="/Users/matteotempesta/.android/build-cache/11c4165937ffe304ba4917f666fa56f0ffbfba62/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="1630658fbc2d222b988603c27b4a4249586fbfe7">
-        <dex dex="/Users/matteotempesta/IoTforEmercency/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_d1cac924a97c573f71e52beeccd1a5e768c1ef2a/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/matteotempesta/.android/build-cache/728dcc297099768296fec0b66cb0369b8b4c8511/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="0a0ef86b7fa568a52bf6214a0326ca1f1d618da7">
-        <dex dex="/Users/matteotempesta/IoTforEmercency/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_fd979eff3b49d8a1a4c26d27878974d3883fbf73/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/matteotempesta/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/25.1.0/support-annotations-25.1.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="64cb6b229a8bdfd907bc8dd46839a0053e4c018d">
-        <dex dex="/Users/matteotempesta/IoTforEmercency/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-25.1.0_966104ecd5bfbee5669b37d2861a99013a7a802b/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/matteotempesta/IoTforEmercency/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jar="C:\Users\Luigi\Documents\IoTforEmergencyCond\IoTforEmercency\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
         sha1="c82741bc129dd5f99f11a4ab8666ae24262053b6">
-        <dex dex="/Users/matteotempesta/IoTforEmercency/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_0d13ae0d00938fed8b7d04b2ca3be21056e069f3/classes.dex" />
+        <dex dex="C:\Users\Luigi\Documents\IoTforEmergencyCond\IoTforEmercency\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_fa7ecd119b405371ea1889b2cfca5df7d4ae8561\classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="/Users/matteotempesta/.android/build-cache/a8272b14a9a79eff1d1fc6f82ddf3cc2f8df7753/output/jars/classes.jar"
+        jar="C:\Users\Luigi\Documents\IoTforEmergencyCond\IoTforEmercency\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="aee64634871d88a419d59eb743c1258a60f19700">
-        <dex dex="/Users/matteotempesta/IoTforEmercency/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_d614d1dcd3e0b445cf349c39089b1740f53bbd02/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/matteotempesta/.android/build-cache/75e1a5b1900b16ecce31211d254d7a6cd6dbe090/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="ca3c7aa31e2726a400a6e552b93cb9f63c9a1e6d">
-        <dex dex="/Users/matteotempesta/IoTforEmercency/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_4ff20d017ebda8fcdfb64f105c3f2a7235f3191f/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/matteotempesta/.android/build-cache/4299c06b71dfe8218288d66a3a3d9d79b40a0cbf/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="2a53c4f3518116b8c6aee0e477233f0f7da8616f">
-        <dex dex="/Users/matteotempesta/IoTforEmercency/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_9384968fc86dea31ccbbc1f044265c46c9daa9b2/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/matteotempesta/.android/build-cache/2cf1c80d0320a01e8a79b52cea7a2c4f17d7b98d/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="f02263e35e52668dd17b73bf961437e3d562b35f">
-        <dex dex="/Users/matteotempesta/IoTforEmercency/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_b4b4eef3adcccc258b99df68bc273dd95c6b7f7b/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/matteotempesta/.android/build-cache/99ccb98bf89313b921197fcbcb76099f95b8e014/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
-        <dex dex="/Users/matteotempesta/IoTforEmercency/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_a9fa5e865aacbbd935ef5307ef13271ae05fcedb/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/matteotempesta/IoTforEmercency/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="e276d44f46ef88520bb8b92d3717777b72d8bb04">
-        <dex dex="/Users/matteotempesta/IoTforEmercency/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_25e839f5c6ff73e0328c4678eb050e08fc5cc971/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/matteotempesta/.android/build-cache/30ff36b4f889e76906fab934a35720516834ba9d/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="6fb6ac3e8d3b9013819920d9ea11f3803c4c0033">
-        <dex dex="/Users/matteotempesta/IoTforEmercency/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_142723211df2a397172bb3b823e6181c5ce25c29/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/matteotempesta/.android/build-cache/5b325707c0a427f1aedc31b136f67bda044f509c/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="e79aa3d9a16f8c9f16377c0608de70a8f31e5d80">
-        <dex dex="/Users/matteotempesta/IoTforEmercency/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_41ff1beef5e3820e14be33ff97241c23a44b34ba/classes.dex" />
+        sha1="79804257e58341812cc76b8c6821eb6ae71378c5">
+        <dex dex="C:\Users\Luigi\Documents\IoTforEmergencyCond\IoTforEmercency\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_ed3fca2964e931bc6ca5be0ed1a28cbaac0465ee\classes.dex" />
     </item>
 
 </items>
