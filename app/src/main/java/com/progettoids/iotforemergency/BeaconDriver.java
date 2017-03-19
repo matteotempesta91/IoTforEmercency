@@ -73,7 +73,7 @@ public class BeaconDriver extends AsyncTask<BluetoothDevice, Void, Object[]> {
                             //sensore accelerometro
                             if (mov != null) {
                                 config = mov.getCharacteristic(mmovConfigUuid);
-                                config.setValue(new byte[]{38,0});
+                                config.setValue(new byte[]{0x38,0});
                                 gatt.writeCharacteristic(config);
                             } else { attesa = false; }
                             break;
@@ -106,61 +106,69 @@ public class BeaconDriver extends AsyncTask<BluetoothDevice, Void, Object[]> {
                     switch (servizio) {
                         // Temperatura
                         case ("f000aa01") :
-                            Integer lowerByte = car.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0);
-                            Integer upperByte = car.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 1); // Note: interpret MSB as unsigned.
-                            double temp = ((upperByte << 8) + lowerByte) / 128.0;
+                            double temp = shortUnsignedAtOffset(car, 0) / 128.0;
+                            sensorData[0] = temp;
 
-                            // Ripete fino al primo valore non nullo
-                            if (letture > 10 || temp != 0 ) {
-                                //attesa = false;
-                                // Lettura sensore Accelerometro
-                                UUID mmovServiceUuid = UUID.fromString("f000aa80-0451-4000-b000-000000000000");
-                                UUID mmovDataUuid = UUID.fromString("f000aa81-0451-4000-b000-000000000000");
-                                BluetoothGattService mov = gattBLE.getService(mmovServiceUuid);
-                                BluetoothGattCharacteristic datamov = mov.getCharacteristic(mmovDataUuid);
-                                gattBLE.readCharacteristic(datamov);
+                            // Lettura sensore Accelerometro
+                            UUID mmovServiceUuid = UUID.fromString("f000aa80-0451-4000-b000-000000000000");
+                            UUID mmovDataUuid = UUID.fromString("f000aa81-0451-4000-b000-000000000000");
+                            BluetoothGattService mov = gattBLE.getService(mmovServiceUuid);
+                            BluetoothGattCharacteristic datamov = mov.getCharacteristic(mmovDataUuid);
+                            gattBLE.readCharacteristic(datamov);
 
-                                sensorData[0] = temp;
-
-                            }
-                            letture++;
                             break;
                         // Accelerometro
                         case ("f000aa81") :
                             //metodo per leggere il sensore di movimento
-                            int x = car.getIntValue(BluetoothGattCharacteristic.FORMAT_SINT8,0);
-                            int y = car.getIntValue(BluetoothGattCharacteristic.FORMAT_SINT8,1);
-                            int z = car.getIntValue(BluetoothGattCharacteristic.FORMAT_SINT8,2) * -1;
+                            double x = shortSignedAtOffset(car, 6).doubleValue() / (64*64);
+                            double y = shortSignedAtOffset(car, 8).doubleValue() / (64*64);
+                            double z = shortSignedAtOffset(car, 10).doubleValue() * -1 / (64*64);
 
-                            double scaledX = x / 64.0;
-                            double scaledY = y / 64.0;
-                            double scaledZ = z / 64.0;
-
-                            double[] mov = new double[]{scaledX,scaledY,scaledZ};
-
-                            sensorData[1] = mov;
+                            sensorData[1] = new double[]{x,y,z};
 
                             // Lettura sensore Umidità
                             UUID mhumServiceUuid = UUID.fromString("f000aa20-0451-4000-b000-000000000000");
                             UUID mhumDataUuid = UUID.fromString("f000aa21-0451-4000-b000-000000000000");
-                            BluetoothGattService hum = gattBLE.getService(mhumServiceUuid);
-                            BluetoothGattCharacteristic datahum = hum.getCharacteristic(mhumDataUuid);
+                            BluetoothGattService humS = gattBLE.getService(mhumServiceUuid);
+                            BluetoothGattCharacteristic datahum = humS.getCharacteristic(mhumDataUuid);
                             gattBLE.readCharacteristic(datahum);
                             break;
                         // Humidostato
                         case ("f000aa21") :
-                            Integer lowersByte = car.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0);
-                            Integer uppersByte = car.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0 + 1); // Note: interpret MSB as unsigned.
-                            double tempH = ((uppersByte << 8) + lowersByte) / 128.0;
+                            double hum = shortUnsignedAtOffset(car, 2).doubleValue();
+                            hum = hum - (hum % 4);
 
-                            sensorData[2] = tempH;
-                            attesa = false;
+                            hum = (-6f) + 125f * (hum / 65535f);
+                            sensorData[2] = hum;
                             break;
                     }
+                    if (letture > 5 ) {
+                        attesa = false;
+                    }
+                    letture++;
                 }
                 else { attesa = false; }
             }
         };
+    }
+
+    // Recupera i UNSIGNED dati dalla characteristic
+    private Integer shortUnsignedAtOffset(BluetoothGattCharacteristic car, int offset) {
+        // recupera i byte
+        Integer lowerByte = car.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, offset);
+        Integer upperByte = car.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, offset + 1); // Note: interpret MSB as unsigned.
+        // costruisce il dato
+        Integer data = (upperByte << 8) + lowerByte;
+        return data;
+    }
+    // Recupera i SIGNED dati dalla characteristic
+    private Integer shortSignedAtOffset(BluetoothGattCharacteristic car, int offset) {
+        // recupera i byte
+        Integer lowerByte = car.getIntValue(BluetoothGattCharacteristic.FORMAT_SINT8, offset);
+        Integer upperByte = car.getIntValue(BluetoothGattCharacteristic.FORMAT_SINT8, offset + 1); // Note: interpret MSB as unsigned.
+        // costruisce il dato
+        Integer data = (upperByte << 8) + lowerByte;
+        return data;
     }
 
     // Effettua la connessione in background ed attende che i dati siano disponibili
@@ -206,14 +214,10 @@ public class BeaconDriver extends AsyncTask<BluetoothDevice, Void, Object[]> {
         if (context != null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-            //Double d=new Double(sensorData[1].toString());
-            //Log.i("tipo1:",String.valueOf((double) sensorData[0]));
-
-
             builder.setMessage("Sensore: " + gattBLE.getDevice().toString() +
                     "\n" + "Temp: " + String.valueOf((double) sensorData[0]) +
-                    "\n" + "Moviment:"+ String.valueOf(((double[]) sensorData[1])[0]) + " " + String.valueOf(((double[]) sensorData[1])[1])
-                    + " " + String.valueOf(((double[]) sensorData[1])[2]) +
+                    "\n" + "Moviment:"+ String.valueOf(((double[]) sensorData[1])[0]).substring(0,6) + ":" + String.valueOf(((double[]) sensorData[1])[1]).substring(0,6)
+                    + ":" + String.valueOf(((double[]) sensorData[1])[2]).substring(0,6) +
                     "\n" + "TempH: " + String.valueOf((double) sensorData[2]) )
                     .setTitle("Dati sensore letti");
             AlertDialog dialog = builder.create();
