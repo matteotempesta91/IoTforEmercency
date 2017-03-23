@@ -12,8 +12,6 @@ import android.util.Log;
 
 import java.util.UUID;
 
-import static java.lang.Math.pow;
-
 /**
  * Questa classe estende un task asincrono che si collega al servergatt e recupera i dati dei
  * sensori. Restituisce un array di tali dati.
@@ -118,8 +116,8 @@ public class BeaconDriver extends AsyncTask<BluetoothDevice, Void, Object[]> {
 
                         String servizio = car.getUuid().toString().substring(0,8);
 
-                        double var = shortUnsignedAtOffset(car,0).doubleValue();
-                        Log.i("Prova ->", "BBBBBBB"+ String.valueOf(var));
+                        /*double var = shortUnsignedAtOffset(car,0).doubleValue();
+                        Log.i("Prova ->", "BBBBBBB"+ String.valueOf(var));*/
 
 
                         switch (servizio) {
@@ -168,39 +166,13 @@ public class BeaconDriver extends AsyncTask<BluetoothDevice, Void, Object[]> {
                                 break;
                             //Barometro
                             case ("f000aa41") :
-                                final Integer t_r;	// Temperature raw value from sensor
-                                final Integer p_r;	// Pressure raw value from sensor
-                                final Double t_a; 	// Temperature actual value in unit centi degrees celsius
-                                final Double S;	// Interim value in calculation
-                                final Double O;	// Interim value in calculation
-                                final Double p_a; 	// Pressure actual value in unit Pascal.
+                                Integer lowerByte = car.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 3);
+                                Integer middleByte = car.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 3 + 1);
+                                Integer upperByte = car.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 3 + 2); // Note: interpret MSB as unsigned.
+                                // costruisce il dato
+                                Integer data = (upperByte << 16) + (middleByte << 8) + lowerByte;
 
-                                double[] coefficients = new double[8];
-
-                                coefficients[0] = shortUnsignedAtOffset(car,0).doubleValue();
-                                Log.i("Coefficente0 ->", "BBBBBBB"+ String.valueOf(coefficients[0]));
-                                coefficients[1] = shortUnsignedAtOffset(car, 2).doubleValue();
-                                Log.i("Coefficente1 ->", "BBBBBBB"+ String.valueOf(coefficients[1]));
-                                coefficients[2] = shortUnsignedAtOffset(car, 4).doubleValue();
-                                Log.i("Coefficente2", "Riesco a leggerlo?" + String.valueOf(coefficients[2]) );
-                                //Bisogna trovare un modo per leggere i valori dopo la terza chiamata
-                                coefficients[3] = shortUnsignedAtOffset(car, 6).doubleValue();
-                                coefficients[4] = shortSignedAtOffset(car, 8).doubleValue();
-                                coefficients[5] = shortSignedAtOffset(car, 10).doubleValue();//sta la stessa chiamata qualche riga sopra(144)
-                                coefficients[6] = shortSignedAtOffset(car, 12).doubleValue();
-                                coefficients[7] = shortSignedAtOffset(car, 14).doubleValue();
-                                Log.i("Ci sono", "NNNNNNNNNNNN");
-
-
-                                t_r = shortSignedAtOffset(car, 0);
-                                p_r = shortUnsignedAtOffset(car, 2);
-
-                                t_a = (100 * (coefficients[0] * t_r / pow(2,8) + shortUnsignedAtOffset(car, 2) * pow(2,6))) / pow(2,16);
-                                Log.i("Temperatura t_a", "Leggi la Temperatura ->" + String.valueOf(t_a));
-                                S = coefficients[2] + coefficients[3] * t_r / pow(2,17) + ((coefficients[4] * t_r / pow(2,15)) * t_r) / pow(2,19);
-                                O = coefficients[5] * pow(2,14) + coefficients[6] * t_r / pow(2,3) + ((coefficients[7] * t_r / pow(2,15)) * t_r) / pow(2,4);
-                                p_a = (S * p_r + O) / pow(2,14);
-                                sensorData[3] = p_a;
+                                sensorData[3] = data/100.0d;
 
                                 break;
 
@@ -280,7 +252,7 @@ public class BeaconDriver extends AsyncTask<BluetoothDevice, Void, Object[]> {
                         "\n" + "Moviment:"+ String.valueOf(((double[]) sensorData[1])[0]).substring(0,6) + ":" + String.valueOf(((double[]) sensorData[1])[1]).substring(0,6)
                         + ":" + String.valueOf(((double[]) sensorData[1])[2]).substring(0,6) +
                         "\n" + "Humidity: " + String.valueOf((double) sensorData[2]) +
-                        "\n" + "Pressione: " /*+ String.valueOf( (double) sensorData[3])*/)
+                        "\n" + "Pressione hPA: " + String.valueOf( (double) sensorData[3]))
                         .setTitle("Dati sensore letti");
                 AlertDialog dialog = builder.create();
                 dialog.show();
