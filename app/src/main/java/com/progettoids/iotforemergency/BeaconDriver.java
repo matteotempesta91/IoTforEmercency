@@ -12,6 +12,8 @@ import android.util.Log;
 
 import java.util.UUID;
 
+import static java.lang.Math.pow;
+
 /**
  * Questa classe estende un task asincrono che si collega al servergatt e recupera i dati dei
  * sensori. Restituisce un array di tali dati.
@@ -102,8 +104,20 @@ public class BeaconDriver extends AsyncTask<BluetoothDevice, Void, Object[]> {
                                 } else { attesa = false; }
                                 break;
                             case ("f000aa42"):
+                                UUID mopticServiceUuid = UUID.fromString("f000aa70-0451-4000-b000-000000000000");
+                                UUID mopticConfigUuid = UUID.fromString("f000aa72-0451-4000-b000-000000000000");
+                                BluetoothGattService optic = gatt.getService(mopticServiceUuid);
+                                //Sensore Ottico
+                                if( optic != null) {
+                                    config =optic.getCharacteristic(mopticConfigUuid);
+                                    config.setValue(new  byte[]{1});
+                                    gatt.writeCharacteristic(config);
+                                } else  {attesa = false; }
+                                break;
+                            case ("f000aa72"):
                                 sensOn = true;
                                 break;
+
                         }
 
                     }
@@ -168,13 +182,27 @@ public class BeaconDriver extends AsyncTask<BluetoothDevice, Void, Object[]> {
                             case ("f000aa41") :
                                 Integer lowerByte = car.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 3);
                                 Integer middleByte = car.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 3 + 1);
-                                Integer upperByte = car.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 3 + 2); // Note: interpret MSB as unsigned.
+                                Integer upperByte = car.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 3 + 2);
                                 // costruisce il dato
+                                //Integer data = (upperByte << 16) + (middleByte << 8) + lowerByte;
                                 Integer data = (upperByte << 16) + (middleByte << 8) + lowerByte;
 
                                 sensorData[3] = data/100.0d;
-
+                                //Lettura sensore Ottico
+                                UUID mopticServiceUuid = UUID.fromString("f000aa70-0451-4000-b000-000000000000");
+                                UUID mopticDataUuid = UUID.fromString("f000aa71-0451-4000-b000-000000000000");
+                                BluetoothGattService optic = gattBLE.getService(mopticServiceUuid);
+                                BluetoothGattCharacteristic dataoptic = optic.getCharacteristic(mopticDataUuid);
+                                gattBLE.readCharacteristic(dataoptic);
                                 break;
+                            case ("f000aa71") :
+                                Integer rawData,e,m;
+                                rawData = shortUnsignedAtOffset(car,0).intValue();
+                                m = rawData & 0x0FFF;
+                                e = (rawData & 0xF000) >> 12;
+
+                                sensorData[4] = m * (0.01 * pow(2.0,e));
+
 
                         }
                         if (letture > 5 ) {
@@ -252,7 +280,8 @@ public class BeaconDriver extends AsyncTask<BluetoothDevice, Void, Object[]> {
                         "\n" + "Moviment:"+ String.valueOf(((double[]) sensorData[1])[0]).substring(0,6) + ":" + String.valueOf(((double[]) sensorData[1])[1]).substring(0,6)
                         + ":" + String.valueOf(((double[]) sensorData[1])[2]).substring(0,6) +
                         "\n" + "Humidity: " + String.valueOf((double) sensorData[2]) +
-                        "\n" + "Pressione hPA: " + String.valueOf( (double) sensorData[3]))
+                        "\n" + "Pressione hPA: " + String.valueOf( (double) sensorData[3]) +
+                        "\n" + "Luminosità: " + String.valueOf( sensorData[4]))
                         .setTitle("Dati sensore letti");
                 AlertDialog dialog = builder.create();
                 dialog.show();
