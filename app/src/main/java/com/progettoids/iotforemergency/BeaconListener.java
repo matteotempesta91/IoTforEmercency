@@ -10,6 +10,8 @@ import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 public class BeaconListener {
 
     final BluetoothManager bluetoothManager;
@@ -19,8 +21,8 @@ public class BeaconListener {
     private Handler goScanH = new Handler();
     private Handler altScanH = new Handler();
     private boolean statoScan;
-    private BluetoothDevice[] fari = new BluetoothDevice[3];
-    private int pos = 0;
+    private ArrayList<BluetoothDevice> fari = new ArrayList<BluetoothDevice>();
+    private int refresh = 0;
 
     // Codice task ferma scanner
     private final Runnable stop = new Runnable() {
@@ -37,6 +39,13 @@ public class BeaconListener {
     private final Runnable start = new Runnable() {
         @Override
         public void run() {
+            // ogni due scansioni si rinnova la lista
+            if (refresh > 1) {
+                refresh = 0;
+                fari.clear();
+            }
+            refresh++;
+            
             scanner.startScan(mScanCB);
             statoScan = true;
             Log.i("Scanning", "Start");
@@ -99,21 +108,21 @@ public class BeaconListener {
     }
 
     // Aggiungi ciclicamente i nuovi disp. BLE, senza ripetizioni
-    public void addDevice(BluetoothDevice faro) {
+    public void addDevice(BluetoothDevice foundDev) {
         boolean presente = false;
-        for (int i=0; !presente && fari[i]!=null && i < 2; i++) {
-            if (faro.getAddress().toString().equals(fari[i].getAddress().toString()))
-            { presente = true; }
-        }
-        if (!presente) {
-            fari[pos] = faro;
-            if (faro.getAddress().toString().equals("B0:B4:48:BD:93:82") ) {
+        if (foundDev.getName().toString().equals("CC2650 SensorTag") ) {  // Mac nostro: B0:B4:48:BD:93:82
+            for (BluetoothDevice faroNoto : fari) {
+                if (foundDev.getAddress().toString().equals(faroNoto.getAddress().toString())) {
+                    presente = true;
+                }
+            }
+            if (!presente) {
+                fari.add(foundDev);
                 // I task possono essere eseguiti solo una volta, occorre ricrearli
                 BeaconDriver bDrive = new BeaconDriver(context);
-                bDrive.execute(faro);
+                bDrive.execute(foundDev);
+                // sincronizzare l'acquisizione nel caso di sensori multipli
             }
         }
-        if (pos < 2) { pos++; }
-        else { pos = 0; }
     }
 }
