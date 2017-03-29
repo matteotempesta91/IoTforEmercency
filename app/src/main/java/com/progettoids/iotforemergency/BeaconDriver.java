@@ -6,7 +6,9 @@ import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -184,7 +186,6 @@ public class BeaconDriver extends AsyncTask<BluetoothDevice, Void, Object[]> {
                                 Integer middleByte = car.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 3 + 1);
                                 Integer upperByte = car.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 3 + 2);
                                 // costruisce il dato
-                                //Integer data = (upperByte << 16) + (middleByte << 8) + lowerByte;
                                 Integer data = (upperByte << 16) + (middleByte << 8) + lowerByte;
 
                                 sensorData[3] = data/100.0d;
@@ -202,6 +203,7 @@ public class BeaconDriver extends AsyncTask<BluetoothDevice, Void, Object[]> {
                                 e = (rawData & 0xF000) >> 12;
 
                                 sensorData[4] = m * (0.01 * pow(2.0,e));
+                                salvataggioDatiDB();//metodo per salvare i dati
 
 
                         }
@@ -213,6 +215,30 @@ public class BeaconDriver extends AsyncTask<BluetoothDevice, Void, Object[]> {
                     else { attesa = false; }
                 }
             };
+        }
+
+        //Metodo per salvare i dati sul DataBase
+        public void salvataggioDatiDB(){
+
+            DBManager dbManager;
+
+            DBHelper dbHelper = new DBHelper(this.context);
+            dbManager = new DBManager(dbHelper);
+
+            Log.i("punto 1 ->", "Help");
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+            ContentValues cv = new ContentValues();
+            cv.put(DatabaseStrings.FIELD_TEMPERATURA, sensorData[0].toString());
+            cv.put(DatabaseStrings.FIELD_ACCELERAZIONE, sensorData[1].toString());
+            cv.put(DatabaseStrings.FIELD_UMIDITA, sensorData[2].toString());
+            cv.put(DatabaseStrings.FIELD_PRESSIONE, sensorData[3].toString());
+            cv.put(DatabaseStrings.FIELD_LUMINOSITA, sensorData[4].toString());
+
+            String v="155U1";
+            db.update(DatabaseStrings.TBL_NAME, cv, "codice="+"'"+v+"'", null);
+            Log.i("punto2 _->", "Goooooo");
+
         }
 
         // Recupera i UNSIGNED dati dalla characteristic
