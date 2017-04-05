@@ -110,7 +110,7 @@ public class BeaconListener {
     // Aggiungi ciclicamente i nuovi disp. BLE, senza ripetizioni
     public void addDevice(BluetoothDevice foundDev) {
         boolean presente = false;
-        if (foundDev.getName().toString().equals("CC2650 SensorTag") ) {  // Mac nostro: B0:B4:48:BD:93:82
+        if (foundDev.getName()!=null && foundDev.getName().toString().equals("CC2650 SensorTag") ) {  // Mac nostro: B0:B4:48:BD:93:82
             for (BluetoothDevice faroNoto : fari) {
                 if (foundDev.getAddress().toString().equals(faroNoto.getAddress().toString())) {
                     presente = true;

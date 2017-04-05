@@ -24,9 +24,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
         Log.i("DBHelper","INIZIO CREAZIONE DB");
 
-        String q="CREATE TABLE " + DatabaseStrings.TBL_NAME +
+        String q="CREATE TABLE " + DatabaseStrings.TBL_NAME_NODO +
                 "("+DatabaseStrings.FIELD_CODICE + " TEXT PRIMARY KEY NOT NULL," +
-                DatabaseStrings.FIELD_ID_BEACON + " TEXT," +
                 DatabaseStrings.FIELD_POSIZIONE_X + " TEXT," +
                 DatabaseStrings.FIELD_POSIZIONE_Y + " TEXT," +
                 DatabaseStrings.FIELD_QUOTA + " TEXT," +

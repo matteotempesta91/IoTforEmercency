@@ -2,6 +2,7 @@ package com.progettoids.iotforemergency;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,7 @@ public class LoginActivity extends AppCompatActivity {
     private CheckBox ricordami;
     private Login log;
     private boolean flag1stLog;
+    private static final int NUMERO_NODI=63;
 
         @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,19 +151,33 @@ public class LoginActivity extends AppCompatActivity {
         dbManager = new DBManager(dBhelper);
 
 
-        final int NUMERO_NODI=65;
-
+        if(isFirst(this)){
             for (int i=0;i<NUMERO_NODI;i++){
                 String codice = DatabaseStrings.codice[i];
                 String posizione_x = String.valueOf(DatabaseStrings.posizione_x[i]);
                 String posizione_y = String.valueOf(DatabaseStrings.posizione_y[i]);
                 Log.i("Login:",codice);
-                dbManager.save(codice,null,posizione_x,posizione_y,null,null,null,null,null,null,null);
+                dbManager.save(codice,posizione_x,posizione_y,null,null,null,null,null,null,null);
             }
 
 
 
-        dbManager.query();
+            dbManager.query();
+        }
+
+    }
+
+
+    public static boolean isFirst(Context context){
+
+        final SharedPreferences reader = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
+        final boolean first = reader.getBoolean("is_first", true);
+        if(first){
+            final SharedPreferences.Editor editor = reader.edit();
+            editor.putBoolean("is_first", false);
+            editor.commit();
+        }
+        return first;
     }
 
 

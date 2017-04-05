@@ -220,10 +220,8 @@ public class BeaconDriver extends AsyncTask<BluetoothDevice, Void, Object[]> {
         //Metodo per salvare i dati sul DataBase
         public void salvataggioDatiDB(){
 
-            DBManager dbManager;
 
             DBHelper dbHelper = new DBHelper(this.context);
-            dbManager = new DBManager(dbHelper);
 
             Log.i("punto 1 ->", "Help");
             SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -236,7 +234,7 @@ public class BeaconDriver extends AsyncTask<BluetoothDevice, Void, Object[]> {
             cv.put(DatabaseStrings.FIELD_LUMINOSITA, sensorData[4].toString());
 
             String v="155U1";
-            db.update(DatabaseStrings.TBL_NAME, cv, "codice="+"'"+v+"'", null);
+            db.update(DatabaseStrings.TBL_NAME_NODO, cv, "codice="+"'"+v+"'", null);
             Log.i("punto2 _->", "Goooooo");
 
         }

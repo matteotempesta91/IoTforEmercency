@@ -17,12 +17,12 @@ public class DBManager
     public DBManager(DBHelper dbhelper)
     {
         this.dbhelper=dbhelper;
-        Log.i("DBManager:","rrrrasdsadadujujujrr");
+        Log.i("DBManager:","COSTRUTTORE DBMANAGER");
     }
 
 
 
-    public void save(String codice,String id_beacon,String posizione_x,String posizione_y,
+    public void save(String codice,String posizione_x,String posizione_y,
                      String quota,String stato,String temperatura,String luminosita,
                      String accelerazione,String numero_persone,String orario_ultima_ricezione) {
 
@@ -33,7 +33,6 @@ public class DBManager
 
 
         cv.put(DatabaseStrings.FIELD_CODICE, codice);
-        cv.put(DatabaseStrings.FIELD_ID_BEACON, id_beacon);
         cv.put(DatabaseStrings.FIELD_POSIZIONE_X, posizione_x);
         cv.put(DatabaseStrings.FIELD_POSIZIONE_Y, posizione_y);
         cv.put(DatabaseStrings.FIELD_QUOTA, quota);
@@ -50,7 +49,7 @@ public class DBManager
 
         try
         {
-            db.insert(DatabaseStrings.TBL_NAME, null, cv);
+            db.insert(DatabaseStrings.TBL_NAME_NODO, null, cv);
         }
         catch (SQLiteException sqle)
         {
@@ -83,15 +82,13 @@ public class DBManager
         try
         {
             SQLiteDatabase db = dbhelper.getReadableDatabase();
-            crs = db.query(DatabaseStrings.TBL_NAME, null, null, null, null, null, null, null);
+            crs = db.query(DatabaseStrings.TBL_NAME_NODO, null, null, null, null, null, null, null);
             crs.moveToLast();
-           // String s = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_CODICE));
             String s2 = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_TEMPERATURA));
             String s3 = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_ACCELERAZIONE));
             String s4 = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_UMIDITA));
             String s5 = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_PRESSIONE));
             String s6 = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_LUMINOSITA));
-            //String s= String.valueOf(crs.getColumnIndex(DatabaseStrings.FIELD_CODICE));
             Log.i("DBMANAGER","99999");
             Log.i("DBMANAGER",s2+"-"+s3+"-"+s4+"-"+s5+"-"+s6);
 

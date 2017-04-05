@@ -6,7 +6,9 @@ package com.progettoids.iotforemergency;
 
 public class DatabaseStrings
 {
-    public static final String FIELD_ID_BEACON = "id_beacon";
+    /*
+    CAMPI NODO
+     */
     public static final String FIELD_CODICE = "codice";
     public static final String FIELD_POSIZIONE_X = "posizione_x";
     public static final String FIELD_POSIZIONE_Y = "posizione_y";
@@ -20,7 +22,27 @@ public class DatabaseStrings
     public static final String FIELD_NUMERO_PERSONE = "numero_persone";
     public static final String FIELD_ORARIO_ULTIMA_RICEZIONE = "orario_ultima_ricezione";
 
-    public static final String TBL_NAME = "Nodo";
+
+    /*
+    CAMPI BEACON
+     */
+    public static final String FIELD_MAC_BEACON = "mac_beacon";
+    public static final String FIELD_CODICE_NODO_BEACON= "codice_nodo_beacon";
+
+
+
+    public static final String TBL_NAME_NODO = "Nodo";
+    public static final String TBL_NAME_BEACON = "Beacon";
+
+
+
+
+    public static final String[] mac_beacon = {
+            "B0:B4:48:BD:93:82"
+    };
+    public static final String[] codice_nodo_beacon = {
+            "145DICEA"
+    };
 
 
     public static final int[] posizione_x = {
@@ -85,9 +107,7 @@ public class DatabaseStrings
             91,
             144,
             62,
-            156,
             154,
-            100,
             136
     };
 
@@ -153,8 +173,6 @@ public class DatabaseStrings
             484,
             474,
             465,
-            452,
-            454,
             454,
             454
     };
@@ -221,9 +239,7 @@ public class DatabaseStrings
             "155A5",
             "155A3",
             "155A7",
-            "155EM3",
             "155EM2",
-            "155EM1",
             "155U1"
     };
 }
