@@ -24,7 +24,7 @@ public class LoginActivity extends AppCompatActivity {
     private boolean flag1stLog;
     private static final int NUMERO_NODI=63;
 
-        @Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
@@ -145,20 +145,28 @@ public class LoginActivity extends AppCompatActivity {
 
     public void gestioneCreazineDB(){
 
-        DBManager dbManager;
-
-        DBHelper dBhelper = new DBHelper(this);
-        dbManager = new DBManager(dBhelper);
 
 
+        Log.i("IS FIRST:",String.valueOf(isFirst(this)));
         if(isFirst(this)){
+
+            DBManager dbManager;
+
+            Log.i("b","inizio creazione db");
+            DBHelper dBhelper = new DBHelper(this);
+            dbManager = new DBManager(dBhelper);
+
+
+
             for (int i=0;i<NUMERO_NODI;i++){
                 String codice = DatabaseStrings.codice[i];
                 String posizione_x = String.valueOf(DatabaseStrings.posizione_x[i]);
                 String posizione_y = String.valueOf(DatabaseStrings.posizione_y[i]);
                 Log.i("Login:",codice);
-                dbManager.save(codice,posizione_x,posizione_y,null,null,null,null,null,null,null);
+                dbManager.saveNodo(codice,posizione_x,posizione_y,null,null,null);
             }
+
+            dbManager.saveBeacon("B0:B4:48:BD:93:82","155R4",null,null,null,null,null);
 
 
 

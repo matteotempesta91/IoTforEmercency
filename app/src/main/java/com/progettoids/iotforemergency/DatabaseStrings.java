@@ -9,25 +9,24 @@ public class DatabaseStrings
     /*
     CAMPI NODO
      */
-    public static final String FIELD_CODICE = "codice";
-    public static final String FIELD_POSIZIONE_X = "posizione_x";
-    public static final String FIELD_POSIZIONE_Y = "posizione_y";
-    public static final String FIELD_QUOTA = "quota";
-    public static final String FIELD_STATO = "stato";
-    public static final String FIELD_TEMPERATURA = "temperatura";
-    public static final String FIELD_ACCELERAZIONE = "accelerazione";
-    public static final String FIELD_UMIDITA = "umidita";
-    public static final String FIELD_PRESSIONE = "pressione";
-    public static final String FIELD_LUMINOSITA = "luminosita";
-    public static final String FIELD_NUMERO_PERSONE = "numero_persone";
-    public static final String FIELD_ORARIO_ULTIMA_RICEZIONE = "orario_ultima_ricezione";
+    public static final String FIELD_NODO_CODICE = "codice";
+    public static final String FIELD_NODO_POSIZIONE_X = "posizione_x";
+    public static final String FIELD_NODO_POSIZIONE_Y = "posizione_y";
+    public static final String FIELD_NODO_STATO = "stato";
+    public static final String FIELD_NODO_QUOTA = "quota";
+    public static final String FIELD_NODO_ORARIO_ULTIMA_RICEZIONE = "orario_ultima_ricezione";
 
 
     /*
     CAMPI BEACON
      */
-    public static final String FIELD_MAC_BEACON = "mac_beacon";
-    public static final String FIELD_CODICE_NODO_BEACON= "codice_nodo_beacon";
+    public static final String FIELD_BEACON_MAC = "mac_beacon";
+    public static final String FIELD_BEACON_CODICE_NODO= "codice_nodo_beacon";
+    public static final String FIELD_BEACON_TEMPERATURA = "temperatura";
+    public static final String FIELD_BEACON_ACCELERAZIONE = "accelerazione";
+    public static final String FIELD_BEACON_UMIDITA = "umidita";
+    public static final String FIELD_BEACON_LUMINOSITA = "luminosita";
+    public static final String FIELD_BEACON_PRESSIONE = "pressione";
 
 
 
@@ -243,3 +242,4 @@ public class DatabaseStrings
             "155U1"
     };
 }
+

@@ -45,7 +45,7 @@ public class BeaconListener {
                 fari.clear();
             }
             refresh++;
-            
+
             scanner.startScan(mScanCB);
             statoScan = true;
             Log.i("Scanning", "Start");
@@ -64,8 +64,8 @@ public class BeaconListener {
             // Se trova un dispositivo
             @Override
             public void onScanResult(int callbackType, ScanResult result) {
-               // Log.i("callbackType", String.valueOf(callbackType));
-               // Log.i("result", result.toString());
+                // Log.i("callbackType", String.valueOf(callbackType));
+                // Log.i("result", result.toString());
                 addDevice(result.getDevice());
             }
             // Se fallisce la scansione
@@ -110,7 +110,14 @@ public class BeaconListener {
     // Aggiungi ciclicamente i nuovi disp. BLE, senza ripetizioni
     public void addDevice(BluetoothDevice foundDev) {
         boolean presente = false;
-        if (foundDev.getName()!=null && foundDev.getName().toString().equals("CC2650 SensorTag") ) {  // Mac nostro: B0:B4:48:BD:93:82
+        String nomeDev;
+        try {
+            nomeDev = foundDev.getName().toString();
+        } catch (Exception ex
+                ) {
+            nomeDev = "SenzaNome";
+        }
+        if (nomeDev.equals("CC2650 SensorTag")) {  // Mac nostro: B0:B4:48:BD:93:82
             for (BluetoothDevice faroNoto : fari) {
                 if (foundDev.getAddress().toString().equals(faroNoto.getAddress().toString())) {
                     presente = true;
@@ -126,3 +133,5 @@ public class BeaconListener {
         }
     }
 }
+
+
