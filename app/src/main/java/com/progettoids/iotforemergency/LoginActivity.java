@@ -147,8 +147,26 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-        Log.i("IS FIRST:",String.valueOf(isFirst(this)));
-        if(isFirst(this)){
+        //Log.i("IS FIRST:",String.valueOf(isFirst(this)));
+
+
+
+        int result = (isFirst(this)) ? 1 : 0;
+        Log.i("result INTERO:",String.valueOf(result));
+
+
+        if(result==1){
+            Log.i("BBBBBB:","BBBBBB");
+        }
+
+
+
+
+
+        if(result==1){
+
+            Log.i("AAAAAAA:","AAAAA");
+
 
             DBManager dbManager;
 
@@ -170,7 +188,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-            dbManager.query();
         }
 
     }
