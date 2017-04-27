@@ -145,28 +145,11 @@ public class LoginActivity extends AppCompatActivity {
 
     public void gestioneCreazineDB(){
 
-
-
-        //Log.i("IS FIRST:",String.valueOf(isFirst(this)));
-
-
-
         int result = (isFirst(this)) ? 1 : 0;
         Log.i("result INTERO:",String.valueOf(result));
 
 
         if(result==1){
-            Log.i("BBBBBB:","BBBBBB");
-        }
-
-
-
-
-
-        if(result==1){
-
-            Log.i("AAAAAAA:","AAAAA");
-
 
             DBManager dbManager;
 
@@ -184,7 +167,7 @@ public class LoginActivity extends AppCompatActivity {
                 dbManager.saveNodo(codice,posizione_x,posizione_y,null,null,null);
             }
 
-            dbManager.saveBeacon("B0:B4:48:BD:93:82","155R4",null,null,null,null,null);
+            dbManager.saveBeacon("B0:B4:48:BD:93:82","155R4",null,null,null,null,null,null,null);
 
 
 

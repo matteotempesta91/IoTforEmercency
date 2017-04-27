@@ -224,13 +224,15 @@ public class BeaconDriver extends AsyncTask<BluetoothDevice, Void, Object[]> {
 
         Log.i("punto 1 ->", "Help");
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-
+        //+":"+String.valueOf(((double[]) sensorData[1])[1])+":"+String.valueOf(((double[]) sensorData[1])[2]));
         ContentValues cv = new ContentValues();
-        cv.put(DatabaseStrings.FIELD_BEACON_TEMPERATURA, sensorData[0].toString());
-        cv.put(DatabaseStrings.FIELD_BEACON_ACCELERAZIONE, sensorData[1].toString());
-        cv.put(DatabaseStrings.FIELD_BEACON_UMIDITA, sensorData[2].toString());
-        cv.put(DatabaseStrings.FIELD_BEACON_PRESSIONE, sensorData[3].toString());
-        cv.put(DatabaseStrings.FIELD_BEACON_LUMINOSITA, sensorData[4].toString());
+        cv.put(DatabaseStrings.FIELD_BEACON_TEMPERATURA, ((double) sensorData[0]));
+        cv.put(DatabaseStrings.FIELD_BEACON_ACCELERAZIONEX, (((double[]) sensorData[1])[0]));
+        cv.put(DatabaseStrings.FIELD_BEACON_ACCELERAZIONEY, (((double[]) sensorData[1])[1]));
+        cv.put(DatabaseStrings.FIELD_BEACON_ACCELERAZIONEZ, (((double[]) sensorData[1])[2]));
+        cv.put(DatabaseStrings.FIELD_BEACON_UMIDITA,((double) sensorData[2]));
+        cv.put(DatabaseStrings.FIELD_BEACON_PRESSIONE, ((double) sensorData[3]));
+        cv.put(DatabaseStrings.FIELD_BEACON_LUMINOSITA, ((double) sensorData[4]));
 
         Log.i("Indirizzo Mac ->", mac);
         db.update(DatabaseStrings.TBL_NAME_BEACON, cv, DatabaseStrings.FIELD_BEACON_MAC + "=" + "'" + mac + "'", null);

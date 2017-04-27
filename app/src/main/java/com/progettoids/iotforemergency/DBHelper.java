@@ -26,27 +26,43 @@ public class DBHelper extends SQLiteOpenHelper {
 
         String q="CREATE TABLE " + DatabaseStrings.TBL_NAME_NODO +
                 "("+DatabaseStrings.FIELD_NODO_CODICE + " TEXT PRIMARY KEY NOT NULL," +
-                DatabaseStrings.FIELD_NODO_POSIZIONE_X + " TEXT," +
-                DatabaseStrings.FIELD_NODO_POSIZIONE_Y + " TEXT," +
-                DatabaseStrings.FIELD_NODO_QUOTA + " TEXT," +
-                DatabaseStrings.FIELD_NODO_STATO + " TEXT," +
+                DatabaseStrings.FIELD_NODO_POSIZIONE_X + " INTEGER," +
+                DatabaseStrings.FIELD_NODO_POSIZIONE_Y + " INTEGER," +
+                DatabaseStrings.FIELD_NODO_QUOTA + " INTEGER," +
+                DatabaseStrings.FIELD_NODO_STATO + " INTEGER," +
                 DatabaseStrings.FIELD_NODO_ORARIO_ULTIMA_RICEZIONE + " TEXT)";
 
-        String q2=" CREATE TABLE " +
-                DatabaseStrings.TBL_NAME_BEACON +
+        String q2=" CREATE TABLE " + DatabaseStrings.TBL_NAME_BEACON +
                 "("+DatabaseStrings.FIELD_BEACON_MAC + " TEXT PRIMARY KEY NOT NULL," +
                 DatabaseStrings.FIELD_BEACON_CODICE_NODO + " TEXT," +
-                DatabaseStrings.FIELD_BEACON_TEMPERATURA + " TEXT," +
-                DatabaseStrings.FIELD_BEACON_ACCELERAZIONE + " TEXT," +
-                DatabaseStrings.FIELD_BEACON_UMIDITA + " TEXT," +
-                DatabaseStrings.FIELD_BEACON_LUMINOSITA + " TEXT," +
-                DatabaseStrings.FIELD_BEACON_PRESSIONE + " TEXT);";
+                DatabaseStrings.FIELD_BEACON_TEMPERATURA + " REAL," +
+                DatabaseStrings.FIELD_BEACON_ACCELERAZIONEX + " REAL," +
+                DatabaseStrings.FIELD_BEACON_ACCELERAZIONEY + " REAL," +
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                DatabaseStrings.FIELD_BEACON_ACCELERAZIONEZ + " REAL," +
+                DatabaseStrings.FIELD_BEACON_UMIDITA + " REAL," +
+                DatabaseStrings.FIELD_BEACON_LUMINOSITA + " REAL," +
+                DatabaseStrings.FIELD_BEACON_PRESSIONE + " REAL);";
 
         Log.i("Creazione tabella nodo:",q);
         sqLiteDatabase.execSQL(q);
 
 
-        Log.i("Creazione tabella beacon:",q2);
+        Log.i("Creazione tab beacon:",q2);
         sqLiteDatabase.execSQL(q2);
 
         Log.i("DBHelper","DATABASE CREATO");

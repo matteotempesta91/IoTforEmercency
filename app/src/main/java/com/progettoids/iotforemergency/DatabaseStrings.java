@@ -23,7 +23,9 @@ public class DatabaseStrings
     public static final String FIELD_BEACON_MAC = "mac_beacon";
     public static final String FIELD_BEACON_CODICE_NODO= "codice_nodo_beacon";
     public static final String FIELD_BEACON_TEMPERATURA = "temperatura";
-    public static final String FIELD_BEACON_ACCELERAZIONE = "accelerazione";
+    public static final String FIELD_BEACON_ACCELERAZIONEX = "accelerazionex";
+    public static final String FIELD_BEACON_ACCELERAZIONEY = "accelerazioney";
+    public static final String FIELD_BEACON_ACCELERAZIONEZ = "accelerazionez";
     public static final String FIELD_BEACON_UMIDITA = "umidita";
     public static final String FIELD_BEACON_LUMINOSITA = "luminosita";
     public static final String FIELD_BEACON_PRESSIONE = "pressione";

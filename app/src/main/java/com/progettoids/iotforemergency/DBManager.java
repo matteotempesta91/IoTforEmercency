@@ -51,7 +51,8 @@ public class DBManager
     }
 
     public void saveBeacon(String mac,String codicenodo,String temperatura,
-                           String accelerazione,String umidita,String pressione, String luminosita) {
+                           String accelerazionex,String accelerazioney, String accelerazionez,String umidita,
+                           String pressione, String luminosita) {
 
         Log.i("DBManager:","1111");
         SQLiteDatabase db = dbhelper.getWritableDatabase();
@@ -62,7 +63,9 @@ public class DBManager
         cv.put(DatabaseStrings.FIELD_BEACON_MAC, mac);
         cv.put(DatabaseStrings.FIELD_BEACON_CODICE_NODO, codicenodo);
         cv.put(DatabaseStrings.FIELD_BEACON_TEMPERATURA, temperatura);
-        cv.put(DatabaseStrings.FIELD_BEACON_ACCELERAZIONE, accelerazione);
+        cv.put(DatabaseStrings.FIELD_BEACON_ACCELERAZIONEX, accelerazionex);
+        cv.put(DatabaseStrings.FIELD_BEACON_ACCELERAZIONEY, accelerazioney);
+        cv.put(DatabaseStrings.FIELD_BEACON_ACCELERAZIONEZ, accelerazionez);
         cv.put(DatabaseStrings.FIELD_BEACON_UMIDITA, umidita);
         cv.put(DatabaseStrings.FIELD_BEACON_PRESSIONE, pressione);
         cv.put(DatabaseStrings.FIELD_BEACON_LUMINOSITA, luminosita);
@@ -107,15 +110,19 @@ public class DBManager
         {
             SQLiteDatabase db = dbhelper.getReadableDatabase();
 
-            crs = db.query(DatabaseStrings.TBL_NAME_BEACON, null, null, null, null, null, null, null);
+            crs = db.query(DatabaseStrings.TBL_NAME_BEACON, null, null, null, null, null, null);
             Log.i("beacon",String.valueOf(crs.getCount()));
             crs.moveToLast();
             Log.i("beacon",String.valueOf(crs.getCount()));
 
             String s2 = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_BEACON_TEMPERATURA));
             Log.i("temp:",s2);
-            String s3 = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_BEACON_ACCELERAZIONE));
-            Log.i("acc:",s3);
+            String s3x = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_BEACON_ACCELERAZIONEX));
+            Log.i("acc:",s3x);
+            String s3y = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_BEACON_ACCELERAZIONEY));
+            Log.i("acc:",s3y);
+            String s3z = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_BEACON_ACCELERAZIONEZ));
+            Log.i("acc:",s3z);
             String s4 = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_BEACON_UMIDITA));
             Log.i("umid:",s4);
             String s5 = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_BEACON_PRESSIONE));
