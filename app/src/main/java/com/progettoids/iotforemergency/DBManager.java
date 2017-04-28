@@ -8,6 +8,10 @@ import android.util.Log;
 
 /**
  * Created by matteotempesta on 02/03/17.
+ *
+ * cose da fare nel db:
+ *  -METTERE LA CHIUSURA DEL DB
+ *  -forse la riga quota
  */
 
 public class DBManager
@@ -143,4 +147,45 @@ public class DBManager
 
 
 
+    public int[] getPosition(String mac_beacon){
+
+        SQLiteDatabase db = dbhelper.getReadableDatabase();
+        String query1="SELECT "+DatabaseStrings.FIELD_BEACON_CODICE_NODO+" FROM "+DatabaseStrings.TBL_NAME_BEACON+" WHERE "+DatabaseStrings.FIELD_BEACON_MAC+"='"+mac_beacon+"';";
+        Log.i("query1:",query1);
+        Cursor c = db.rawQuery(query1, null);
+
+        int[] posizione=new int[3];
+        if(c.moveToFirst()){
+            String codice_nodo= c.getString(0);
+            Log.i("codice_nodo:",codice_nodo);
+
+
+            String query2="SELECT "+DatabaseStrings.FIELD_NODO_POSIZIONE_X+","+DatabaseStrings.FIELD_NODO_POSIZIONE_Y+","+DatabaseStrings.FIELD_NODO_QUOTA+" FROM "+DatabaseStrings.TBL_NAME_NODO+" WHERE "+DatabaseStrings.FIELD_NODO_CODICE+"='"+codice_nodo+"';";
+            Log.i("query2:",query2);
+            Cursor c2 = db.rawQuery(query2, null);
+            if(c2.moveToFirst()) {
+                String x = c2.getString(0);
+                Log.i("x:", x);
+                posizione[0]= Integer.parseInt(x);
+
+                String y = c2.getString(1);
+                Log.i("y:", y);
+                posizione[1]= Integer.parseInt(y);
+
+                String z = c2.getString(2);
+                Log.i("z:", z);
+                posizione[2]= Integer.parseInt(z);
+            }
+            c2.close();
+
+
+
+        }
+        c.close();
+        db.close();
+
+
+
+        return posizione;
+    }
 }

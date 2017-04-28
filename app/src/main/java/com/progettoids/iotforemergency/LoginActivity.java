@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.v7.appcompat.*;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -13,6 +15,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import java.io.File;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity {
@@ -20,7 +23,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnLogin, btnLoginGuest, btnRegistrati;
     private EditText editUser, editPass;
     private CheckBox ricordami;
-    private Login log;
+    private Login loginUtils;
     private boolean flag1stLog;
     private static final int NUMERO_NODI=63;
 
@@ -29,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        log = new Login();
+        loginUtils = new Login();
         flag1stLog = true;
         login();
         loginGuest();
@@ -48,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         File memo = new File(path, "memo");
         if (memo.exists()) {
             try {
-                String[] userPwd = log.loadLogin(memo);
+                String[] userPwd = loginUtils.loadLogin(memo);
                 if (userPwd.length >= 2) {
                     ricordami.setChecked(true);
                     editUser.setText(userPwd[0]);
@@ -80,7 +83,7 @@ public class LoginActivity extends AppCompatActivity {
                         File path = context.getCacheDir();
                         File memo = new File(path, "memo");
                         try {
-                            log.saveLogin(memo, editUser.getText().toString(), editUser.getText().toString());
+                            loginUtils.saveLogin(memo, editUser.getText().toString(), editUser.getText().toString());
                         } catch (Exception ex) {
                             AlertDialog.Builder miaAlert = new AlertDialog.Builder(context);
                             miaAlert.setTitle("Error");
@@ -163,17 +166,44 @@ public class LoginActivity extends AppCompatActivity {
                 String codice = DatabaseStrings.codice[i];
                 String posizione_x = String.valueOf(DatabaseStrings.posizione_x[i]);
                 String posizione_y = String.valueOf(DatabaseStrings.posizione_y[i]);
+                String quota = String.valueOf(DatabaseStrings.quota[i]);
                 Log.i("Login:",codice);
-                dbManager.saveNodo(codice,posizione_x,posizione_y,null,null,null);
+                dbManager.saveNodo(codice,posizione_x,posizione_y,quota,null,null);
             }
 
             dbManager.saveBeacon("B0:B4:48:BD:93:82","155R4",null,null,null,null,null,null,null);
 
 
+            provaStoriaUtente3(dbManager);
 
         }
-
     }
+
+
+
+    public void provaStoriaUtente3(DBManager dbManager){
+        int[] position=dbManager.getPosition("B0:B4:48:BD:93:82");
+        DriverServer driverServer=new DriverServer();
+
+
+
+        String android_id = Settings.Secure.getString( this.getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+
+
+        Log.d("Android","Android ID : "+android_id);
+
+
+
+        if(loginUtils.getUser()!=null){
+            driverServer.sendPosition(loginUtils.getUser(),position);
+        }
+        else{
+
+
+        }
+    }
+
 
 
     public static boolean isFirst(Context context){

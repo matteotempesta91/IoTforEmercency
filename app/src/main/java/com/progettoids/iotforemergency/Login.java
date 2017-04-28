@@ -44,4 +44,9 @@ public class Login {
         }
         return userPwd;
     }
+
+
+    public String getUser(){
+        return this.user;
+    }
 }

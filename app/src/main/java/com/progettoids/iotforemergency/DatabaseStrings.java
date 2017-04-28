@@ -14,7 +14,7 @@ public class DatabaseStrings
     public static final String FIELD_NODO_POSIZIONE_Y = "posizione_y";
     public static final String FIELD_NODO_STATO = "stato";
     public static final String FIELD_NODO_QUOTA = "quota";
-    public static final String FIELD_NODO_ORARIO_ULTIMA_RICEZIONE = "orario_ultima_ricezione";
+    public static final String FIELD_NODO_ORARIO_ULTIMA_RICEZIONE = "orario_ultima_ricezione"; // va su beacon
 
 
     /*
@@ -177,6 +177,74 @@ public class DatabaseStrings
             454,
             454
     };
+
+
+    public static final int[] quota = {
+            145,
+            145,
+            145,
+            145,
+            145,
+            145,
+            145,
+            145,
+            145,
+            145,
+            145,
+            145,
+            145,
+            145,
+            145,
+            145,
+            145,
+            145,
+            145,
+            145,
+            145,
+            150,
+            150,
+            150,
+            150,
+            150,
+            150,
+            150,
+            150,
+            150,
+            150,
+            150,
+            150,
+            150,
+            150,
+            150,
+            150,
+            150,
+            150,
+            150,
+            150,
+            155,
+            155,
+            155,
+            155,
+            155,
+            155,
+            155,
+            155,
+            155,
+            155,
+            155,
+            155,
+            155,
+            155,
+            155,
+            155,
+            155,
+            155,
+            155,
+            155,
+            155,
+            155
+    };
+
 
     public static final String[] codice = {
             "145DICEA",

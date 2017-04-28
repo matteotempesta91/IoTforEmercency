@@ -3,21 +3,21 @@
 
     <item
         is-multidex="true"
-        jar="C:\Users\Luigi\Documents\IoTforEmergencyCond\IoTforEmercency\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jar="/Users/matteotempesta/IoTforEmercency/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="2be7396cc97fb22571bc50c63ba30ba5bac44fa8">
+        <dex dex="/Users/matteotempesta/IoTforEmercency/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_25e839f5c6ff73e0328c4678eb050e08fc5cc971/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/matteotempesta/IoTforEmercency/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
         sha1="c82741bc129dd5f99f11a4ab8666ae24262053b6">
-        <dex dex="C:\Users\Luigi\Documents\IoTforEmergencyCond\IoTforEmercency\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_fa7ecd119b405371ea1889b2cfca5df7d4ae8561\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Luigi\Documents\IoTforEmergencyCond\IoTforEmercency\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="b82d6a41545c04d4abde4ac14055710876574f08">
-        <dex dex="C:\Users\Luigi\Documents\IoTforEmergencyCond\IoTforEmercency\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_ed3fca2964e931bc6ca5be0ed1a28cbaac0465ee\classes.dex" />
+        <dex dex="/Users/matteotempesta/IoTforEmercency/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_0d13ae0d00938fed8b7d04b2ca3be21056e069f3/classes.dex" />
     </item>
 
 </items>

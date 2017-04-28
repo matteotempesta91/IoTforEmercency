@@ -200,7 +200,6 @@ public class BeaconDriver extends AsyncTask<BluetoothDevice, Void, Object[]> {
                             e = (rawData & 0xF000) >> 12;
 
                             sensorData[4] = m * (0.01 * pow(2.0, e));
-                            //salvataggioDatiDB(faro[0].getAddress().toString());//metodo per salvare i dati
 
 
                     }
