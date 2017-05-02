@@ -1,5 +1,6 @@
 package com.progettoids.iotforemergency;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
@@ -12,17 +13,19 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends Activity {
     private TextView txtWelcome;
     private Button btnLogout;
     private BeaconListener bleList;
+
+    MapHome mapHome;
 
     // Id necessari per tracciare le richieste effettuate al sistema
     static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
@@ -36,6 +39,9 @@ public class HomeActivity extends AppCompatActivity {
         Bundle bundle = this.getIntent().getExtras();
         txtWelcome.setText(bundle.getString("welcomeMsg"));
         logout();
+
+        mapHome = (MapHome)findViewById(R.id.IMAGEID);
+
         bleList = new BeaconListener(this);
 
         // Richiesta dei permessi di localizzazione approssimata
@@ -54,6 +60,21 @@ public class HomeActivity extends AppCompatActivity {
         // Registra il ricevitore per le notifiche di stato
         IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
         registerReceiver(mReceiver, filter);
+    }
+
+    //aggiunta per provare le funzioni di disegno
+    @Override
+    public void onPostCreate(Bundle savedInstance) {
+        super.onPostCreate(savedInstance);
+        RelativeLayout layout =(RelativeLayout)findViewById(R.id.activity_home);
+
+        mapHome.disegnaEmergenza(2,layout);         // disegna la cornice per l'emergenza
+                mapHome.disegnaPosizione(133,480,145);
+        //   int i =0;
+        mapHome.disegnaStatoNodo(1,143,473,145); // 145A3 (vicino le scale)
+        mapHome.disegnaStatoNodo(2,90,480,145);  // 145RG1 (sinistra di G1 sotto le scale)
+        mapHome.disegnaStatoNodo(3,133,465,145); // 145WC1
+        mapHome.disegnaStatoNodo(3,119,465,145);
     }
 
     @Override
