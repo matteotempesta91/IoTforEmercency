@@ -24,8 +24,8 @@ public class HomeActivity extends Activity {
     private TextView txtWelcome;
     private Button btnLogout;
     private BeaconListener bleList;
-
-    MapHome mapHome;
+    private Localizzatore locMe;
+    private MapHome mapHome;
 
     // Id necessari per tracciare le richieste effettuate al sistema
     static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
@@ -41,8 +41,8 @@ public class HomeActivity extends Activity {
         logout();
 
         mapHome = (MapHome)findViewById(R.id.IMAGEID);
-
         bleList = new BeaconListener(this);
+        locMe = new Localizzatore(this, bleList, mapHome);
 
         // Richiesta dei permessi di localizzazione approssimata
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -55,6 +55,7 @@ public class HomeActivity extends Activity {
         if (EnableBluetooth()) {
             EnableGPS();
             bleList.Scansione(true);
+            locMe.startFinder();
         }
 
         // Registra il ricevitore per le notifiche di stato
@@ -67,21 +68,29 @@ public class HomeActivity extends Activity {
     public void onPostCreate(Bundle savedInstance) {
         super.onPostCreate(savedInstance);
         RelativeLayout layout =(RelativeLayout)findViewById(R.id.activity_home);
-
+        /*
         mapHome.disegnaEmergenza(2,layout);         // disegna la cornice per l'emergenza
-                mapHome.disegnaPosizione(133,480,145);
-        //   int i =0;
+        mapHome.disegnaPosizione(133,480,145);
         mapHome.disegnaStatoNodo(1,143,473,145); // 145A3 (vicino le scale)
         mapHome.disegnaStatoNodo(2,90,480,145);  // 145RG1 (sinistra di G1 sotto le scale)
         mapHome.disegnaStatoNodo(3,133,465,145); // 145WC1
         mapHome.disegnaStatoNodo(3,119,465,145);
+        */
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        // evita memory leak causato dalle bitmap
+        mapHome.emptyBM();
+        mapHome=null;
+        bleList.stopAll();
+        bleList=null;
+        locMe.stopFinder();
+        locMe = null;
         // Cancella il ricevitore dalle notifiche di stato
         unregisterReceiver(mReceiver);
+
     }
 
     // Gestisce il risultato della richiesta dei permessi
@@ -96,6 +105,7 @@ public class HomeActivity extends Activity {
                         if (EnableBluetooth()) {
                             EnableGPS();
                             bleList.Scansione(true);
+                            locMe.startFinder();
                         }
                     } else {
                         Log.i("Localizzazione", "Permessi di localizzazione negati");
@@ -105,23 +115,6 @@ public class HomeActivity extends Activity {
             }
         }
     }
-
-    /* Gestisce il risultato della richiesta di attivazione del bluetooth
-    Questa soluzione non permette di attendere che il ble sia effettivamente attivo
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case REQUEST_ENABLE_BT: {
-                if (resultCode == RESULT_OK) {
-                    EnableGPS();
-                    bleList.Scansione(true);
-                } else {
-                    Log.i("BLE", "Non attivo");
-                }
-                return;
-            }
-        }
-    }*/
 
     // Permette di ricevere notifice sullo stato del dispositivo
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -136,6 +129,13 @@ public class HomeActivity extends Activity {
                     case BluetoothAdapter.STATE_ON:
                         EnableGPS();
                         bleList.Scansione(true);
+                        locMe.startFinder();
+                        break;
+                    case BluetoothAdapter.STATE_OFF:
+                        bleList.stopAll();
+                        locMe.stopFinder();
+                        //HomeActivity.this.finish();
+                        // Segalare all'utente che l'app non funziona senza ble
                         break;
                 }
                 // Aggiungere azione in caso l'utente spenga il ble con app attiva
@@ -148,14 +148,15 @@ public class HomeActivity extends Activity {
         btnLogout.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HomeActivity.this.finish();
-                bleList.Scansione(false);
+                bleList.stopAll();
+                locMe.stopFinder();
+                finish();
             }
         });
     }
 
     // Abilita il BLE con il consenso dell'utente
-    public boolean EnableBluetooth(){
+    public boolean EnableBluetooth() {
         BluetoothAdapter mBluetoothAdapter = bleList.getmBluetoothAdapter();
         boolean statoBLE = mBluetoothAdapter.isEnabled();
         // Controlla se il bluetooth è attivo.
@@ -170,7 +171,7 @@ public class HomeActivity extends Activity {
     // Abilita il gps con il consenso dell'utente
     public void EnableGPS() {
         // Controlla se il bluetooth è attivo.
-        LocationManager locMan =  (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
+        LocationManager locMan = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         if (!locMan.isProviderEnabled(LocationManager.NETWORK_PROVIDER) ||
                 !locMan.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             // Nel caso non lo sia ne richiede l'attivazione

@@ -12,6 +12,8 @@ import android.util.Log;
  * cose da fare nel db:
  *  -METTERE LA CHIUSURA DEL DB
  *  -forse la riga quota
+ *
+ *  - rigirare tutto in static
  */
 
 public class DBManager

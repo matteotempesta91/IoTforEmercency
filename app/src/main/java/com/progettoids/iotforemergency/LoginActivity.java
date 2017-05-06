@@ -14,7 +14,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import java.io.File;
-import java.util.UUID;
+import java.lang.ref.WeakReference;
 import java.util.regex.Pattern;
 
 public class LoginActivity extends Activity {
