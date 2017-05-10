@@ -3,111 +3,21 @@
 
     <item
         is-multidex="true"
-        jar="/home/gaesse/Documenti/uni-versi/Biennio/IngSW/Progetto/IoTforEmercencyShared/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jar="C:\Users\Luigi\Documents\IoTforEmergencyCond\IoTforEmercency\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
         sha1="c82741bc129dd5f99f11a4ab8666ae24262053b6">
-        <dex dex="/home/gaesse/Documenti/uni-versi/Biennio/IngSW/Progetto/IoTforEmercencyShared/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_5b62c048d2f4119ca0c69343bb9f859a74d36ba4/classes.dex" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/home/gaesse/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/25.2.0/support-annotations-25.2.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="4a5a82a027706397fff621b22fd6fa796e91d7c5">
-        <dex dex="/home/gaesse/Documenti/uni-versi/Biennio/IngSW/Progetto/IoTforEmercencyShared/app/build/intermediates/pre-dexed/debug/support-annotations-25.2.0_f68cf6aa354a6ef8f60f6283e0ead8c28235a61e.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/home/gaesse/.android/build-cache/133313a155810417953f1dad443bdd41dec0fabd/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="1630658fbc2d222b988603c27b4a4249586fbfe7">
-        <dex dex="/home/gaesse/Documenti/uni-versi/Biennio/IngSW/Progetto/IoTforEmercencyShared/app/build/intermediates/pre-dexed/debug/classes_fa8b0c86bbf271a20648d9a0cc4ab386b7ac493d.jar" />
+        <dex dex="C:\Users\Luigi\Documents\IoTforEmergencyCond\IoTforEmercency\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_fa7ecd119b405371ea1889b2cfca5df7d4ae8561\classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="/home/gaesse/Documenti/uni-versi/Biennio/IngSW/Progetto/IoTforEmercencyShared/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jar="C:\Users\Luigi\Documents\IoTforEmergencyCond\IoTforEmercency\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="fd3c318dc3190d158a355256e9f7590783f3726a">
-        <dex dex="/home/gaesse/Documenti/uni-versi/Biennio/IngSW/Progetto/IoTforEmercencyShared/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_a8ebdf7fae9a6cdafede6d6a4847379ebcad8434/classes.dex" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/home/gaesse/.android/build-cache/d4cd806516888dc573a8d29b12906a214f905115/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="e79aa3d9a16f8c9f16377c0608de70a8f31e5d80">
-        <dex dex="/home/gaesse/Documenti/uni-versi/Biennio/IngSW/Progetto/IoTforEmercencyShared/app/build/intermediates/pre-dexed/debug/classes_b454ea61bdbd3d24d25a97227bbefd8a614b4878.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/home/gaesse/.android/build-cache/7f167195069ecce8df5e794962c7daab7aafb08b/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="67eb33110dbacb46a48175b08ae0c96761d2c17d">
-        <dex dex="/home/gaesse/Documenti/uni-versi/Biennio/IngSW/Progetto/IoTforEmercencyShared/app/build/intermediates/pre-dexed/debug/classes_5e81d5102811a926f6ef434fc56a00debf91df78.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/home/gaesse/.android/build-cache/d63fd397ec989ade096de0e418dd1ff9b08f74c4/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="fa0446a14ed5dd3725047d6399ffea771a564b30">
-        <dex dex="/home/gaesse/Documenti/uni-versi/Biennio/IngSW/Progetto/IoTforEmercencyShared/app/build/intermediates/pre-dexed/debug/classes_3231b72a354078bf198384cf097afe0882276a2c.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/home/gaesse/.android/build-cache/581ddcd0a0b161b5036c8602dc8fd79d7c64dadc/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="8fe8a8f77d651982ce5e18f6187dc4daf914ac57">
-        <dex dex="/home/gaesse/Documenti/uni-versi/Biennio/IngSW/Progetto/IoTforEmercencyShared/app/build/intermediates/pre-dexed/debug/classes_788352b3c8cf572dc9866e3eb7844ea7af61d088.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/home/gaesse/.android/build-cache/69b840a8ed90accc41d5ddaa602526e038c5f816/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="e820b7be8c035dd522da4bc822e8a76c8e27921a">
-        <dex dex="/home/gaesse/Documenti/uni-versi/Biennio/IngSW/Progetto/IoTforEmercencyShared/app/build/intermediates/pre-dexed/debug/classes_7c146e69f88d4d512258d1f4e0330a218026ba8c.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/home/gaesse/.android/build-cache/43d201ccbf7e0d480691b875d56cff5c0f8c60fe/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="ee394a892dd21c03a528139c1e8d4e0e1264ac84">
-        <dex dex="/home/gaesse/Documenti/uni-versi/Biennio/IngSW/Progetto/IoTforEmercencyShared/app/build/intermediates/pre-dexed/debug/classes_d58a52d67bd683f2469ef074ba57bc79d8a61ff3.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/home/gaesse/.android/build-cache/905aff1c8fee6ae82d9fcda95c704cf8ac1bb2c9/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
-        <dex dex="/home/gaesse/Documenti/uni-versi/Biennio/IngSW/Progetto/IoTforEmercencyShared/app/build/intermediates/pre-dexed/debug/classes_80524abf2d366389b9fc999d33a22009a594faf9.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/home/gaesse/.android/build-cache/ebe335c977e2184d07dd9bff99d953847f55c67b/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="6fb6ac3e8d3b9013819920d9ea11f3803c4c0033">
-        <dex dex="/home/gaesse/Documenti/uni-versi/Biennio/IngSW/Progetto/IoTforEmercencyShared/app/build/intermediates/pre-dexed/debug/classes_308171dd12d3b6fdd0721e953b9d5f2e946515fe.jar" />
+        sha1="20702f41bcd127a00ca10d71caa323325a5236e7">
+        <dex dex="C:\Users\Luigi\Documents\IoTforEmergencyCond\IoTforEmercency\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_ed3fca2964e931bc6ca5be0ed1a28cbaac0465ee\classes.dex" />
     </item>
 
 </items>

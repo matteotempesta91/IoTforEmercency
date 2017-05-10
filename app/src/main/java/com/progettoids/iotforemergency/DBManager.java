@@ -1,3 +1,4 @@
+
 package com.progettoids.iotforemergency;
 
 import android.content.ContentValues;
@@ -29,7 +30,7 @@ public class DBManager
 
 
     public void saveNodo(String codice,String posizione_x,String posizione_y,
-                         String quota,String stato,String orario_ultima_ricezione) {
+                         String quota,int stato,String orario_ultima_ricezione) {
 
         Log.i("DBManager:","1111");
         SQLiteDatabase db = dbhelper.getWritableDatabase();
@@ -187,7 +188,36 @@ public class DBManager
         db.close();
 
 
-
         return posizione;
+    }
+
+
+/*
+query che restituisce i nodi che hanno lo stato diverso da 0 . campi posizione,x,y,z, stato
+ */
+
+
+    public void getNodiStato0() {
+
+        SQLiteDatabase db = dbhelper.getReadableDatabase();
+        String query1 = "SELECT " + DatabaseStrings.FIELD_NODO_STATO+","+DatabaseStrings.FIELD_NODO_POSIZIONE_X+","+DatabaseStrings.FIELD_NODO_POSIZIONE_Y+","+DatabaseStrings.FIELD_NODO_QUOTA + " FROM " + DatabaseStrings.TBL_NAME_NODO + " WHERE " + DatabaseStrings.FIELD_NODO_STATO + "<>'" + 0+ "';";
+        Log.i("query Diverso da 0:", query1);
+        Cursor c = db.rawQuery(query1, null);
+
+        if(c.moveToFirst()) {
+            String stato= c.getString(0);
+            Log.i("stato:",stato);
+
+            String x= c.getString(1);
+            Log.i("---->x:",x);
+
+            String y= c.getString(2);
+            Log.i("---->y:",y);
+
+            String z= c.getString(3);
+            Log.i("---->z:",z);
+
+        }
+
     }
 }

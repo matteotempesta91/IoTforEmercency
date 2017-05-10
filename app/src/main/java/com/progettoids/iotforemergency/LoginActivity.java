@@ -1,3 +1,4 @@
+
 package com.progettoids.iotforemergency;
 
 import android.app.Activity;
@@ -82,7 +83,8 @@ public class LoginActivity extends Activity {
                         File path = context.getCacheDir();
                         File memo = new File(path, "memo");
                         try {
-                            loginUtils.saveLogin(memo, editUser.getText().toString(), editUser.getText().toString());
+
+                            loginUtils.saveLogin(context, memo, editUser.getText().toString(), editUser.getText().toString());
                         } catch (Exception ex) {
                             AlertDialog.Builder miaAlert = new AlertDialog.Builder(context);
                             miaAlert.setTitle("Error");
@@ -106,7 +108,8 @@ public class LoginActivity extends Activity {
         // auto Login solo al primo avvio
         if (flag1stLog && memo.exists()) {
             btnLogin.callOnClick();
-            flag1stLog = false;
+            flag1stLog
+                    = false;
         }
     }
 
@@ -151,6 +154,7 @@ public class LoginActivity extends Activity {
         Log.i("result INTERO:",String.valueOf(result));
 
 
+        // ENTRA IN QUESTO IF SOLO SE E' LA PRIMA VOLTA CHE VIENE AVVIATA L'APPLICAZIONI
         if(result==1){
 
             DBManager dbManager;
@@ -161,16 +165,34 @@ public class LoginActivity extends Activity {
 
 
 
-            for (int i=0;i<NUMERO_NODI;i++){
+            for (int i=0;i<NUMERO_NODI;i++) {
                 String codice = DatabaseStrings.codice[i];
                 String posizione_x = String.valueOf(DatabaseStrings.posizione_x[i]);
                 String posizione_y = String.valueOf(DatabaseStrings.posizione_y[i]);
                 String quota = String.valueOf(DatabaseStrings.quota[i]);
-                Log.i("Login:",codice);
-                dbManager.saveNodo(codice,posizione_x,posizione_y,quota,null,null);
+                Log.i("Login:", codice);
+
+                if (i == 34){
+                    dbManager.saveNodo(codice, posizione_x, posizione_y, quota, 1, null);
+                }
+                else if(i==35){
+                    dbManager.saveNodo(codice, posizione_x, posizione_y, quota, 2, null);
+                }
+                else if(i==36){
+                    dbManager.saveNodo(codice, posizione_x, posizione_y, quota, 3, null);
+                }
+                else{
+                    dbManager.saveNodo(codice,posizione_x,posizione_y,quota,0,null);
+                }
+
+
+
             }
 
             dbManager.saveBeacon("B0:B4:48:BD:93:82","155R4",null,null,null,null,null,null,null);
+
+
+            dbManager.getNodiStato0();
 
 
             provaStoriaUtente3(dbManager);
