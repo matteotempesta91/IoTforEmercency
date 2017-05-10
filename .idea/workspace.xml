@@ -6,7 +6,7 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_LOG_LEVEL" value="info" />
+    <option name="TOOL_WINDOW_LOG_LEVEL" value="verbose" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
@@ -17,32 +17,11 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/taskArtifacts.lock" afterPath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/taskArtifacts.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.bin" afterPath="$PROJECT_DIR$/.gradle/3.3/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" afterPath="$PROJECT_DIR$/.gradle/3.3/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.bin" afterPath="$PROJECT_DIR$/.gradle/3.3/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" afterPath="$PROJECT_DIR$/.gradle/3.3/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/animated_vector_drawable_25_1_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/animated_vector_drawable_25_1_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/appcompat_v7_25_1_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/appcompat_v7_25_1_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/espresso_core_2_2_2.xml" afterPath="$PROJECT_DIR$/.idea/libraries/espresso_core_2_2_2.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/espresso_idling_resource_2_2_2.xml" afterPath="$PROJECT_DIR$/.idea/libraries/espresso_idling_resource_2_2_2.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/exposed_instrumentation_api_publish_0_5.xml" afterPath="$PROJECT_DIR$/.idea/libraries/exposed_instrumentation_api_publish_0_5.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/rules_0_5.xml" afterPath="$PROJECT_DIR$/.idea/libraries/rules_0_5.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/runner_0_5.xml" afterPath="$PROJECT_DIR$/.idea/libraries/runner_0_5.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/support_annotations_25_2_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/support_annotations_25_2_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/support_compat_25_2_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/support_compat_25_2_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/support_core_ui_25_2_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/support_core_ui_25_2_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/support_core_utils_25_2_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/support_core_utils_25_2_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/support_fragment_25_2_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/support_fragment_25_2_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/support_media_compat_25_2_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/support_media_compat_25_2_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/support_v4_25_2_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/support_v4_25_2_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/support_vector_drawable_25_1_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/support_vector_drawable_25_1_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/BeaconDriver.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/BeaconDriver.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/DBManager.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/DBManager.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/DriverServer.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/DriverServer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/Localizzatore.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/Localizzatore.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/Login.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/Login.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/LoginActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/LoginActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/intermediates/dex-cache/cache.xml" afterPath="$PROJECT_DIR$/build/intermediates/dex-cache/cache.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/local.properties" afterPath="$PROJECT_DIR$/local.properties" />
     </list>
     <ignored path="IoTforEmercency.iws" />
@@ -87,15 +66,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="HomeActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/HomeActivity.java">
+      <file leaf-file-name="DriverServer.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/DriverServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="39" column="8" selection-start-line="39" selection-start-column="8" selection-end-line="39" selection-end-column="8" />
+            <state relative-caret-position="413">
+              <caret line="66" column="0" selection-start-line="66" selection-start-column="0" selection-end-line="66" selection-end-column="0" />
               <folding>
-                <element signature="imports" expanded="false" />
-                <element signature="e#7636#7637#0" expanded="false" />
-                <element signature="e#7707#7708#0" expanded="false" />
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -104,160 +81,54 @@
       <file leaf-file-name="LoginActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/LoginActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1110">
+            <state relative-caret-position="2405">
               <caret line="242" column="1" selection-start-line="242" selection-start-column="1" selection-end-line="242" selection-end-column="1" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#2272#3949#0" expanded="true" />
-                <element signature="e#3948#3949#0" expanded="true" />
-                <element signature="e#4283#4707#0" expanded="true" />
-                <element signature="e#4706#4707#0" expanded="true" />
-                <element signature="e#4860#5132#0" expanded="true" />
-                <element signature="e#5131#5132#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Login.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/Login.java">
+      <file leaf-file-name="DBHelper.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/DBHelper.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="430">
-              <caret line="62" column="1" selection-start-line="62" selection-start-column="1" selection-end-line="62" selection-end-column="1" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#1692#1693#0" expanded="true" />
-                <element signature="e#1724#1725#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="409">
+              <caret line="43" column="67" selection-start-line="37" selection-start-column="15" selection-end-line="43" selection-end-column="67" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DriverServer.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/DriverServer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="498">
-              <caret line="39" column="1" selection-start-line="39" selection-start-column="1" selection-end-line="39" selection-end-column="1" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MapHome.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/MapHome.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="30" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="30" />
-              <folding>
-                <element signature="method#MapHome#0;class#MapHome#0" expanded="false" />
-                <element signature="e#3157#3186#0" expanded="false" />
-                <element signature="e#3471#3502#0" expanded="false" />
-                <element signature="e#3795#3816#0" expanded="false" />
-                <element signature="e#3946#3970#0" expanded="false" />
-                <element signature="e#4541#4588#0" expanded="false" />
-                <element signature="e#5110#5159#0" expanded="false" />
-                <element signature="e#5684#5732#0" expanded="false" />
-                <element signature="method#emptyBM#0;class#MapHome#0" expanded="false" />
-                <element signature="method#conversioneCoordQ155#0;class#MapHome#0" expanded="false" />
-                <element signature="e#8115#8147#0" expanded="false" />
-                <element signature="method#conversioneCoordQ150#0;class#MapHome#0" expanded="false" />
-                <element signature="e#9028#9052#0" expanded="false" />
-                <element signature="method#conversioneCoordQ145#0;class#MapHome#0" expanded="false" />
-                <element signature="e#10099#10153#0" expanded="false" />
-                <element signature="method#disegnaPosizione#0;class#MapHome#0" expanded="false" />
-                <element signature="method#disegnaEmergenza#0;class#MapHome#0" expanded="false" />
-                <element signature="e#12619#12714#0" expanded="false" />
-                <element signature="e#13491#13565#0" expanded="false" />
-                <element signature="method#disegnaStatoNodo#0;class#MapHome#0" expanded="false" />
-                <element signature="method#setBitmap#0;class#MapHome#0" expanded="false" />
-                <element signature="class#ScaleListener#0;class#MapHome#0" expanded="false" />
-                <element signature="method#onScaleBegin#0;class#ScaleListener#0;class#MapHome#0" expanded="false" />
-                <element signature="method#onScale#0;class#ScaleListener#0;class#MapHome#0" expanded="false" />
-                <element signature="method#onMeasure#0;class#MapHome#0" expanded="false" />
-                <element signature="class#LoadMap#0;class#MapHome#0" expanded="false" />
-                <element signature="method#LoadMap#0;class#LoadMap#0;class#MapHome#0" expanded="false" />
-                <element signature="method#doInBackground#0;class#LoadMap#0;class#MapHome#0" expanded="false" />
-                <element signature="method#onPostExecute#0;class#LoadMap#0;class#MapHome#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Localizzatore.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/Localizzatore.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="498">
-              <caret line="68" column="1" selection-start-line="68" selection-start-column="1" selection-end-line="68" selection-end-column="1" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#736#1890#0" expanded="true" />
-                <element signature="e#1889#1890#0" expanded="true" />
-                <element signature="e#1954#1955#0" expanded="true" />
-                <element signature="e#2002#2003#0" expanded="true" />
-                <element signature="e#2065#2066#0" expanded="true" />
-                <element signature="e#2111#2112#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BeaconListener.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/BeaconListener.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
-              <folding>
-                <element signature="imports" expanded="false" />
-                <element signature="method#BeaconListener#0;class#BeaconListener#0" expanded="false" />
-                <element signature="class#2022:2555" expanded="false" />
-                <element signature="method#onScanResult#0;class#2022:2555" expanded="false" />
-                <element signature="e#2191#2246#0" expanded="false" />
-                <element signature="method#onScanFailed#0;class#2022:2555" expanded="false" />
-                <element signature="method#getmBluetoothAdapter#0;class#BeaconListener#0" expanded="false" />
-                <element signature="method#Scansione#0;class#BeaconListener#0" expanded="false" />
-                <element signature="method#addDevice#0;class#BeaconListener#0" expanded="false" />
-                <element signature="method#closestBle#0;class#BeaconListener#0" expanded="false" />
-                <element signature="method#testWait#0;class#BeaconListener#0" expanded="false" />
-                <element signature="method#signal#0;class#BeaconListener#0" expanded="false" />
-                <element signature="method#stopAll#0;class#BeaconListener#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BeaconDriver.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="BeaconDriver.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/BeaconDriver.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="36" column="28" selection-start-line="36" selection-start-column="28" selection-end-line="36" selection-end-column="28" />
+            <state relative-caret-position="158">
+              <caret line="297" column="46" selection-start-line="297" selection-start-column="46" selection-end-line="297" selection-end-column="46" />
               <folding>
                 <element signature="docComment;class#BeaconDriver#0" expanded="false" />
                 <element signature="method#BeaconDriver#0;class#BeaconDriver#0" expanded="false" />
-                <element signature="class#1541:11663" expanded="false" />
-                <element signature="method#onConnectionStateChange#0;class#1541:11663" expanded="false" />
-                <element signature="method#onServicesDiscovered#0;class#1541:11663" expanded="false" />
-                <element signature="method#onCharacteristicWrite#0;class#1541:11663" expanded="false" />
-                <element signature="method#onCharacteristicRead#0;class#1541:11663" expanded="false" />
-                <element signature="e#10027#10048#0" expanded="false" />
-                <element signature="method#salvataggioDatiDB#0;class#BeaconDriver#0" expanded="false" />
+                <element signature="class#1572:11694" expanded="false" />
+                <element signature="method#onConnectionStateChange#0;class#1572:11694" expanded="false" />
+                <element signature="method#onServicesDiscovered#0;class#1572:11694" expanded="false" />
+                <element signature="method#onCharacteristicWrite#0;class#1572:11694" expanded="false" />
+                <element signature="method#onCharacteristicRead#0;class#1572:11694" expanded="false" />
+                <element signature="e#10058#10079#0" expanded="false" />
                 <element signature="method#shortUnsignedAtOffset#0;class#BeaconDriver#0" expanded="false" />
                 <element signature="method#shortSignedAtOffset#0;class#BeaconDriver#0" expanded="false" />
-                <element signature="method#doInBackground#0;class#BeaconDriver#0" expanded="false" />
                 <element signature="method#onPostExecute#0;class#BeaconDriver#0" expanded="false" />
                 <element signature="method#initSensors#0;class#BeaconDriver#0" expanded="false" />
-                <element signature="e#17192#17239#0" expanded="false" />
+                <element signature="e#17476#17523#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DBManager.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="DBManager.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/DBManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="160">
-              <caret line="177" column="43" selection-start-line="177" selection-start-column="43" selection-end-line="177" selection-end-column="43" />
+            <state relative-caret-position="228">
+              <caret line="114" column="26" selection-start-line="114" selection-start-column="26" selection-end-line="114" selection-end-column="26" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -2085,14 +1956,14 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_home.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/MapHome.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/BeaconDriver.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/BeaconListener.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/HomeActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/LoginActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/Login.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/DriverServer.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/Localizzatore.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/DBManager.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/DriverServer.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/BeaconDriver.java" />
       </list>
     </option>
   </component>
@@ -2206,7 +2077,7 @@
   <component name="PropertiesComponent">
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="device.picker.selection" value="LGH815d995c021" />
+    <property name="device.picker.selection" value="Nexus_5_API_22" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.import" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="android.project.structure.last.selected" value="Project" />
@@ -2645,7 +2516,14 @@
       <option name="project" value="LOCAL" />
       <updated>1494078385063</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="creazione file json invio posizione + query stato nodo">
+      <created>1494425354305</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1494425354305</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TodoView" selected-index="3">
@@ -2667,7 +2545,7 @@
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.35578585" sideWeight="0.5181543" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="WINDOWED" visible="true" show_stripe_button="true" weight="0.32933104" sideWeight="0.4969697" order="7" side_tool="false" content_ui="tabs" x="54" y="121" width="1280" height="581" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="WINDOWED" visible="true" show_stripe_button="true" weight="0.32933104" sideWeight="0.4969697" order="7" side_tool="false" content_ui="tabs" x="33" y="108" width="1280" height="581" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="FLOATING" visible="false" show_stripe_button="true" weight="0.32879046" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" x="0" y="23" width="1280" height="709" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32409012" sideWeight="0.4939577" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32469776" sideWeight="0.49697885" order="7" side_tool="false" content_ui="tabs" />
@@ -2770,7 +2648,8 @@
     <MESSAGE value="Database con tabella beacon" />
     <MESSAGE value="Sistemato il salvataggio dei dati ambientali nel db (nella tabella beacon)&#10;Da controllare il valore dell'accelerazione" />
     <MESSAGE value="- Classe localizzatore inserita&#10;- memory leak della mapHome fixed&#10;- semaforo binario per scansione fari multipli" />
-    <option name="LAST_COMMIT_MESSAGE" value="- Classe localizzatore inserita&#10;- memory leak della mapHome fixed&#10;- semaforo binario per scansione fari multipli" />
+    <MESSAGE value="creazione file json invio posizione + query stato nodo" />
+    <option name="LAST_COMMIT_MESSAGE" value="creazione file json invio posizione + query stato nodo" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -2983,38 +2862,6 @@
     <entry file="file://$PROJECT_DIR$/captures/com.progettoids.iotforemergency_2017.05.04_19.51.hprof" />
     <entry file="file://$PROJECT_DIR$/captures/com.progettoids.iotforemergency_2017.05.04_20.23.hprof" />
     <entry file="file://$PROJECT_DIR$/captures/com.progettoids.iotforemergency_2017.05.04_20.24.alloc" />
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/DBHelper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/BeaconDriver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="36" column="28" selection-start-line="36" selection-start-column="28" selection-end-line="36" selection-end-column="28" />
-          <folding>
-            <element signature="docComment;class#BeaconDriver#0" expanded="false" />
-            <element signature="method#BeaconDriver#0;class#BeaconDriver#0" expanded="false" />
-            <element signature="class#1541:11663" expanded="false" />
-            <element signature="method#onConnectionStateChange#0;class#1541:11663" expanded="false" />
-            <element signature="method#onServicesDiscovered#0;class#1541:11663" expanded="false" />
-            <element signature="method#onCharacteristicWrite#0;class#1541:11663" expanded="false" />
-            <element signature="method#onCharacteristicRead#0;class#1541:11663" expanded="false" />
-            <element signature="e#10027#10048#0" expanded="false" />
-            <element signature="method#salvataggioDatiDB#0;class#BeaconDriver#0" expanded="false" />
-            <element signature="method#shortUnsignedAtOffset#0;class#BeaconDriver#0" expanded="false" />
-            <element signature="method#shortSignedAtOffset#0;class#BeaconDriver#0" expanded="false" />
-            <element signature="method#doInBackground#0;class#BeaconDriver#0" expanded="false" />
-            <element signature="method#onPostExecute#0;class#BeaconDriver#0" expanded="false" />
-            <element signature="method#initSensors#0;class#BeaconDriver#0" expanded="false" />
-            <element signature="e#17192#17239#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/BeaconListener.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
@@ -3037,9 +2884,40 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="android-designer2">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/Login.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="430">
+          <caret line="62" column="1" selection-start-line="62" selection-start-column="1" selection-end-line="62" selection-end-column="1" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1692#1693#0" expanded="true" />
+            <element signature="e#1724#1725#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/HomeActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-522">
+          <caret line="39" column="8" selection-start-line="39" selection-start-column="8" selection-end-line="39" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/MapHome.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
+        <state relative-caret-position="120">
           <caret line="8" column="30" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="30" />
           <folding>
             <element signature="method#MapHome#0;class#MapHome#0" expanded="false" />
@@ -3075,70 +2953,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/HomeActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="39" column="8" selection-start-line="39" selection-start-column="8" selection-end-line="39" selection-end-column="8" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#7636#7637#0" expanded="false" />
-            <element signature="e#7707#7708#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="android-designer2">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/LoginActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1110">
-          <caret line="242" column="1" selection-start-line="242" selection-start-column="1" selection-end-line="242" selection-end-column="1" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2272#3949#0" expanded="true" />
-            <element signature="e#3948#3949#0" expanded="true" />
-            <element signature="e#4283#4707#0" expanded="true" />
-            <element signature="e#4706#4707#0" expanded="true" />
-            <element signature="e#4860#5132#0" expanded="true" />
-            <element signature="e#5131#5132#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/Login.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="430">
-          <caret line="62" column="1" selection-start-line="62" selection-start-column="1" selection-end-line="62" selection-end-column="1" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1692#1693#0" expanded="true" />
-            <element signature="e#1724#1725#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/DriverServer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="498">
-          <caret line="39" column="1" selection-start-line="39" selection-start-column="1" selection-end-line="39" selection-end-column="1" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/Localizzatore.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="498">
+        <state relative-caret-position="1156">
           <caret line="68" column="1" selection-start-line="68" selection-start-column="1" selection-end-line="68" selection-end-column="1" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -3152,12 +2969,62 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/DBManager.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/LoginActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="177" column="43" selection-start-line="177" selection-start-column="43" selection-end-line="177" selection-end-column="43" />
+        <state relative-caret-position="2405">
+          <caret line="242" column="1" selection-start-line="242" selection-start-column="1" selection-end-line="242" selection-end-column="1" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/DBHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="409">
+          <caret line="43" column="67" selection-start-line="37" selection-start-column="15" selection-end-line="43" selection-end-column="67" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/DriverServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="413">
+          <caret line="66" column="0" selection-start-line="66" selection-start-column="0" selection-end-line="66" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/DBManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="228">
+          <caret line="114" column="26" selection-start-line="114" selection-start-column="26" selection-end-line="114" selection-end-column="26" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/BeaconDriver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="158">
+          <caret line="297" column="46" selection-start-line="297" selection-start-column="46" selection-end-line="297" selection-end-column="46" />
+          <folding>
+            <element signature="docComment;class#BeaconDriver#0" expanded="false" />
+            <element signature="method#BeaconDriver#0;class#BeaconDriver#0" expanded="false" />
+            <element signature="class#1572:11694" expanded="false" />
+            <element signature="method#onConnectionStateChange#0;class#1572:11694" expanded="false" />
+            <element signature="method#onServicesDiscovered#0;class#1572:11694" expanded="false" />
+            <element signature="method#onCharacteristicWrite#0;class#1572:11694" expanded="false" />
+            <element signature="method#onCharacteristicRead#0;class#1572:11694" expanded="false" />
+            <element signature="e#10058#10079#0" expanded="false" />
+            <element signature="method#shortUnsignedAtOffset#0;class#BeaconDriver#0" expanded="false" />
+            <element signature="method#shortSignedAtOffset#0;class#BeaconDriver#0" expanded="false" />
+            <element signature="method#onPostExecute#0;class#BeaconDriver#0" expanded="false" />
+            <element signature="method#initSensors#0;class#BeaconDriver#0" expanded="false" />
+            <element signature="e#17476#17523#0" expanded="false" />
           </folding>
         </state>
       </provider>

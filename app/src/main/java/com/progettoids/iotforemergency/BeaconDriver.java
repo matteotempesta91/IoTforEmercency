@@ -36,6 +36,7 @@ public class BeaconDriver extends AsyncTask<Object, Void, Object[]> {
     private boolean sensOn = false;
     private int letture = 0;
     private String error;
+    private DBHelper dbHelper;
 
     public BeaconDriver(Context context) {
             super();
@@ -222,7 +223,7 @@ public class BeaconDriver extends AsyncTask<Object, Void, Object[]> {
     //Metodo per salvare i dati sul DataBase
     public void salvataggioDatiDB(String mac) {
 
-        DBHelper dbHelper = new DBHelper(this.context);
+        dbHelper = new DBHelper(this.context);
 
         Log.i("punto 1 ->", "Help");
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -240,8 +241,7 @@ public class BeaconDriver extends AsyncTask<Object, Void, Object[]> {
         db.update(DatabaseStrings.TBL_NAME_BEACON, cv, DatabaseStrings.FIELD_BEACON_MAC + "=" + "'" + mac + "'", null);
         Log.i("punto2 _->", "Goooooo");
 
-        DBManager dbManager = new DBManager(dbHelper);
-        dbManager.query();
+
 
     }
 
@@ -294,8 +294,15 @@ public class BeaconDriver extends AsyncTask<Object, Void, Object[]> {
             else if (error != null) {Log.i("Errore ", error); }
             gattBLE.disconnect();
             gattBLE.close();
+        //creazione json per l'invio di dati ambientali
+        dbHelper = new DBHelper(this.context);
+        DBManager dbManager = new DBManager(dbHelper);
+        String[] datiambientali = dbManager.getdatiambientali();
+        DriverServer driverServer = new DriverServer();
+        driverServer.createjsonDatiAmbientali(datiambientali);
             // Lettura beacon successivo
             ((BeaconListener)param[0]).signal();
+
             return sensorData;
         }
 
