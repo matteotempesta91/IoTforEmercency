@@ -68,14 +68,10 @@ public class HomeActivity extends Activity {
     public void onPostCreate(Bundle savedInstance) {
         super.onPostCreate(savedInstance);
         RelativeLayout layout =(RelativeLayout)findViewById(R.id.activity_home);
-        /*
+
+        // Debug code
         mapHome.disegnaEmergenza(2,layout);         // disegna la cornice per l'emergenza
-        mapHome.disegnaPosizione(133,480,145);
-        mapHome.disegnaStatoNodo(1,143,473,145); // 145A3 (vicino le scale)
-        mapHome.disegnaStatoNodo(2,90,480,145);  // 145RG1 (sinistra di G1 sotto le scale)
-        mapHome.disegnaStatoNodo(3,133,465,145); // 145WC1
-        mapHome.disegnaStatoNodo(3,119,465,145);
-        */
+       // mapHome.disegnaPosizione(133,480,145);
     }
 
     @Override

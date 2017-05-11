@@ -1,11 +1,10 @@
 package com.progettoids.iotforemergency;
 
-import android.app.Activity;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.os.AsyncTask;
-import android.util.DisplayMetrics;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -16,6 +15,7 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.support.v7.widget.AppCompatImageView;
 import android.widget.RelativeLayout;
+import java.util.Arrays;
 
 public class MapHome extends AppCompatImageView {
 
@@ -41,7 +41,7 @@ public class MapHome extends AppCompatImageView {
     private Context context;
 
     private Bitmap bmMap, bmNodi, bmPos, bmInc, bmCrollo, bmAffollato;
-    private int mappa, altezza, larghezza;
+    private int mappa;
     private int[] pixelPos;
 
     public MapHome(final Context context, AttributeSet attr) {
@@ -54,16 +54,6 @@ public class MapHome extends AppCompatImageView {
         setImageMatrix(matrix);
         setScaleType(ScaleType.MATRIX);
         pixelPos = new int[]{0,0};
-
-// ------- prova per misurare le dimensioni dello schermo --------
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        ((Activity) getContext()).getWindowManager()
-                .getDefaultDisplay()
-                .getMetrics(displayMetrics);
-
-        altezza = displayMetrics.heightPixels;
-        larghezza = displayMetrics.widthPixels;
-// ----------------------------------------------------------------
 
         bmPos = BitmapFactory.decodeResource(getResources(), R.drawable.posizione);
         bmInc = BitmapFactory.decodeResource(getResources(), R.drawable.incendio);
@@ -313,6 +303,13 @@ public class MapHome extends AppCompatImageView {
 
         // In base al tipo di notifica che riceve disegna la corrispondente icona sulla mappa
         switch (stato) {
+            case 0:
+                int w = bmInc.getWidth();
+                int h = bmInc.getHeight();
+                int[] pix = new int[w*h];
+                Arrays.fill(pix, 0x0000);
+                bmNodi.setPixels(pix, 0, w, pixelCoord[0], pixelCoord[1], w, h);
+                break;
             case 1:
                 canvas.drawBitmap(bmInc, pixelCoord[0], pixelCoord[1], null);
                 break;
@@ -467,8 +464,23 @@ public class MapHome extends AppCompatImageView {
             bmMap = bmPiano;
             bmNodi = Bitmap.createBitmap(bmPiano.getWidth(), bmPiano.getHeight(), bmPiano.getConfig());
             mappa = this.quota;
+            /* debug code
+            disegnaStatoNodo(1,143,473,145); // 145A3 (vicino le scale)
+            disegnaStatoNodo(2,90,480,145);  // 145RG1 (sinistra di G1 sotto le scale)
+            disegnaStatoNodo(3,133,465,145); // 145WC1
+            disegnaStatoNodo(3,119,465,145);
+            */
+            DBHelper hl = new DBHelper(context);
+            DBManager db = new DBManager(hl);
+            Cursor cr = db.getStatoNodi();
+            while (cr.moveToNext()) {
+                int stato = cr.getInt(0);
+                int x = cr.getInt(1);
+                int y = cr.getInt(2);
+                int z = cr.getInt(3);
+                disegnaStatoNodo(stato, x, y, z);
+            }
             setBitmap();
         }
     }
-
 }

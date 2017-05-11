@@ -14,7 +14,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import java.io.File;
-import java.lang.ref.WeakReference;
 import java.util.regex.Pattern;
 
 public class LoginActivity extends Activity {
@@ -82,7 +81,7 @@ public class LoginActivity extends Activity {
                         File path = context.getCacheDir();
                         File memo = new File(path, "memo");
                         try {
-                            loginUtils.saveLogin(memo, editUser.getText().toString(), editUser.getText().toString());
+                            loginUtils.saveLogin(context, memo, editUser.getText().toString(), editUser.getText().toString());
                         } catch (Exception ex) {
                             AlertDialog.Builder miaAlert = new AlertDialog.Builder(context);
                             miaAlert.setTitle("Error");
@@ -151,6 +150,7 @@ public class LoginActivity extends Activity {
         Log.i("result INTERO:",String.valueOf(result));
 
 
+        // ENTRA IN QUESTO IF SOLO SE E' LA PRIMA VOLTA CHE VIENE AVVIATA L'APPLICAZIONI
         if(result==1){
 
             DBManager dbManager;
@@ -161,18 +161,28 @@ public class LoginActivity extends Activity {
 
 
 
-            for (int i=0;i<NUMERO_NODI;i++){
+            for (int i=0;i<NUMERO_NODI;i++) {
                 String codice = DatabaseStrings.codice[i];
                 String posizione_x = String.valueOf(DatabaseStrings.posizione_x[i]);
                 String posizione_y = String.valueOf(DatabaseStrings.posizione_y[i]);
                 String quota = String.valueOf(DatabaseStrings.quota[i]);
-                Log.i("Login:",codice);
-                dbManager.saveNodo(codice,posizione_x,posizione_y,quota,null,null);
+                Log.i("Login:", codice);
+
+                if (i == 34){
+                    dbManager.saveNodo(codice, posizione_x, posizione_y, quota, 1, null);
+                }
+                else if(i==35){
+                    dbManager.saveNodo(codice, posizione_x, posizione_y, quota, 2, null);
+                }
+                else if(i==36){
+                    dbManager.saveNodo(codice, posizione_x, posizione_y, quota, 3, null);
+                }
+                else{
+                    dbManager.saveNodo(codice,posizione_x,posizione_y,quota,0,null);
+                }
             }
 
             dbManager.saveBeacon("B0:B4:48:BD:93:82","155R4",null,null,null,null,null,null,null);
-
-
             provaStoriaUtente3(dbManager);
 
         }
@@ -184,22 +194,13 @@ public class LoginActivity extends Activity {
         int[] position=dbManager.getPosition("B0:B4:48:BD:93:82");
         DriverServer driverServer=new DriverServer();
 
-
-
         String android_id = Settings.Secure.getString( this.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
 
-
         Log.d("Android","Android ID : "+android_id);
-
-
 
         if(loginUtils.getUser()!=null){
             driverServer.sendPosition(loginUtils.getUser(),position);
-        }
-        else{
-
-
         }
     }
 

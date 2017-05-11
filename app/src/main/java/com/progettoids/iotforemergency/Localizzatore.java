@@ -1,6 +1,7 @@
 package com.progettoids.iotforemergency;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.util.Log;
 
@@ -18,7 +19,7 @@ public class Localizzatore {
         mHome = maphome;
         finder = new Handler();
 
-        // Se 0 0 0 => pos sconosciuta
+// Se 0 0 0 => pos sconosciuta
         x=0;
         y=0;
         quota=0;
@@ -39,7 +40,17 @@ public class Localizzatore {
                     y = pos[1];
                     quota = pos[2];
                     mHome.disegnaPosizione(x,y,quota);
-                    // SEND POS TO SERVER //
+// SEND POS TO SERVER //
+
+
+// PRENDO L'ID COME VARIABILE GLOBALE
+                    final SharedPreferences reader = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
+                    final String id_utente= reader.getString("id_utente", null);
+
+
+// creazione file json per l'invio della posizione al server
+                    DriverServer driverServer=new DriverServer();
+                    driverServer.createjsonposizione(id_utente,pos);
                 }
             }
             finder.postDelayed(findMe, 21000);

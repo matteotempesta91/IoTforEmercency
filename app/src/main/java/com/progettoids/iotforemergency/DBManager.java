@@ -29,7 +29,7 @@ public class DBManager
 
 
     public void saveNodo(String codice,String posizione_x,String posizione_y,
-                         String quota,String stato,String orario_ultima_ricezione) {
+                         String quota,int stato,String orario_ultima_ricezione) {
 
         Log.i("DBManager:","1111");
         SQLiteDatabase db = dbhelper.getWritableDatabase();
@@ -108,10 +108,13 @@ public class DBManager
     */
 
     //questa va cambiata per leggere tutta la tabella?
-    public Cursor query(){
+    public String[]  getdatiambientali(){
         Log.i("DbManager","metodo query");
 
         Cursor crs = null;
+    String[] datiambientali = new String[7];
+
+
         try
         {
             SQLiteDatabase db = dbhelper.getReadableDatabase();
@@ -122,19 +125,26 @@ public class DBManager
             Log.i("beacon",String.valueOf(crs.getCount()));
 
             String s2 = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_BEACON_TEMPERATURA));
+            datiambientali[0] = s2;
             Log.i("temp:",s2);
             String s3x = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_BEACON_ACCELERAZIONEX));
             Log.i("acc:",s3x);
+            datiambientali[1] = s3x;
             String s3y = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_BEACON_ACCELERAZIONEY));
             Log.i("acc:",s3y);
+            datiambientali[2] = s3y;
             String s3z = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_BEACON_ACCELERAZIONEZ));
             Log.i("acc:",s3z);
+            datiambientali[3] = s3z;
             String s4 = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_BEACON_UMIDITA));
             Log.i("umid:",s4);
-            String s5 = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_BEACON_PRESSIONE));
-            Log.i("pressione:",s5);
+            datiambientali[4] = s4;
             String s6 = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_BEACON_LUMINOSITA));
             Log.i("lumin:",s6);
+            datiambientali[5] = s6;
+            String s5 = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_BEACON_PRESSIONE));
+            Log.i("pressione:",s5);
+            datiambientali[6] = s5;
 
 
 
@@ -144,7 +154,7 @@ public class DBManager
         {
             return null;
         }
-        return crs;
+        return datiambientali;
     }
 
 
@@ -174,9 +184,13 @@ public class DBManager
                 Log.i("y:", y);
                 posizione[1]= Integer.parseInt(y);
 
-                String z = c2.getString(2);
-                Log.i("z:", z);
-                posizione[2]= Integer.parseInt(z);
+
+                Integer z = 155;
+                Log.i("z:", z.toString());
+                posizione[2] = z;
+                //String z = c2.getString(2);
+                //Log.i("z:", z);
+                //posizione[2]= Integer.parseInt(z);
             }
             c2.close();
 
@@ -187,7 +201,37 @@ public class DBManager
         db.close();
 
 
-
         return posizione;
+    }
+
+
+/*
+query che restituisce i nodi che hanno lo stato diverso da 0 . campi posizione,x,y,z, stato
+ */
+
+
+    public Cursor getStatoNodi() {
+
+        SQLiteDatabase db = dbhelper.getReadableDatabase();
+        String query1 = "SELECT " + DatabaseStrings.FIELD_NODO_STATO+","+DatabaseStrings.FIELD_NODO_POSIZIONE_X+","+DatabaseStrings.FIELD_NODO_POSIZIONE_Y+","+DatabaseStrings.FIELD_NODO_QUOTA + " FROM " + DatabaseStrings.TBL_NAME_NODO + " WHERE " + DatabaseStrings.FIELD_NODO_STATO + "<>'" + 0+ "';";
+        Log.i("query Diverso da 0:", query1);
+        Cursor c = db.rawQuery(query1, null);
+        return c;
+        /* Debug code
+        if(c.moveToFirst()) {
+            String stato= c.getString(0);
+            Log.i("stato:",stato);
+
+            String x= c.getString(1);
+            Log.i("---->x:",x);
+
+            String y= c.getString(2);
+            Log.i("---->y:",y);
+
+            String z= c.getString(3);
+            Log.i("---->z:",z);
+
+        }
+        */
     }
 }
