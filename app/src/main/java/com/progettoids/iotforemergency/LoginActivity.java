@@ -14,6 +14,9 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import java.io.File;
+import java.net.NetworkInterface;
+import java.util.Collections;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class LoginActivity extends Activity {
@@ -119,9 +122,44 @@ public class LoginActivity extends Activity {
                 Intent openHomeGuest = new Intent(LoginActivity.this, HomeActivity.class);
                 openHomeGuest.putExtras(bundle);
                 startActivity(openHomeGuest);
+
+                // SALVA L'ID UTENTE GUEST COME VARIABILE GLOBALE
+                final SharedPreferences reader = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
+                final SharedPreferences.Editor editor = reader.edit();
+                String macAdrress=getMacAddr();
+                Log.i("macAddress:",macAdrress);
+                editor.putString("id_utente", macAdrress);
+                editor.commit();
             }
         });
     }
+
+    public static String getMacAddr() {
+        try {
+            List<NetworkInterface> all = Collections.list(NetworkInterface.getNetworkInterfaces());
+            for (NetworkInterface nif : all) {
+                if (!nif.getName().equalsIgnoreCase("wlan0")) continue;
+
+                byte[] macBytes = nif.getHardwareAddress();
+                if (macBytes == null) {
+                    return "";
+                }
+
+                StringBuilder res1 = new StringBuilder();
+                for (byte b : macBytes) {
+                    res1.append(String.format("%02X:",b));
+                }
+
+                if (res1.length() > 0) {
+                    res1.deleteCharAt(res1.length() - 1);
+                }
+                return res1.toString();
+            }
+        } catch (Exception ex) {
+        }
+        return "02:00:00:00:00:00";
+    }
+
 
     public void registrazione() {
         btnRegistrati=(Button)findViewById(R.id.buttonRegistrati);
