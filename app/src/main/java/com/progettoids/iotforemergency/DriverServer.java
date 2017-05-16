@@ -1,9 +1,12 @@
 package com.progettoids.iotforemergency;
 
+import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import com.android.volley.*;
 
 /**
  * Created by matteotempesta on 27/04/17.
@@ -11,9 +14,35 @@ import org.json.JSONObject;
 
 public class DriverServer {
 
+    private final Handler sender = new Handler();
+    private DBManager dbManager;
+
+    public DriverServer(Context context) {
+        DBHelper dbHelper = new DBHelper(context);
+        dbManager = new DBManager(dbHelper);
+    }
+
+    // Runnable per invio dati ambientali periodico
+    private Runnable sendDatiAmb = new Runnable() {
+        @Override
+        public void run() {
+            //creazione json per l'invio di dati ambientali
+            String[] datiambientali = dbManager.getdatiambientali();
+            createjsonDatiAmbientali(datiambientali);
+            sender.postDelayed(sendDatiAmb, 60000);
+        }
+    };
+
+    // Attiva e disattiva invio dati ambientali al server
+    public void startAmb(boolean onOff) {
+        if (onOff) {
+            sender.postDelayed(sendDatiAmb, 60000);
+        } else {
+          sender.removeCallbacks(sendDatiAmb);
+        }
+    }
+
     public void sendPosition(String id_utente,int[] position){
-
-
     }
 
 

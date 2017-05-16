@@ -294,12 +294,6 @@ public class BeaconDriver extends AsyncTask<Object, Void, Object[]> {
             else if (error != null) {Log.i("Errore ", error); }
             gattBLE.disconnect();
             gattBLE.close();
-        //creazione json per l'invio di dati ambientali
-        dbHelper = new DBHelper(this.context);
-        DBManager dbManager = new DBManager(dbHelper);
-        String[] datiambientali = dbManager.getdatiambientali();
-        DriverServer driverServer = new DriverServer();
-        driverServer.createjsonDatiAmbientali(datiambientali);
             // Lettura beacon successivo
             ((BeaconListener)param[0]).signal();
 
