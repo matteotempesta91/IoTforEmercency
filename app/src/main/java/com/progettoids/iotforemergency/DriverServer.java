@@ -48,7 +48,6 @@ public class DriverServer {
 
     public void createjsonposizione(String id_utente, int[] position){
 
-
         JSONObject json = new JSONObject();
         JSONObject posizioneutenteJson = new JSONObject();
         try{

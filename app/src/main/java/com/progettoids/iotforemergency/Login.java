@@ -2,10 +2,13 @@ package com.progettoids.iotforemergency;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.icu.lang.UScript;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.net.URISyntaxException;
 import java.nio.CharBuffer;
 
 /**
@@ -24,11 +27,13 @@ public class Login {
             scrivi.write(user + "\n" + pwd + "\n");
             scrivi.close();
 
-// SALVA COME VARIABILE GLOBALE L'ID UTENTE
+            // SALVA COME VARIABILE GLOBALE L'ID UTENTE
             final SharedPreferences reader = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
             final SharedPreferences.Editor editor = reader.edit();
             editor.putString("id_utente", user);
             editor.commit();
+
+
 
 
             this.user = user;
