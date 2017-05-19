@@ -2,13 +2,10 @@ package com.progettoids.iotforemergency;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.icu.lang.UScript;
-import android.util.Log;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.net.URISyntaxException;
 import java.nio.CharBuffer;
 
 /**
@@ -18,7 +15,7 @@ import java.nio.CharBuffer;
 public class Login {
     private String user;
     private String pwd;
-
+    DriverServer driverServer;
 
     // salva i dati nella cartella cache locale
     public void saveLogin(Context context, File memo, String user, String pwd) throws Exception {

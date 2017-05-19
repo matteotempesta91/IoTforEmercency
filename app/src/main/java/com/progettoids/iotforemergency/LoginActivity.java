@@ -27,6 +27,7 @@ public class LoginActivity extends Activity {
     private Login loginUtils;
     private boolean flag1stLog;
     private static final int NUMERO_NODI=63;
+    private DriverServer driverServer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,7 @@ public class LoginActivity extends Activity {
         loginGuest();
         registrazione();
         gestioneCreazineDB();
+        driverServer = DriverServer.getInstance(context);
     }
 
     public void login() {
@@ -73,6 +75,7 @@ public class LoginActivity extends Activity {
             public void onClick(View arg0) {
                 if(controlloCampi())
                 {
+                    driverServer.verificaLogin(editUser.getText().toString(),editPass.getText().toString());
                     Bundle bundle = new Bundle();
                     bundle.putString("welcomeMsg", "Benvenuto "+editUser.getText().toString());
                     Intent openHome = new Intent(LoginActivity.this, HomeActivity.class);
@@ -93,7 +96,6 @@ public class LoginActivity extends Activity {
                             alert.show();
                         }
                     }
-
                 } else
                 {
                     AlertDialog.Builder miaAlert = new AlertDialog.Builder(context);
@@ -160,12 +162,12 @@ public class LoginActivity extends Activity {
         return "02:00:00:00:00:00";
     }
 
-
     public void registrazione() {
         btnRegistrati=(Button)findViewById(R.id.buttonRegistrati);
         btnRegistrati.setOnClickListener( new View.OnClickListener(){
             @Override
             public void onClick(View arg0) {
+
                 Intent openRegistrazione = new Intent(LoginActivity.this, RegistrazioneActivity.class);
                 startActivity(openRegistrazione);
             }
@@ -230,8 +232,8 @@ public class LoginActivity extends Activity {
 
     public void provaStoriaUtente3(DBManager dbManager){
         int[] position=dbManager.getPosition("B0:B4:48:BD:93:82");
-        DriverServer driverServer=new DriverServer();
 
+        //DriverServer driverServer=new DriverServer(context);
         String android_id = Settings.Secure.getString( this.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
 

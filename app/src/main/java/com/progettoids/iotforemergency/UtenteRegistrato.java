@@ -1,15 +1,18 @@
 package com.progettoids.iotforemergency;
 
+import java.sql.Driver;
+
 /**
  * Created by marco on 17/01/2017.
  */
 
-public class UtenteRegistrato extends Utente {
+public class UtenteRegistrato {
     private String nome;
     private String cognome;
     private String codFiscale;
     private String username;
     private String password;
+    DriverServer driverServer;
 
     public UtenteRegistrato(String nome, String cognome, String codFiscale, String username, String password) {
         this.nome = nome;
@@ -17,6 +20,7 @@ public class UtenteRegistrato extends Utente {
         this.codFiscale = codFiscale;
         this.username = username;
         this.password = password;
+       // driverServer = new DriverServer(context);
     }
 
     public void setNome(String nomeUtente) {

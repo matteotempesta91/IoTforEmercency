@@ -12,12 +12,14 @@ public class Localizzatore {
     private MapHome mHome;
     private Context context;
     private Handler finder;
+    private DriverServer mDriverServer;
 
     public Localizzatore(Context context, BeaconListener ble, MapHome maphome) {
         this.context = context;
         bleList = ble;
         mHome = maphome;
         finder = new Handler();
+        mDriverServer = DriverServer.getInstance(context);
 
 // Se 0 0 0 => pos sconosciuta
         x=0;
@@ -49,8 +51,8 @@ public class Localizzatore {
 
 
 // creazione file json per l'invio della posizione al server
-                    DriverServer driverServer=new DriverServer();
-                    driverServer.createjsonposizione(id_utente,pos);
+              //      DriverServer driverServer=new DriverServer(context);
+                    mDriverServer.inviaPos(id_utente, pos);
                 }
             }
             finder.postDelayed(findMe, 21000);

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="C:\Users\marco\.android\build-cache\c87178bdb6a844032e9539b1fff65cfcd75e6407\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="702d339bc0a81d21354cd7e2cf2b67225fa4a16c">
+        <dex dex="C:\Users\marco\Documents\IoTforEmercency\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_2aa883a0a2ffe1aaac5fd3614049af6b273bbb40\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\marco\.gradle\caches\modules-2\files-2.1\eu.the4thfloor.volley\com.android.volley\2015.05.28\b0b08cc0ac897e596abe6b263a9507cba875b705\com.android.volley-2015.05.28.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="b0b08cc0ac897e596abe6b263a9507cba875b705">
+        <dex dex="C:\Users\marco\Documents\IoTforEmercency\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.volley-2015.05.28_e527111a18bcca93679ac428d674e903e5993c0f\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\marco\Documents\IoTforEmercency\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="79c8aa1c02f1096fb2abbb4045c2f35ad25e88bd">
+        <dex dex="C:\Users\marco\Documents\IoTforEmercency\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_50181dae6ff40867fa1dfc292ad9cc059a6f19cf\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\marco\.android\build-cache\a6a13f010a205f3d547885ce3302520a9a5e99cd\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="810f41e5b7fd99f196ebeabe865ba2c54e7e76dc">
+        <dex dex="C:\Users\marco\Documents\IoTforEmercency\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_35904dabe8ee64c69662fd202a7ea550f4775df5\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\marco\Documents\IoTforEmercency\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="c82741bc129dd5f99f11a4ab8666ae24262053b6">
+        <dex dex="C:\Users\marco\Documents\IoTforEmercency\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_aaa658005aa2b48dc4b48f2340d5922b8331728a\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\marco\.android\build-cache\81f6e0cc9710ca7a4d8f72d0129e53525031006d\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="cb454b52545859ed2f24a6c01366805b0fa04b22">
+        <dex dex="C:\Users\marco\Documents\IoTforEmercency\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_0a0ba5ea2a837cf5d6bf71901815114938792e09\classes.dex" />
+    </item>
+
+</items>

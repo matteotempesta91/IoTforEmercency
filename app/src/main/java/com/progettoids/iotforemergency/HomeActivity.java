@@ -26,6 +26,7 @@ public class HomeActivity extends Activity {
     private BeaconListener bleList;
     private Localizzatore locMe;
     private MapHome mapHome;
+    private DriverServer mDriverServer;
 
     // Id necessari per tracciare le richieste effettuate al sistema
     static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
@@ -35,6 +36,7 @@ public class HomeActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        mDriverServer = DriverServer.getInstance(this);
         txtWelcome = (TextView)findViewById(R.id.welcome);
         Bundle bundle = this.getIntent().getExtras();
         txtWelcome.setText(bundle.getString("welcomeMsg"));
@@ -56,6 +58,7 @@ public class HomeActivity extends Activity {
             EnableGPS();
             bleList.Scansione(true);
             locMe.startFinder();
+            mDriverServer.startAmb(true);
         }
 
         // Registra il ricevitore per le notifiche di stato
@@ -86,7 +89,7 @@ public class HomeActivity extends Activity {
         locMe = null;
         // Cancella il ricevitore dalle notifiche di stato
         unregisterReceiver(mReceiver);
-
+        mDriverServer.startAmb(false);
     }
 
     // Gestisce il risultato della richiesta dei permessi
@@ -102,6 +105,7 @@ public class HomeActivity extends Activity {
                             EnableGPS();
                             bleList.Scansione(true);
                             locMe.startFinder();
+                            mDriverServer.startAmb(true);
                         }
                     } else {
                         Log.i("Localizzazione", "Permessi di localizzazione negati");
@@ -126,6 +130,7 @@ public class HomeActivity extends Activity {
                         EnableGPS();
                         bleList.Scansione(true);
                         locMe.startFinder();
+                        mDriverServer.startAmb(true);
                         break;
                     case BluetoothAdapter.STATE_OFF:
                         bleList.stopAll();

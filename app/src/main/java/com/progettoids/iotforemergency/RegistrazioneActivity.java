@@ -3,8 +3,10 @@ package com.progettoids.iotforemergency;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.AlertDialog;
+//import android.support.v7.app.AlertDialog;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,10 +21,12 @@ public class RegistrazioneActivity extends Activity {
     final Context context = this;
     private Button btnReg;
     private EditText editNome, editCognome, editCF, editUsername, editPassword, editPassword2;
+    private DriverServer mdriverServer;
+    private String[] datiReg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        datiReg = new String[5];
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrazione);
         btnReg = (Button) findViewById(R.id.buttonReg);
@@ -35,7 +39,6 @@ public class RegistrazioneActivity extends Activity {
     }
 
     public void controlloCampiReg() {
-
         btnReg =                (Button) findViewById(R.id.buttonReg);
         editNome =              (EditText) findViewById(R.id.editNome);
         editCognome =           (EditText) findViewById(R.id.editCognome);
@@ -57,11 +60,10 @@ public class RegistrazioneActivity extends Activity {
             txtNome.setTextColor(Color.parseColor("#db524c"));
 
         }else{
-
+            datiReg[0] = editNome.getText().toString();
             txtNome.setText("Nome corretto");
             txtNome.setTextColor(Color.parseColor("#73C400"));
             control++;
-
         }
 
         if(!Pattern.matches("[a-zA-Z]*", editCognome.getText().toString())||editCognome.getText().toString().equals("")){
@@ -69,21 +71,23 @@ public class RegistrazioneActivity extends Activity {
             txtCognome.setText("Cognome non valido");
             txtCognome.setTextColor(Color.parseColor("#db524c"));
 
-        }else{
 
+        }else{
+            datiReg[1]=editCognome.getText().toString();
             txtCognome.setText("Cognome Corretto");
             txtCognome.setTextColor(Color.parseColor("#73C400"));
             control++;
-
         }
 
-        if(!Pattern.matches("[a-zA-Z0-9]*", editCF.getText().toString())||editCF.getText().toString().length()!=16){
+        //   if(!Pattern.matches("[a-zA-Z0-9]*", editCF.getText().toString())||editCF.getText().toString().length()!=16){
+        if(!Pattern.matches("[a-zA-Z0-9]*", editCF.getText().toString())){
 
             txtCF.setText("Codice fiscale non valido");
             txtCF.setTextColor(Color.parseColor("#db524c"));
 
-        }else{
 
+        }else{
+            datiReg[2]=editCF.getText().toString();
             txtCF.setText("Codice Fiscale corretto");
             txtCF.setTextColor(Color.parseColor("#73C400"));
             control++;
@@ -95,8 +99,9 @@ public class RegistrazioneActivity extends Activity {
             txtUsername.setText("Username non valido");
             txtUsername.setTextColor(Color.parseColor("#db524c"));
 
-        } else{
 
+        } else{
+            datiReg[3] = editUsername.getText().toString();
             txtUsername.setText("Username corretto");
             txtUsername.setTextColor(Color.parseColor("#73C400"));
             control++;
@@ -108,8 +113,9 @@ public class RegistrazioneActivity extends Activity {
             txtPassword.setText("Password non valida");
             txtPassword.setTextColor(Color.parseColor("#db524c"));
 
-        }else{
 
+        }else{
+            datiReg[4] = editPassword.getText().toString();
             txtPassword.setText("Password corretta");
             txtPassword.setTextColor(Color.parseColor("#73C400"));
             control++;
@@ -129,11 +135,7 @@ public class RegistrazioneActivity extends Activity {
             }
 
         }
-
-
-
         if(control==6){
-
             AlertDialog.Builder miaAlert = new AlertDialog.Builder(context);
             miaAlert.setTitle("Registrazione Effettuata con successo!!!");
             miaAlert.setMessage("Ora sarai rimandato alla pagina di login per accedere all'app");
@@ -141,7 +143,7 @@ public class RegistrazioneActivity extends Activity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 
-                    UtenteRegistrato nuovoUtente = new UtenteRegistrato(editNome.getText().toString(),editCognome.getText().toString(),editCF.getText().toString(),editUsername.getText().toString(),editPassword.getText().toString());
+            /*UtenteRegistrato nuovoUtente = new UtenteRegistrato(editNome.getText().toString(),editCognome.getText().toString(),editCF.getText().toString(),editUsername.getText().toString(),editPassword.getText().toString());
 //-------------------------------- Controlli per il debug ----------------------------------------------
                     Log.d("nome",nuovoUtente.getNome());
                     Log.d("cognome",nuovoUtente.getCognome());
@@ -149,7 +151,7 @@ public class RegistrazioneActivity extends Activity {
                     Log.d("username",nuovoUtente.getUsername());
                     Log.d("password",nuovoUtente.getPassword());
 //------------------------------------------------------------------------------------------------------
-
+*/
                     // Chiusura form
                     RegistrazioneActivity.this.finish();
 
@@ -157,8 +159,10 @@ public class RegistrazioneActivity extends Activity {
             });
             AlertDialog alert = miaAlert.create();
             alert.show();
-
+            mdriverServer=DriverServer.getInstance(context);
+            mdriverServer.inviaRegistrazione(datiReg);
         }
+
 
 
 

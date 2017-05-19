@@ -46,24 +46,26 @@
             android:layout_centerHorizontal="true" />
 
         <EditText
+            android:id="@+id/editNome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:hint="Nome"
-            android:ems="10"
-            android:id="@+id/editNome"
             android:layout_below="@+id/txtName"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:ems="10"
+            android:hint="Nome"
+            android:inputType="textPersonName"
+            android:text="Mario" />
 
         <EditText
+            android:id="@+id/editCognome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:hint="Cognome"
-            android:ems="10"
-            android:id="@+id/editCognome"
+            android:layout_alignStart="@+id/editNome"
             android:layout_below="@+id/txtCognome"
-            android:layout_alignStart="@+id/editNome" />
+            android:ems="10"
+            android:hint="Cognome"
+            android:inputType="textPersonName"
+            android:text="Rossi" />
 
         <TextView
             android:text="Codice fiscale*"
@@ -77,14 +79,15 @@
 
 
         <EditText
+            android:id="@+id/editCF"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:hint="Codice fiscale"
-            android:ems="10"
-            android:id="@+id/editCF"
+            android:layout_alignStart="@+id/editCognome"
             android:layout_below="@+id/txtCodFis"
-            android:layout_alignStart="@+id/editCognome" />
+            android:ems="10"
+            android:hint="Codice fiscale"
+            android:inputType="textPersonName"
+            android:text="CodFis" />
 
         <TextView
             android:text="Username*"
@@ -97,14 +100,15 @@
             android:layout_centerHorizontal="true"/>
 
         <EditText
+            android:id="@+id/editUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:id="@+id/editUsername"
-            android:hint="Username"
-            android:ems="10"
+            android:layout_alignStart="@+id/editCF"
             android:layout_below="@+id/txtUsername"
-            android:layout_alignStart="@+id/editCF" />
+            android:ems="10"
+            android:hint="Username"
+            android:inputType="textPersonName"
+            android:text="Mariolino97" />
 
         <TextView
             android:text="Password*"
@@ -117,14 +121,15 @@
             android:layout_centerHorizontal="true" />
 
         <EditText
+            android:id="@+id/editPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:id="@+id/editPassword"
-            android:hint="Password"
-            android:ems="10"
+            android:layout_alignStart="@+id/editUsername"
             android:layout_below="@+id/txtPass1"
-            android:layout_alignStart="@+id/editUsername" />
+            android:ems="10"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:text="pass" />
 
         <TextView
             android:text="Ripetere Password*"
