@@ -87,12 +87,14 @@
       <file leaf-file-name="LoginActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/LoginActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3247">
-              <caret line="235" column="13" selection-start-line="235" selection-start-column="13" selection-end-line="235" selection-end-column="13" />
+            <state relative-caret-position="-2692">
+              <caret line="22" column="4" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="33" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#loginGuest#0;class#LoginActivity#0" expanded="false" />
                 <element signature="method#getMacAddr#0;class#LoginActivity#0" expanded="false" />
+                <element signature="e#6937#7210#0" expanded="true" />
+                <element signature="e#7209#7210#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -101,13 +103,9 @@
       <file leaf-file-name="HomeActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/HomeActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1241">
-              <caret line="91" column="37" selection-start-line="91" selection-start-column="37" selection-end-line="91" selection-end-column="37" />
-              <folding>
-                <element signature="imports" expanded="false" />
-                <element signature="e#7652#7653#0" expanded="false" />
-                <element signature="e#7723#7724#0" expanded="false" />
-              </folding>
+            <state relative-caret-position="476">
+              <caret line="146" column="25" selection-start-line="146" selection-start-column="25" selection-end-line="146" selection-end-column="25" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -115,7 +113,7 @@
       <file leaf-file-name="Localizzatore.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/Localizzatore.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="850">
+            <state relative-caret-position="810">
               <caret line="53" column="69" selection-start-line="53" selection-start-column="69" selection-end-line="53" selection-end-column="69" />
               <folding />
             </state>
@@ -125,8 +123,8 @@
       <file leaf-file-name="DriverServer.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/DriverServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="810">
-              <caret line="206" column="47" selection-start-line="206" selection-start-column="47" selection-end-line="206" selection-end-column="47" />
+            <state relative-caret-position="781">
+              <caret line="197" column="26" selection-start-line="197" selection-start-column="26" selection-end-line="197" selection-end-column="26" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#getInstance#0;class#DriverServer#0" expanded="false" />
@@ -134,9 +132,12 @@
                 <element signature="method#createJsonPosizione#0;class#DriverServer#0" expanded="false" />
                 <element signature="method#inviaDatiAmb#0;class#DriverServer#0" expanded="false" />
                 <element signature="method#inviaPos#0;class#DriverServer#0" expanded="false" />
+                <element signature="e#7092#7725#0" expanded="true" />
+                <element signature="e#7724#7725#0" expanded="true" />
+                <element signature="e#7743#8077#0" expanded="true" />
+                <element signature="e#8076#8077#0" expanded="true" />
                 <element signature="method#verificaLogin#0;class#DriverServer#0" expanded="false" />
                 <element signature="method#riceviJson#0;class#DriverServer#0" expanded="false" />
-                <element signature="method#inviaUtenteReg#0;class#DriverServer#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -145,7 +146,7 @@
       <file leaf-file-name="activity_registrazione.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_registrazione.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2584">
+            <state relative-caret-position="645">
               <caret line="152" column="32" selection-start-line="152" selection-start-column="32" selection-end-line="152" selection-end-column="32" />
               <folding />
             </state>
@@ -158,10 +159,12 @@
       <file leaf-file-name="RegistrazioneActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/RegistrazioneActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1581">
-              <caret line="109" column="71" selection-start-line="109" selection-start-column="71" selection-end-line="109" selection-end-column="71" />
+            <state relative-caret-position="373">
+              <caret line="118" column="0" selection-start-line="118" selection-start-column="0" selection-end-line="118" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#5911#6138#0" expanded="true" />
+                <element signature="e#6137#6138#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -1994,8 +1997,8 @@
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/Localizzatore.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/HomeActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/LoginActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_registrazione.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/LoginActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/RegistrazioneActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/DriverServer.java" />
       </list>
@@ -2059,6 +2062,48 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="IoTforEmercency" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IoTforEmercency" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IoTforEmercency" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IoTforEmercency" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="iotforemergency" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -2530,7 +2575,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32764506" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34075725" sideWeight="0.48184568" order="7" side_tool="false" content_ui="tabs" />
@@ -2539,13 +2584,14 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.35523385" sideWeight="0.5181543" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="true" weight="0.42761692" sideWeight="0.4969697" order="7" side_tool="false" content_ui="tabs" x="0" y="23" width="1916" height="1017" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32954547" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32409012" sideWeight="0.4939577" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="FLOATING" visible="false" show_stripe_button="true" weight="0.32879046" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" x="98" y="133" width="1169" height="466" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32469776" sideWeight="0.49697885" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2270364" sideWeight="0.5121029" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21108742" sideWeight="0.48353553" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21108742" sideWeight="0.48353553" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32954547" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24962178" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32954547" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
@@ -2564,7 +2610,6 @@
       <window_info id="Code Iris" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32954547" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32850778" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -2653,12 +2698,12 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/DriverServer.java</url>
-          <line>123</line>
+          <line>121</line>
           <properties />
           <option name="timeStamp" value="105" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="132" />
+      <option name="time" value="157" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -2788,6 +2833,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2859,31 +2905,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/HomeActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1241">
-          <caret line="91" column="37" selection-start-line="91" selection-start-column="37" selection-end-line="91" selection-end-column="37" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#7652#7653#0" expanded="false" />
-            <element signature="e#7723#7724#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/LoginActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3247">
-          <caret line="235" column="13" selection-start-line="235" selection-start-column="13" selection-end-line="235" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#loginGuest#0;class#LoginActivity#0" expanded="false" />
-            <element signature="method#getMacAddr#0;class#LoginActivity#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="476">
+          <caret line="146" column="25" selection-start-line="146" selection-start-column="25" selection-end-line="146" selection-end-column="25" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_registrazione.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2584">
+        <state relative-caret-position="645">
           <caret line="152" column="32" selection-start-line="152" selection-start-column="32" selection-end-line="152" selection-end-column="32" />
           <folding />
         </state>
@@ -2892,9 +2922,23 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/LoginActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2692">
+          <caret line="22" column="4" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="33" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#loginGuest#0;class#LoginActivity#0" expanded="false" />
+            <element signature="method#getMacAddr#0;class#LoginActivity#0" expanded="false" />
+            <element signature="e#6937#7210#0" expanded="true" />
+            <element signature="e#7209#7210#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/Localizzatore.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="850">
+        <state relative-caret-position="810">
           <caret line="53" column="69" selection-start-line="53" selection-start-column="69" selection-end-line="53" selection-end-column="69" />
           <folding />
         </state>
@@ -2902,18 +2946,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/RegistrazioneActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1581">
-          <caret line="109" column="71" selection-start-line="109" selection-start-column="71" selection-end-line="109" selection-end-column="71" />
+        <state relative-caret-position="373">
+          <caret line="118" column="0" selection-start-line="118" selection-start-column="0" selection-end-line="118" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#5911#6138#0" expanded="true" />
+            <element signature="e#6137#6138#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/progettoids/iotforemergency/DriverServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="810">
-          <caret line="206" column="47" selection-start-line="206" selection-start-column="47" selection-end-line="206" selection-end-column="47" />
+        <state relative-caret-position="781">
+          <caret line="197" column="26" selection-start-line="197" selection-start-column="26" selection-end-line="197" selection-end-column="26" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#getInstance#0;class#DriverServer#0" expanded="false" />
@@ -2921,9 +2967,12 @@
             <element signature="method#createJsonPosizione#0;class#DriverServer#0" expanded="false" />
             <element signature="method#inviaDatiAmb#0;class#DriverServer#0" expanded="false" />
             <element signature="method#inviaPos#0;class#DriverServer#0" expanded="false" />
+            <element signature="e#7092#7725#0" expanded="true" />
+            <element signature="e#7724#7725#0" expanded="true" />
+            <element signature="e#7743#8077#0" expanded="true" />
+            <element signature="e#8076#8077#0" expanded="true" />
             <element signature="method#verificaLogin#0;class#DriverServer#0" expanded="false" />
             <element signature="method#riceviJson#0;class#DriverServer#0" expanded="false" />
-            <element signature="method#inviaUtenteReg#0;class#DriverServer#0" expanded="false" />
           </folding>
         </state>
       </provider>

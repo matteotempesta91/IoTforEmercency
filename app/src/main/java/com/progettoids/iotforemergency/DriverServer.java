@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.ProgressBar;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,10 +21,9 @@ public class DriverServer {
     private final Handler sender = new Handler();
     private DBManager dbManager;
     private final RequestQueue queue;
-    private Context context;
+    private Context context;            // Questo campo contiene il primo context: ovvero quello di loginActivity
     private final String url;
-    private boolean loginValido, registrato, flagResponse;
-    ProgressDialog progressDialog;
+    private boolean loginValido, registrato;
 
     // Runnable per invio dati ambientali periodico
     private Runnable sendDatiAmb = new Runnable() {
@@ -39,12 +39,10 @@ public class DriverServer {
     private DriverServer(Context cont) {
         DBHelper dbHelper = new DBHelper(context);
         dbManager = new DBManager(dbHelper);
-        context = cont;
+        context = cont;                 // viene inizializzato con il context di loginActivity
         queue = Volley.newRequestQueue(context);
         url = "http://www.bandaappignano.altervista.org/Project/web/app_dev.php";
         loginValido = false;
-        flagResponse = false;
-       // registrato = false;
     }
 
     // Per accedere all'oggetto questo metodo fornisce il riferimento, in questo modo è creato una sola volta per tutta l'applicazione
@@ -153,7 +151,9 @@ public class DriverServer {
         queue.add(request);
     }
 
-    public void inviaRegistrazione(String[] registrazione, RegistrazioneActivity regAct) {
+    // Il context cont che viene passato a inviaRegistrazione è il context di RegistrazioneActivity
+    public void inviaRegistrazione(String[] registrazione, final Context cont) {
+        final ProgressDialog progDialog = new ProgressDialog(cont);
         String urlReg = url.concat("/registrazione");
         JSONObject json = new JSONObject();
         JSONObject registrazioneJson = new JSONObject();
@@ -171,59 +171,31 @@ public class DriverServer {
 
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.POST, urlReg, json,
-
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        flagResponse = true;
-                        //progressDialog.dismiss();
+                        progDialog.dismiss();
                         Log.i("POST Response",response.toString());
                         try {
                             registrato = response.getBoolean("check");
-                            /*
-                            Log.i("Registrato",Boolean.toString(registrato));
-                           AlertDialog.Builder miaAlert = new AlertDialog.Builder(context);
-                            // Se lo username è libero l'allert rimanda alla pagina di login, altrimenti rimane aperta l'acticity per la registrazione
-                           if(registrato) {
-                               miaAlert.setTitle("Registrazione Effettuata con successo!");
-                                miaAlert.setMessage("Ora sarai rimandato alla pagina di login per accedere all'app");
-                                miaAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        ((Activity)context).finish();
-                                    }
-                                });
-                            }else {
-                                miaAlert.setTitle("Registrazione errata!");
-                                miaAlert.setMessage("Username già presente");
-                            }
-                            AlertDialog alert = miaAlert.create();
-                            alert.show();
-                            int i =0;
-           */
-                            if(registrato) {
-                                //((Activity)context).finish();
-                            }
+                           ((RegistrazioneActivity)cont).mostraDialog(registrato);  // usiamo cont (RegistrazioneActivity) e non context che si riferisce a LoginActivity
                         } catch (Exception e) {
 
                         }
-
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        flagResponse = true;
+                        progDialog.dismiss();
                         String err = error.getMessage();
-                      //  progressDialog.dismiss();
-                        Log.i("POST Response Error",err);
+                        Log.i("POST Response Error",err+"!");
                     }
                 });
         queue.add(request);
-
-    //    progressDialog = new ProgressDialog(context);
-      //  progressDialog.setMessage("Verifica delle credenziali");
-       // progressDialog.show();
+        progDialog.setTitle("Registrazione in corso...");
+        progDialog.setMessage("Attendere prego");
+        progDialog.show();
     }
 
     public void verificaLogin(String username, String password) {
@@ -265,10 +237,6 @@ public class DriverServer {
         queue.add(request);
     }
 
-    public boolean getRegistrato() {
-        return registrato;
-    }
-
     public  Boolean getLoginValido() {
         return loginValido;
     }
@@ -293,11 +261,7 @@ public class DriverServer {
         queue.add(request);
     }
 
+    //TODO
     // fare update server per registrazione, controllo login di username e password,
     //ricezione cambiamento emergenza, stato nodi
-
-    public static void inviaUtenteReg() {
-
-    }
-
 }

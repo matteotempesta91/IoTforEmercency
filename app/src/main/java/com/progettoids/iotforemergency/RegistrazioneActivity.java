@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-//import android.support.v7.app.AlertDialog;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
@@ -113,29 +112,28 @@ public class RegistrazioneActivity extends Activity {
         }
         if(control==6){
             // Crea l'istanza di driver server che invia i dati al server e controlla se lo username è già presente nel DB
-            mdriverServer=DriverServer.getInstance(this);
-
-            mdriverServer.inviaRegistrazione(datiReg,this);
-            registrazioneOk = mdriverServer.getRegistrato();
-
-                AlertDialog.Builder miaAlert = new AlertDialog.Builder(context);
-                // Se lo username è libero l'allert rimanda alla pagina di login, altrimenti rimane aperta l'acticity per la registrazione
-                if (registrazioneOk) {
-                    miaAlert.setTitle("Registrazione Effettuata con successo!");
-                    miaAlert.setMessage("Ora sarai rimandato alla pagina di login per accedere all'app");
-                    miaAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            RegistrazioneActivity.this.finish();
-                        }
-                    });
-                } else {
-                    miaAlert.setTitle("Errore Registrazione");
-                    miaAlert.setMessage("Username già presente");
-                }
-                AlertDialog alert = miaAlert.create();
-                alert.show();
-
+            mdriverServer=DriverServer.getInstance(context);
+            mdriverServer.inviaRegistrazione(datiReg, context);
         }
+    }
+
+    public void mostraDialog(Boolean flag) {
+        AlertDialog.Builder miaAlert = new AlertDialog.Builder(context);
+        // Se lo username non è presente sul server l'allert rimanda alla pagina di login, altrimenti rimane aperta l'acticity per la registrazione
+        if (flag) {
+            miaAlert.setTitle("Registrazione Effettuata con successo!");
+            miaAlert.setMessage("Ora sarai rimandato alla pagina di login per accedere all'app");
+            miaAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    RegistrazioneActivity.this.finish();
+                }
+            });
+        } else {
+            miaAlert.setTitle("Errore Registrazione");
+            miaAlert.setMessage("Username già presente");
+        }
+        AlertDialog alert = miaAlert.create();
+        alert.show();
     }
 }
