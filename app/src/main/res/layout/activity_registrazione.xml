@@ -149,7 +149,8 @@
             android:hint="Ripetere Password"
             android:ems="10"
             android:layout_below="@+id/txtPass2"
-            android:layout_alignStart="@+id/editUsername" />
+            android:layout_alignStart="@+id/editUsername"
+            android:text="pass" />
 
         <Button
             android:text="Registrati"

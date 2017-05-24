@@ -27,7 +27,7 @@ public class LoginActivity extends Activity {
     private Login loginUtils;
     private boolean flag1stLog;
     private static final int NUMERO_NODI=63;
-    private DriverServer driverServer;
+    private DriverServer mDriverServer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +40,9 @@ public class LoginActivity extends Activity {
         loginGuest();
         registrazione();
         gestioneCreazineDB();
-        driverServer = DriverServer.getInstance(context);
+        mDriverServer = DriverServer.getInstance(context);
     }
+
 
     public void login() {
         btnLogin=(Button)findViewById(R.id.buttonLogin);
@@ -75,12 +76,21 @@ public class LoginActivity extends Activity {
             public void onClick(View arg0) {
                 if(controlloCampi())
                 {
-                    driverServer.verificaLogin(editUser.getText().toString(),editPass.getText().toString());
-                    Bundle bundle = new Bundle();
-                    bundle.putString("welcomeMsg", "Benvenuto "+editUser.getText().toString());
-                    Intent openHome = new Intent(LoginActivity.this, HomeActivity.class);
-                    openHome.putExtras(bundle);
-                    startActivity(openHome);
+                    mDriverServer.verificaLogin(editUser.getText().toString(),editPass.getText().toString());
+                    // Controlla se Username e Password sono presenti nel server
+                    if(mDriverServer.getLoginValido()) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("welcomeMsg", "Benvenuto " + editUser.getText().toString());
+                        Intent openHome = new Intent(LoginActivity.this, HomeActivity.class);
+                        openHome.putExtras(bundle);
+                        startActivity(openHome);
+                    } else {
+                        AlertDialog.Builder miaAlert = new AlertDialog.Builder(context);
+                        miaAlert.setTitle("Login Error");
+                        miaAlert.setMessage("Username o Password errati");
+                        AlertDialog alert = miaAlert.create();
+                        alert.show();
+                    }
 
                     // salva i dati solo se checkbox segnato
                     if (ricordami.isChecked()) {
@@ -223,13 +233,13 @@ public class LoginActivity extends Activity {
             }
 
             dbManager.saveBeacon("B0:B4:48:BD:93:82","155R4",null,null,null,null,null,null,null);
-            provaStoriaUtente3(dbManager);
+           // provaStoriaUtente3(dbManager);
 
         }
     }
 
 
-
+/*
     public void provaStoriaUtente3(DBManager dbManager){
         int[] position=dbManager.getPosition("B0:B4:48:BD:93:82");
 
@@ -240,10 +250,10 @@ public class LoginActivity extends Activity {
         Log.d("Android","Android ID : "+android_id);
 
         if(loginUtils.getUser()!=null){
-            driverServer.sendPosition(loginUtils.getUser(),position);
+            mDriverServer.sendPosition(loginUtils.getUser(),position);
         }
     }
-
+*/
 
 
     public static boolean isFirst(Context context){
