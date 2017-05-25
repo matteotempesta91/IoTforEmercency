@@ -5,8 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.support.v7.app.AlertDialog;
+import android.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -36,13 +35,12 @@ public class LoginActivity extends Activity {
 
         loginUtils = new Login();
         flag1stLog = true;
+        mDriverServer = DriverServer.getInstance(context);
         login();
         loginGuest();
         registrazione();
         gestioneCreazineDB();
-        mDriverServer = DriverServer.getInstance(context);
     }
-
 
     public void login() {
         btnLogin=(Button)findViewById(R.id.buttonLogin);
@@ -52,7 +50,7 @@ public class LoginActivity extends Activity {
 
         // carica dati utente salvati se presenti
         File path = context.getCacheDir();
-        File memo = new File(path, "memo");
+        final File memo = new File(path, "memo");
         if (memo.exists()) {
             try {
                 String[] userPwd = loginUtils.loadLogin(memo);
@@ -70,34 +68,30 @@ public class LoginActivity extends Activity {
                 alert.show();
             }
         }
-
         btnLogin.setOnClickListener( new View.OnClickListener(){
             @Override
             public void onClick(View arg0) {
                 if(controlloCampi())
                 {
-                    mDriverServer.verificaLogin(editUser.getText().toString(),editPass.getText().toString());
                     // Controlla se Username e Password sono presenti nel server
-                    if(mDriverServer.getLoginValido()) {
-                        Bundle bundle = new Bundle();
-                        bundle.putString("welcomeMsg", "Benvenuto " + editUser.getText().toString());
-                        Intent openHome = new Intent(LoginActivity.this, HomeActivity.class);
-                        openHome.putExtras(bundle);
-                        startActivity(openHome);
-                    } else {
-                        AlertDialog.Builder miaAlert = new AlertDialog.Builder(context);
-                        miaAlert.setTitle("Login Error");
-                        miaAlert.setMessage("Username o Password errati");
-                        AlertDialog alert = miaAlert.create();
-                        alert.show();
+                    if(mDriverServer == null)
+                    {
+                        Log.i("mDriverServer","is NULL");
                     }
+                    else
+                    {
+                        Log.i("mDriverServer","not null");
+                    }
+                    mDriverServer.verificaLogin(editUser.getText().toString(),editPass.getText().toString());
+                    mDriverServer.metodoProva(editUser.getText().toString(),editPass.getText().toString());
+
 
                     // salva i dati solo se checkbox segnato
                     if (ricordami.isChecked()) {
                         File path = context.getCacheDir();
                         File memo = new File(path, "memo");
                         try {
-                            loginUtils.saveLogin(context, memo, editUser.getText().toString(), editUser.getText().toString());
+                            loginUtils.saveLogin(context, memo, editUser.getText().toString(), editPass.getText().toString());
                         } catch (Exception ex) {
                             AlertDialog.Builder miaAlert = new AlertDialog.Builder(context);
                             miaAlert.setTitle("Error");
@@ -202,14 +196,11 @@ public class LoginActivity extends Activity {
 
         // ENTRA IN QUESTO IF SOLO SE E' LA PRIMA VOLTA CHE VIENE AVVIATA L'APPLICAZIONI
         if(result==1){
-
             DBManager dbManager;
 
             Log.i("b","inizio creazione db");
             DBHelper dBhelper = new DBHelper(this);
             dbManager = new DBManager(dBhelper);
-
-
 
             for (int i=0;i<NUMERO_NODI;i++) {
                 String codice = DatabaseStrings.codice[i];
@@ -234,11 +225,8 @@ public class LoginActivity extends Activity {
 
             dbManager.saveBeacon("B0:B4:48:BD:93:82","155R4",null,null,null,null,null,null,null);
            // provaStoriaUtente3(dbManager);
-
         }
     }
-
-
 /*
     public void provaStoriaUtente3(DBManager dbManager){
         int[] position=dbManager.getPosition("B0:B4:48:BD:93:82");
@@ -254,8 +242,6 @@ public class LoginActivity extends Activity {
         }
     }
 */
-
-
     public static boolean isFirst(Context context){
 
         final SharedPreferences reader = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
@@ -268,5 +254,30 @@ public class LoginActivity extends Activity {
         return first;
     }
 
+    public void mostraDialog(Boolean flag) {
 
+        // Se lo username non è presente sul server l'allert rimanda alla pagina di login, altrimenti rimane aperta l'acticity per la registrazione
+        if (flag) {
+            Bundle bundle = new Bundle();
+            bundle.putString("welcomeMsg", "Benvenuto " + editUser.getText().toString());
+            Intent openHome = new Intent(LoginActivity.this, HomeActivity.class);
+            openHome.putExtras(bundle);
+            startActivity(openHome);
+        } else {
+            AlertDialog.Builder miaAlert = new AlertDialog.Builder(context);
+            miaAlert.setTitle("Errore Login");
+            miaAlert.setMessage("Username o Passoword Errati");
+            AlertDialog alert = miaAlert.create();
+            alert.show();
+        }
+    }
+
+    public void mostraDialog(String err) {
+        // Se lo username non è presente sul server l'allert rimanda alla pagina di login, altrimenti rimane aperta l'acticity per la registrazione
+            AlertDialog.Builder errorAlert = new AlertDialog.Builder(context);
+            errorAlert.setTitle("Errore di Connessione");
+            errorAlert.setMessage(err);
+            AlertDialog alert = errorAlert.create();
+            alert.show();
+    }
 }

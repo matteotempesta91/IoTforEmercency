@@ -9,9 +9,11 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.ProgressBar;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.android.volley.*;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -21,7 +23,7 @@ public class DriverServer {
     private final Handler sender = new Handler();
     private DBManager dbManager;
     private final RequestQueue queue;
-    private Context context;            // Questo campo contiene il primo context: ovvero quello di loginActivity
+    private Context contextLogin;            // Questo campo contiene il primo context: ovvero quello di loginActivity
     private final String url;
     private boolean loginValido, registrato;
 
@@ -37,11 +39,11 @@ public class DriverServer {
     };
 
     private DriverServer(Context cont) {
-        DBHelper dbHelper = new DBHelper(context);
+        DBHelper dbHelper = new DBHelper(contextLogin);
         dbManager = new DBManager(dbHelper);
-        context = cont;                 // viene inizializzato con il context di loginActivity
-        queue = Volley.newRequestQueue(context);
-        url = "http://www.bandaappignano.altervista.org/Project/web/app_dev.php";
+        contextLogin = cont;                 // viene inizializzato con il context di loginActivity
+        queue = Volley.newRequestQueue(contextLogin);
+        url = "http://www.bandaappignano.altervista.org/Project/web/app_dev.php";   // ROOT della url del server
         loginValido = false;
     }
 
@@ -151,10 +153,15 @@ public class DriverServer {
         queue.add(request);
     }
 
-    // Il context cont che viene passato a inviaRegistrazione è il context di RegistrazioneActivity
-    public void inviaRegistrazione(String[] registrazione, final Context cont) {
-        final ProgressDialog progDialog = new ProgressDialog(cont);
-        String urlReg = url.concat("/registrazione");
+
+    // Metodo per l'invio dei dati di registrazione verso al server tramite JSON
+    // Il context contRegistrazione che viene passato a inviaRegistrazione è il context di RegistrazioneActivity,
+    // registrazione è un vettore di stinghe contenente i dati dell'utente per la registrazione
+
+    public void inviaRegistrazione(String[] registrazione, final Context contRegistrazione) {
+        final ProgressDialog progDialog = new ProgressDialog(contRegistrazione);    // finestra di caricamente in attesa della risposta del server
+        String urlReg = url.concat("/registrazione");                   // Aggiunge alla root dell'url l'indirizzo per la richiesta al server
+// ----------------------------------- CREAZIONE JSON -----------------------------------
         JSONObject json = new JSONObject();
         JSONObject registrazioneJson = new JSONObject();
         try{
@@ -168,7 +175,7 @@ public class DriverServer {
         }catch(JSONException e){
             e.printStackTrace();
         }
-
+// ----------------------------------------------------------------------------------------
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.POST, urlReg, json,
                 new Response.Listener<JSONObject>() {
@@ -178,9 +185,9 @@ public class DriverServer {
                         Log.i("POST Response",response.toString());
                         try {
                             registrato = response.getBoolean("check");
-                           ((RegistrazioneActivity)cont).mostraDialog(registrato);  // usiamo cont (RegistrazioneActivity) e non context che si riferisce a LoginActivity
+                           ((RegistrazioneActivity)contRegistrazione).mostraDialog(registrato);  // usiamo contRegistrazione (RegistrazioneActivity) e non context che si riferisce a LoginActivity
                         } catch (Exception e) {
-
+                            Log.i("POST Response Exception",e.toString()+"!");
                         }
                     }
                 },
@@ -199,46 +206,55 @@ public class DriverServer {
     }
 
     public void verificaLogin(String username, String password) {
+        final ProgressDialog progDialog = new ProgressDialog(contextLogin);    // finestra di caricamente in attesa della risposta del server
         String urlLogin =url.concat("/login");
         JSONObject json = new JSONObject();
         JSONObject loginJson = new JSONObject();
         try{
             loginJson.put("username", username );
             loginJson.put("password", password);
-
             json.put("login", loginJson);
-
         }catch(JSONException e){
             e.printStackTrace();
         }
-
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.POST, urlLogin, json,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        progDialog.dismiss();
                         Log.i("Login JSON",response.toString());
                         try {
-                            loginValido = response.getBoolean("flag");
+                            loginValido = response.getBoolean("check");
                             Log.i("RESPONSE LOGIN", Boolean.toString(loginValido));
+                            ((LoginActivity)contextLogin).mostraDialog(loginValido);  // usiamo contRegistrazione (RegistrazioneActivity) e non context che si riferisce a LoginActivity
                         }
                         catch (Exception e) {
-                            Log.i("RESPONE LOGIN","Exception");
+                            Log.i("RESPONSE LOGIN","Exception "+e.toString());
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        String err = error.getMessage();
-                        Log.i("POST Response Error",err);
+                        progDialog.dismiss();
+                        String msgError = error.getMessage()+" "+error.getCause();
+                        if(msgError.equals("null null"))
+                        {
+                            msgError = "SERVER DOWN";
+                        }
+                        Log.i("POST Response Error",msgError);
+                        if(error.networkResponse!=null)
+                        {
+                            Log.i("POST Response Error",String.valueOf(error.networkResponse.statusCode)+" "
+                                +error.networkResponse.data+" !");
+                        }
                     }
                 });
         queue.add(request);
-    }
-
-    public  Boolean getLoginValido() {
-        return loginValido;
+        progDialog.setTitle("Login in corso...");
+        progDialog.setMessage("Attendere prego");
+        progDialog.show();
     }
 
     public void riceviJson(String url) {
@@ -264,4 +280,40 @@ public class DriverServer {
     //TODO
     // fare update server per registrazione, controllo login di username e password,
     //ricezione cambiamento emergenza, stato nodi
+
+    public void metodoProva(String username, String password) {
+
+        String urlLogin =url.concat("/database");
+        JsonArrayRequest request = new JsonArrayRequest(
+                Request.Method.GET, urlLogin, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            Log.i("PROVA GET", response.getJSONObject(0).toString());
+                            ((LoginActivity)contextLogin).mostraDialog(loginValido);  // usiamo contRegistrazione (RegistrazioneActivity) e non context che si riferisce a LoginActivity
+                        }
+                        catch (Exception e) {
+                            Log.i("RESPONSE LOGIN","Exception "+e.toString());
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        String msgError = error.getMessage()+" "+error.getCause();
+                        if(msgError.equals("null null"))
+                        {
+                            msgError = "SERVER DOWN";
+                        }
+                        Log.i("POST Response Error",msgError);
+                        if(error.networkResponse!=null)
+                        {
+                            Log.i("POST Response Error",String.valueOf(error.networkResponse.statusCode)+" "
+                                    +error.networkResponse.data+" !");
+                        }
+                    }
+                });
+        queue.add(request);
+    }
 }

@@ -8,10 +8,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.nio.CharBuffer;
 
-/**
- * Created by marco on 17/01/2017.
- */
-
 public class Login {
     private String user;
     private String pwd;
@@ -29,10 +25,6 @@ public class Login {
             final SharedPreferences.Editor editor = reader.edit();
             editor.putString("id_utente", user);
             editor.commit();
-
-
-
-
             this.user = user;
             this.pwd = pwd;
         } catch (Exception ex) {
