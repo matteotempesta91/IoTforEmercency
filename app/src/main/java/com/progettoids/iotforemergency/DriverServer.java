@@ -1,7 +1,5 @@
 package com.progettoids.iotforemergency;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Handler;
@@ -14,11 +12,12 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.util.ArrayList;
+
 public class DriverServer {
 
     private static DriverServer mDriverServer;
     private final Handler sender = new Handler();
-    private DBManager dbManager;
     private final RequestQueue queue;
     private Context contextLogin;            // Questo campo contiene il primo context: ovvero quello di loginActivity
     private final String url;
@@ -28,16 +27,13 @@ public class DriverServer {
     private Runnable sendDatiAmb = new Runnable() {
         @Override
         public void run() {
-            //creazione json per l'invio di dati ambientali
-            String[] datiambientali = dbManager.getdatiambientali();
-            inviaDatiAmb(datiambientali);
+            //creazione json ed invio dei dati ambientali di tutti i beacon trovati
+            inviaDatiAmb(DBManager.getdatiambientali());
             sender.postDelayed(sendDatiAmb, 60000);
         }
     };
 
     private DriverServer(Context cont) {
-        DBHelper dbHelper = new DBHelper(contextLogin);
-        dbManager = new DBManager(dbHelper);
         contextLogin = cont;                 // viene inizializzato con il context di loginActivity
         queue = Volley.newRequestQueue(contextLogin);
         url = "http://www.bandaappignano.altervista.org/Project/web/app_dev.php";   // ROOT della url del server
@@ -82,28 +78,32 @@ public class DriverServer {
     }
 
 
-    public void inviaDatiAmb(String[] datiambientali) {
+    public void inviaDatiAmb(ArrayList<String[]> elencoBeacon) {
 
         String urlDA = url.concat("/blog");
-        JSONObject json = new JSONObject();
+        JSONArray elencoB = new JSONArray();
         JSONObject datiambientaliJson = new JSONObject();
+
         try{
-            datiambientaliJson.put("temperatura", datiambientali[0] );
-            datiambientaliJson.put("accelerazione_x", datiambientali[1]);
-            datiambientaliJson.put("accelerazione_y", datiambientali[2]);
-            datiambientaliJson.put("accelerazione_z",datiambientali[3]);
-            datiambientaliJson.put("umidita",datiambientali[4]);
-            datiambientaliJson.put("luminosita",datiambientali[5]);
-            datiambientaliJson.put("pressione",datiambientali[6]);
-            json.put("dati_ambientali",datiambientaliJson);
+            for (String[] datiambientali : elencoBeacon) {
+            datiambientaliJson.put("Beacon_Mac", datiambientali[0]);
+            datiambientaliJson.put("temperatura", datiambientali[1]);
+            datiambientaliJson.put("accelerazione_x", datiambientali[2]);
+            datiambientaliJson.put("accelerazione_y", datiambientali[3]);
+            datiambientaliJson.put("accelerazione_z",datiambientali[4]);
+            datiambientaliJson.put("umidita",datiambientali[5]);
+            datiambientaliJson.put("luminosita",datiambientali[6]);
+            datiambientaliJson.put("pressione",datiambientali[7]);
+            elencoB.put(datiambientaliJson);
+            }
         }catch(JSONException e){
             e.printStackTrace();
         }
-        JsonObjectRequest request = new JsonObjectRequest(
-                Request.Method.POST, urlDA, json,
-                new Response.Listener<JSONObject>() {
+        JsonArrayRequest request = new JsonArrayRequest(
+                Request.Method.POST, urlDA, elencoB,
+                new Response.Listener<JSONArray>() {
                     @Override
-                    public void onResponse(JSONObject response) {
+                    public void onResponse(JSONArray response) {
                         Log.i("POST Response",response.toString());
                     }
                 },

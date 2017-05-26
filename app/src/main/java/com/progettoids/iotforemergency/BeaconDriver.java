@@ -36,7 +36,6 @@ public class BeaconDriver extends AsyncTask<Object, Void, Object[]> {
     private boolean sensOn = false;
     private int letture = 0;
     private String error;
-    private DBHelper dbHelper;
 
     public BeaconDriver(Context context) {
             super();
@@ -223,10 +222,8 @@ public class BeaconDriver extends AsyncTask<Object, Void, Object[]> {
     //Metodo per salvare i dati sul DataBase
     public void salvataggioDatiDB(String mac) {
 
-        dbHelper = new DBHelper(this.context);
-
         Log.i("punto 1 ->", "Help");
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        SQLiteDatabase db = DBHelper.getInstance(null).getWritableDatabase();
         //+":"+String.valueOf(((double[]) sensorData[1])[1])+":"+String.valueOf(((double[]) sensorData[1])[2]));
         ContentValues cv = new ContentValues();
         cv.put(DatabaseStrings.FIELD_BEACON_TEMPERATURA, ((double) sensorData[0]));

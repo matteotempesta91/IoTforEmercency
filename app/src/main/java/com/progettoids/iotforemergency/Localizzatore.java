@@ -34,9 +34,7 @@ public class Localizzatore {
             Log.i("finder", "Ricerca pos");
             String macAdrs = bleList.closestBle();
             if (!macAdrs.equals("NN")) {
-                DBHelper mDBhe = new DBHelper(context);
-                DBManager mDBman = new DBManager(mDBhe);
-                int[] pos = mDBman.getPosition(macAdrs);
+                int[] pos = DBManager.getPosition(macAdrs);
                 if (pos[0] != x && pos[1] != y && z != pos[2]) {
                     x = pos[0];
                     y = pos[1];

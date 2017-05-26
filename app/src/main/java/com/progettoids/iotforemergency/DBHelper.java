@@ -6,19 +6,22 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 /**
- * Created by matteotempesta on 03/03/17.
+ * Estende la classe SQLiteOpenHelper, che fornisce i metodi per dialogare con il DB locale
  */
 
 public class DBHelper extends SQLiteOpenHelper {
 
+    private static DBHelper mDBHelper;
     public static final String DBNAME = "DB_LOCALE_15";
 
-    public DBHelper(Context context) {
-
+    private DBHelper(Context context) {
         super(context, DBNAME, null, 1);
-
     }
 
+    /**
+     * Invocato alla prima creazione del DB locale, crea le tabelle necessarie
+     * @param sqLiteDatabase : Passato dal costruttore
+     */
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
@@ -54,6 +57,26 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
+    /**
+     * Questa classe può avere un'unica istanza, invocare questo metodo per accedere all'oggetto.
+     * @param context : necessario per accedere al DB
+     *                NOTA: è necessario solo alla prima invocazione,
+     *                se si è sicuri che già esiste è possibile passare NULL
+     * @return : l'istanza dell'oggetto stesso
+     */
+    public static synchronized  DBHelper getInstance(Context context){
+        if(mDBHelper==null) {
+            mDBHelper = new DBHelper(context);
+        }
+        return mDBHelper;
+    }
+
+    /**
+     *  ??
+     * @param sqLiteDatabase
+     * @param i
+     * @param i1
+     */
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 

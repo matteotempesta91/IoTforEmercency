@@ -6,215 +6,167 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 /**
- * Created by matteotempesta on 02/03/17.
- *
- * cose da fare nel db:
- *  -METTERE LA CHIUSURA DEL DB
- *  -forse la riga quota
- *
- *  - rigirare tutto in static
+ * Fornisce i metodi per effettuare ed interpretare le query al DB locale
+ * DBhelper deve essere già stato invocato da un'activity
  */
 
-public class DBManager
-{
-    private DBHelper dbhelper;
+public class DBManager {
 
-    public DBManager(DBHelper dbhelper)
-    {
-        this.dbhelper=dbhelper;
-        Log.i("DBManager:","COSTRUTTORE DBMANAGER");
-    }
+    /**
+     * Salva un nuovo nodo nella tabella
+     * @param codice : ID unico del nodo
+     * @param posizione_x
+     * @param posizione_y
+     * @param quota : o posizione z
+     */
+    public static void saveNodo(String codice,String posizione_x,String posizione_y,
+                         String quota) {
 
-
-
-    public void saveNodo(String codice,String posizione_x,String posizione_y,
-                         String quota,int stato,String orario_ultima_ricezione) {
-
-        Log.i("DBManager:","1111");
-        SQLiteDatabase db = dbhelper.getWritableDatabase();
-
+        SQLiteDatabase db = DBHelper.getInstance(null).getWritableDatabase();
         ContentValues cv = new ContentValues();
-
 
         cv.put(DatabaseStrings.FIELD_NODO_CODICE, codice);
         cv.put(DatabaseStrings.FIELD_NODO_POSIZIONE_X, posizione_x);
         cv.put(DatabaseStrings.FIELD_NODO_POSIZIONE_Y, posizione_y);
         cv.put(DatabaseStrings.FIELD_NODO_QUOTA, quota);
-        cv.put(DatabaseStrings.FIELD_NODO_STATO, stato);
-        cv.put(DatabaseStrings.FIELD_NODO_ORARIO_ULTIMA_RICEZIONE, orario_ultima_ricezione);
+        cv.put(DatabaseStrings.FIELD_NODO_STATO, 0);
+        cv.put(DatabaseStrings.FIELD_NODO_ORARIO_ULTIMA_RICEZIONE, "");
 
-        Log.i("DBManager:","2222");
-
-        try
-        {
+        try {
             db.insert(DatabaseStrings.TBL_NAME_NODO, null, cv);
+            Log.i("DBManager", "Nodo salvato");
+        } catch (SQLiteException sqle) {
+            Log.e("DBManager", "Errore sql saveNodo");
         }
-        catch (SQLiteException sqle)
-        {
-            // Gestione delle eccezioni
-        }
+        db.close();
     }
 
-    public void saveBeacon(String mac,String codicenodo,String temperatura,
-                           String accelerazionex,String accelerazioney, String accelerazionez,String umidita,
-                           String pressione, String luminosita) {
+    /**
+     * Salva un nuovo Beacon nel DB locale
+     * @param mac : indirizzo MAC bluetooth del beacon
+     * @param codicenodo : nodo al quale è associato
+     */
+    public static void saveBeacon(String mac,String codicenodo) {
 
-        Log.i("DBManager:","1111");
-        SQLiteDatabase db = dbhelper.getWritableDatabase();
-
+        SQLiteDatabase db = DBHelper.getInstance(null).getWritableDatabase();
         ContentValues cv = new ContentValues();
-
 
         cv.put(DatabaseStrings.FIELD_BEACON_MAC, mac);
         cv.put(DatabaseStrings.FIELD_BEACON_CODICE_NODO, codicenodo);
-        cv.put(DatabaseStrings.FIELD_BEACON_TEMPERATURA, temperatura);
-        cv.put(DatabaseStrings.FIELD_BEACON_ACCELERAZIONEX, accelerazionex);
-        cv.put(DatabaseStrings.FIELD_BEACON_ACCELERAZIONEY, accelerazioney);
-        cv.put(DatabaseStrings.FIELD_BEACON_ACCELERAZIONEZ, accelerazionez);
-        cv.put(DatabaseStrings.FIELD_BEACON_UMIDITA, umidita);
-        cv.put(DatabaseStrings.FIELD_BEACON_PRESSIONE, pressione);
-        cv.put(DatabaseStrings.FIELD_BEACON_LUMINOSITA, luminosita);
+        cv.put(DatabaseStrings.FIELD_BEACON_TEMPERATURA, "");
+        cv.put(DatabaseStrings.FIELD_BEACON_ACCELERAZIONEX, "");
+        cv.put(DatabaseStrings.FIELD_BEACON_ACCELERAZIONEY, "");
+        cv.put(DatabaseStrings.FIELD_BEACON_ACCELERAZIONEZ, "");
+        cv.put(DatabaseStrings.FIELD_BEACON_UMIDITA, "");
+        cv.put(DatabaseStrings.FIELD_BEACON_PRESSIONE, "");
+        cv.put(DatabaseStrings.FIELD_BEACON_LUMINOSITA, "");
 
-        Log.i("DBManager:","2222");
-
-        try
-        {
+        try {
             db.insert(DatabaseStrings.TBL_NAME_BEACON, null, cv);
+            Log.i("DBManager", "Beacon salvato");
+        } catch (SQLiteException sqle) {
+            Log.e("DBManager", "Errore sql saveBeacon");
         }
-        catch (SQLiteException sqle)
-        {
-            // Gestione delle eccezioni
-        }
+        db.close();
     }
 
-
-    /*
-    public boolean delete(long id)
-    {
-        SQLiteDatabase db=dbhelper.getWritableDatabase();
-        try
-        {
-            if (db.delete(DatabaseStrings.TBL_NAME, DatabaseStrings.FIELD_ID+"=?", new String[]{Long.toString(id)})>0)
-                return true;
-            return false;
-        }
-        catch (SQLiteException sqle)
-        {
-            return false;
-        }
-
-    }
-    */
-
-    //questa va cambiata per leggere tutta la tabella?
-    public String[]  getdatiambientali(){
-        Log.i("DbManager","metodo query");
+    /**
+     * Legge e poi elimina i dati ambientali salvati nel DB locale dei beacon incontrati
+     * @return : array bidimensionale di lunghezza pari al numero di beacon incontrati contenente
+     *          i rispettivi dati ambientali e macAddress
+     */
+    public static ArrayList<String[]> getdatiambientali(){
 
         Cursor crs = null;
-    String[] datiambientali = new String[7];
-
-
-        try
-        {
-            SQLiteDatabase db = dbhelper.getReadableDatabase();
-
-            crs = db.query(DatabaseStrings.TBL_NAME_BEACON, null, null, null, null, null, null);
-            Log.i("beacon",String.valueOf(crs.getCount()));
-            crs.moveToLast();
-            Log.i("beacon",String.valueOf(crs.getCount()));
-
-            String s2 = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_BEACON_TEMPERATURA));
-            datiambientali[0] = s2;
-            Log.i("temp:",s2);
-            String s3x = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_BEACON_ACCELERAZIONEX));
-            Log.i("acc:",s3x);
-            datiambientali[1] = s3x;
-            String s3y = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_BEACON_ACCELERAZIONEY));
-            Log.i("acc:",s3y);
-            datiambientali[2] = s3y;
-            String s3z = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_BEACON_ACCELERAZIONEZ));
-            Log.i("acc:",s3z);
-            datiambientali[3] = s3z;
-            String s4 = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_BEACON_UMIDITA));
-            Log.i("umid:",s4);
-            datiambientali[4] = s4;
-            String s6 = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_BEACON_LUMINOSITA));
-            Log.i("lumin:",s6);
-            datiambientali[5] = s6;
-            String s5 = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_BEACON_PRESSIONE));
-            Log.i("pressione:",s5);
-            datiambientali[6] = s5;
-
-
-
-
-        }
-        catch(SQLiteException sqle)
-        {
+        SQLiteDatabase db = DBHelper.getInstance(null).getWritableDatabase();
+        String query1 = "SELECT * FROM " + DatabaseStrings.TBL_NAME_BEACON +
+                " WHERE NOT" + DatabaseStrings.FIELD_BEACON_TEMPERATURA + "IS NULL" + "';";
+        try {
+            crs = db.rawQuery(query1, null);
+        } catch(SQLiteException sqle) {
+            Log.e("DBManager","Errore getDatiAmb");
             return null;
         }
-        return datiambientali;
+        ArrayList<String[]> listaBeacon = new ArrayList<>();
+        String[] datiambientali = new String[8];
+        // content value per svuotare i campi letti
+        ContentValues cv = new ContentValues();
+        cv.put(DatabaseStrings.FIELD_BEACON_TEMPERATURA, 0);
+        cv.put(DatabaseStrings.FIELD_BEACON_ACCELERAZIONEX, 0);
+        cv.put(DatabaseStrings.FIELD_BEACON_ACCELERAZIONEY, 0);
+        cv.put(DatabaseStrings.FIELD_BEACON_ACCELERAZIONEZ, 0);
+        cv.put(DatabaseStrings.FIELD_BEACON_UMIDITA,0);
+        cv.put(DatabaseStrings.FIELD_BEACON_PRESSIONE, 0);
+        cv.put(DatabaseStrings.FIELD_BEACON_LUMINOSITA, 0);
+        // Ciclo per interpretare i risultati
+        while (crs.moveToNext()) {
+            datiambientali[0] = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_BEACON_MAC));
+            datiambientali[1] = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_BEACON_TEMPERATURA));
+            datiambientali[2] = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_BEACON_ACCELERAZIONEX));
+            datiambientali[3] = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_BEACON_ACCELERAZIONEY));
+            datiambientali[4] = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_BEACON_ACCELERAZIONEZ));
+            datiambientali[5] = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_BEACON_UMIDITA));
+            datiambientali[6] = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_BEACON_LUMINOSITA));
+            datiambientali[7] = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_BEACON_PRESSIONE));
+            listaBeacon.add(datiambientali);
+            db.update(DatabaseStrings.TBL_NAME_BEACON, cv, DatabaseStrings.FIELD_BEACON_MAC
+                      + "=" + "'" + datiambientali[0] + "'", null);
+        }
+        crs.close();
+        db.close();
+        return listaBeacon;
     }
 
+    /**
+     * Recupera la posizione dell'utente in base al beacon più vicino ricevuto in input
+     * @param mac_beacon : macAddress del beacon più vicino
+     * @return : posizione gemoetrica
+     */
+    public static int[] getPosition(String mac_beacon){
 
-
-    public int[] getPosition(String mac_beacon){
-
-        SQLiteDatabase db = dbhelper.getReadableDatabase();
-        String query1="SELECT "+DatabaseStrings.FIELD_BEACON_CODICE_NODO+" FROM "+DatabaseStrings.TBL_NAME_BEACON+" WHERE "+DatabaseStrings.FIELD_BEACON_MAC+"='"+mac_beacon+"';";
-        Log.i("query1:",query1);
+        SQLiteDatabase db = DBHelper.getInstance(null).getReadableDatabase();
+        String query1 = "SELECT "+DatabaseStrings.FIELD_BEACON_CODICE_NODO+" FROM "
+                +DatabaseStrings.TBL_NAME_BEACON+" WHERE "+DatabaseStrings.FIELD_BEACON_MAC+"='"+mac_beacon+"';";
         Cursor c = db.rawQuery(query1, null);
 
         int[] posizione=new int[3];
         if(c.moveToFirst()){
             String codice_nodo= c.getString(0);
-            Log.i("codice_nodo:",codice_nodo);
-
-
-            String query2="SELECT "+DatabaseStrings.FIELD_NODO_POSIZIONE_X+","+DatabaseStrings.FIELD_NODO_POSIZIONE_Y+","+DatabaseStrings.FIELD_NODO_QUOTA+" FROM "+DatabaseStrings.TBL_NAME_NODO+" WHERE "+DatabaseStrings.FIELD_NODO_CODICE+"='"+codice_nodo+"';";
-            Log.i("query2:",query2);
+            String query2="SELECT "+DatabaseStrings.FIELD_NODO_POSIZIONE_X+","
+                    +DatabaseStrings.FIELD_NODO_POSIZIONE_Y+","+DatabaseStrings.FIELD_NODO_QUOTA
+                    +" FROM "+DatabaseStrings.TBL_NAME_NODO+" WHERE "+DatabaseStrings.FIELD_NODO_CODICE+"='"+codice_nodo+"';";
             Cursor c2 = db.rawQuery(query2, null);
             if(c2.moveToFirst()) {
                 String x = c2.getString(0);
-                Log.i("x:", x);
                 posizione[0]= Integer.parseInt(x);
 
                 String y = c2.getString(1);
-                Log.i("y:", y);
                 posizione[1]= Integer.parseInt(y);
 
-
-                Integer z = 155;
-                Log.i("z:", z.toString());
-                posizione[2] = z;
-                //String z = c2.getString(2);
-                //Log.i("z:", z);
-                //posizione[2]= Integer.parseInt(z);
+                String z = c2.getString(2);
+                posizione[2]= Integer.parseInt(z);
             }
             c2.close();
-
-
-
         }
         c.close();
         db.close();
-
-
         return posizione;
     }
 
+    /**
+     * Restituisce i nodi che hanno lo stato diverso da 0. Campi letti: posizione,x,y,z,stato
+     * @return
+     */
+    public static Cursor getStatoNodi() {
 
-/*
-query che restituisce i nodi che hanno lo stato diverso da 0 . campi posizione,x,y,z, stato
- */
-
-
-    public Cursor getStatoNodi() {
-
-        SQLiteDatabase db = dbhelper.getReadableDatabase();
-        String query1 = "SELECT " + DatabaseStrings.FIELD_NODO_STATO+","+DatabaseStrings.FIELD_NODO_POSIZIONE_X+","+DatabaseStrings.FIELD_NODO_POSIZIONE_Y+","+DatabaseStrings.FIELD_NODO_QUOTA + " FROM " + DatabaseStrings.TBL_NAME_NODO + " WHERE " + DatabaseStrings.FIELD_NODO_STATO + "<>'" + 0+ "';";
-        Log.i("query Diverso da 0:", query1);
+        SQLiteDatabase db = DBHelper.getInstance(null).getReadableDatabase();
+        String query1 = "SELECT " + DatabaseStrings.FIELD_NODO_STATO+","
+                +DatabaseStrings.FIELD_NODO_POSIZIONE_X+","+DatabaseStrings.FIELD_NODO_POSIZIONE_Y
+                +","+DatabaseStrings.FIELD_NODO_QUOTA + " FROM " + DatabaseStrings.TBL_NAME_NODO
+                + " WHERE " + DatabaseStrings.FIELD_NODO_STATO + "<>'" + 0+ "';";
         Cursor c = db.rawQuery(query1, null);
         return c;
         /* Debug code

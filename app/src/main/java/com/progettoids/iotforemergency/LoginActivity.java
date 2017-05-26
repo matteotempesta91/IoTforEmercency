@@ -27,6 +27,7 @@ public class LoginActivity extends Activity {
     private boolean flag1stLog;
     private static final int NUMERO_NODI=63;
     private DriverServer mDriverServer;
+    private DBHelper mDBhelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,7 @@ public class LoginActivity extends Activity {
         loginUtils = new Login();
         flag1stLog = true;
         mDriverServer = DriverServer.getInstance(context);
+        mDBhelper = DBHelper.getInstance(context);
         login();
         //loginGuest();
 
@@ -200,8 +202,6 @@ public class LoginActivity extends Activity {
             DBManager dbManager;
 
             Log.i("b","inizio creazione db");
-            DBHelper dBhelper = new DBHelper(this);
-            dbManager = new DBManager(dBhelper);
 
             for (int i=0;i<NUMERO_NODI;i++) {
                 String codice = DatabaseStrings.codice[i];
@@ -211,20 +211,20 @@ public class LoginActivity extends Activity {
                 Log.i("Login:", codice);
 
                 if (i == 34){
-                    dbManager.saveNodo(codice, posizione_x, posizione_y, quota, 1, null);
+                    DBManager.saveNodo(codice, posizione_x, posizione_y, quota);
                 }
                 else if(i==35){
-                    dbManager.saveNodo(codice, posizione_x, posizione_y, quota, 2, null);
+                    DBManager.saveNodo(codice, posizione_x, posizione_y, quota);
                 }
                 else if(i==36){
-                    dbManager.saveNodo(codice, posizione_x, posizione_y, quota, 3, null);
+                    DBManager.saveNodo(codice, posizione_x, posizione_y, quota);
                 }
                 else{
-                    dbManager.saveNodo(codice,posizione_x,posizione_y,quota,0,null);
+                    DBManager.saveNodo(codice,posizione_x,posizione_y,quota);
                 }
             }
 
-            dbManager.saveBeacon("B0:B4:48:BD:93:82","155R4",null,null,null,null,null,null,null);
+            DBManager.saveBeacon("B0:B4:48:BD:93:82","155R4");
            // provaStoriaUtente3(dbManager);
         }
     }

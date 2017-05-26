@@ -470,9 +470,7 @@ public class MapHome extends AppCompatImageView {
             disegnaStatoNodo(3,133,465,145); // 145WC1
             disegnaStatoNodo(3,119,465,145);
             */
-            DBHelper hl = new DBHelper(context);
-            DBManager db = new DBManager(hl);
-            Cursor cr = db.getStatoNodi();
+            Cursor cr = DBManager.getStatoNodi();
             while (cr.moveToNext()) {
                 int stato = cr.getInt(0);
                 int x = cr.getInt(1);
