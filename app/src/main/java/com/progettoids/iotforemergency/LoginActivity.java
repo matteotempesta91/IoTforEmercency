@@ -37,7 +37,15 @@ public class LoginActivity extends Activity {
         flag1stLog = true;
         mDriverServer = DriverServer.getInstance(context);
         login();
-        loginGuest();
+        //loginGuest();
+
+        btnLoginGuest=(Button)findViewById(R.id.buttonLoginGuest);
+        btnLoginGuest.setOnClickListener( new View.OnClickListener(){
+            @Override
+            public void onClick(View arg0) {
+                mDriverServer.inviaLoginGuest(getMacAddr());
+            }
+        });
         registrazione();
         gestioneCreazineDB();
     }
@@ -119,16 +127,11 @@ public class LoginActivity extends Activity {
     }
 
     public void loginGuest() {
-        btnLoginGuest=(Button)findViewById(R.id.buttonLoginGuest);
-        btnLoginGuest.setOnClickListener( new View.OnClickListener(){
-            @Override
-            public void onClick(View arg0) {
                 Bundle bundle = new Bundle();
                 bundle.putString("welcomeMsg", "Benvenuto Utente Guest");
                 Intent openHomeGuest = new Intent(LoginActivity.this, HomeActivity.class);
                 openHomeGuest.putExtras(bundle);
                 startActivity(openHomeGuest);
-
                 // SALVA L'ID UTENTE GUEST COME VARIABILE GLOBALE
                 final SharedPreferences reader = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
                 final SharedPreferences.Editor editor = reader.edit();
@@ -136,8 +139,6 @@ public class LoginActivity extends Activity {
                 Log.i("macAddress:",macAdrress);
                 editor.putString("id_utente", macAdrress);
                 editor.commit();
-            }
-        });
     }
 
     public static String getMacAddr() {

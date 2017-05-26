@@ -7,7 +7,7 @@ import android.util.Log;
 
 public class Localizzatore {
 
-    private int x, y, quota;
+    private int x, y, z;
     private BeaconListener bleList;
     private MapHome mHome;
     private Context context;
@@ -24,7 +24,7 @@ public class Localizzatore {
 // Se 0 0 0 => pos sconosciuta
         x=0;
         y=0;
-        quota=0;
+        z=0;
     }
 
     // Runnable per localizzare l'user, eseguito periodicamente fino a stop
@@ -37,13 +37,11 @@ public class Localizzatore {
                 DBHelper mDBhe = new DBHelper(context);
                 DBManager mDBman = new DBManager(mDBhe);
                 int[] pos = mDBman.getPosition(macAdrs);
-                if (pos[0] != x && pos[1] != y && quota != pos[2]) {
+                if (pos[0] != x && pos[1] != y && z != pos[2]) {
                     x = pos[0];
                     y = pos[1];
-                    quota = pos[2];
-                    mHome.disegnaPosizione(x,y,quota);
-// SEND POS TO SERVER //
-
+                    z = pos[2];
+                    mHome.disegnaPosizione(x, y, z);
 
 // PRENDO L'ID COME VARIABILE GLOBALE
                     final SharedPreferences reader = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE);

@@ -4,11 +4,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Handler;
 import android.util.Log;
-import android.widget.ProgressBar;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -120,40 +117,6 @@ public class DriverServer {
         queue.add(request);
     }
 
-    public void inviaPos(String id_utente, int[] position) {
-        JSONObject json = new JSONObject();
-        JSONObject posizioneutenteJson = new JSONObject();
-        String urlPos = url.concat("/blog");
-        try{
-            posizioneutenteJson.put("id_utente", id_utente );
-            posizioneutenteJson.put("posizione_x", position[0]);
-            posizioneutenteJson.put("posizione_y", position[1]);
-            posizioneutenteJson.put("quota",position[2]);
-            json.put("posizione_utente",posizioneutenteJson);
-            Log.i("KKKKKKKK", "MMMMMMMMM");
-        }catch(JSONException e){
-            e.printStackTrace();
-            Log.i("ERRRRRRRRR", "MMMMMMMMM");
-        }
-        JsonObjectRequest request = new JsonObjectRequest(
-                Request.Method.POST, url, json,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.i("POST Response",response.toString());
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        String err = error.getMessage();
-                        Log.i("POST Response Error",err);
-                    }
-                });
-        queue.add(request);
-    }
-
-
     // Metodo per l'invio dei dati di registrazione verso al server tramite JSON
     // Il context contRegistrazione che viene passato a inviaRegistrazione è il context di RegistrazioneActivity,
     // registrazione è un vettore di stinghe contenente i dati dell'utente per la registrazione
@@ -181,6 +144,7 @@ public class DriverServer {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        // Chiude la progress dialog quando riceve il JSONObject dal server in risposta alla registrazione di un nuovo utente
                         progDialog.dismiss();
                         Log.i("POST Response",response.toString());
                         try {
@@ -194,17 +158,22 @@ public class DriverServer {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        // Chiude la progress dialog quando il server risponde errore alla richiesta di registrazione di un nuovo utente
                         progDialog.dismiss();
                         String err = error.getMessage();
                         Log.i("POST Response Error",err+"!");
                     }
                 });
+        // Aggiunge la richiesta per il server alla queue
         queue.add(request);
+        // Crea e visualizza la progress dialog che si chiuderà quando verrà ricevuta la risposta dal server
         progDialog.setTitle("Registrazione in corso...");
         progDialog.setMessage("Attendere prego");
         progDialog.show();
     }
 
+    // Verifica che username e password inserite dall'utente siano presenti nel server
+    // e chiama mostraDialog() per mostrare all'utente il risultato del login e consentire di aprire l'activity home
     public void verificaLogin(String username, String password) {
         final ProgressDialog progDialog = new ProgressDialog(contextLogin);    // finestra di caricamente in attesa della risposta del server
         String urlLogin =url.concat("/login");
@@ -219,31 +188,40 @@ public class DriverServer {
         }
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.POST, urlLogin, json,
+// -------------------------------------------- RESPONSE LISTENER --------------------------------------------
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        // Chiude la progress dialog quando riceve il JSONObject di risposta per il login dal server
                         progDialog.dismiss();
                         Log.i("Login JSON",response.toString());
                         try {
                             loginValido = response.getBoolean("check");
                             Log.i("RESPONSE LOGIN", Boolean.toString(loginValido));
-                            ((LoginActivity)contextLogin).mostraDialog(loginValido);  // usiamo contRegistrazione (RegistrazioneActivity) e non context che si riferisce a LoginActivity
+                            // mostraDialog() crea l'allertDialog per visulizzare il risultato del login e apre l'HomeActivity
+                            // usiamo contRegistrazione (RegistrazioneActivity) e non context che si riferisce a LoginActivity
+                            ((LoginActivity)contextLogin).mostraDialog(loginValido);
                         }
                         catch (Exception e) {
                             Log.i("RESPONSE LOGIN","Exception "+e.toString());
                         }
                     }
                 },
+//-------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------- ERROR LISTENER ----------------------------------------------
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        // Chiude la progress dialog quando il server risponde errore alla richiesta di login
                         progDialog.dismiss();
+                        // Salva il messaggio e la causa dell'errore, se sono null significa che si sta aggiornando il server
                         String msgError = error.getMessage()+" "+error.getCause();
                         if(msgError.equals("null null"))
                         {
                             msgError = "SERVER DOWN";
                         }
                         Log.i("POST Response Error",msgError);
+                        // Visualizza anche il codice errore data, soltanto nel caso in cui networkResponse non sia nullo
                         if(error.networkResponse!=null)
                         {
                             Log.i("POST Response Error",String.valueOf(error.networkResponse.statusCode)+" "
@@ -251,11 +229,86 @@ public class DriverServer {
                         }
                     }
                 });
+//-------------------------------------------------------------------------------------------------------------
+        // Aggiunge la richiesta per il server alla queue
+        queue.add(request);
+        // Crea e visualizza la progress dialog che si chiuderà quando verrà ricevuta la risposta dal server
+        progDialog.setTitle("Login in corso...");
+        progDialog.setMessage("Attendere prego");
+        progDialog.show();
+    }
+
+    public void inviaLoginGuest(String idUtenteGuest) {
+        final ProgressDialog progDialog = new ProgressDialog(contextLogin);    // finestra di caricamente in attesa della risposta del server
+        String urlReg = url.concat("/loginGuest");                       // Aggiunge alla root dell'url l'indirizzo per la richiesta al server
+
+// -------------------------------------------- CREAZIONE JSON LOGINGUEST -----------------------------------------
+        JSONObject json = new JSONObject();
+        JSONObject loginGuestJson = new JSONObject();
+        try{
+            loginGuestJson.put("username", idUtenteGuest);
+            json.put("loginGuest", loginGuestJson);
+        }catch(JSONException e){
+            e.printStackTrace();
+        }
+// -----------------------------------------------------------------------------------------------------------------
+
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.POST, urlReg, json,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        progDialog.dismiss();
+                        Log.i("POST Response",response.toString());
+                        ((LoginActivity)contextLogin).loginGuest();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progDialog.dismiss();
+                        String err = error.getMessage();
+                        Log.i("DriverServer","inviaLoginGuest Response ERROR: " +err);
+                    }
+                });
         queue.add(request);
         progDialog.setTitle("Login in corso...");
         progDialog.setMessage("Attendere prego");
         progDialog.show();
     }
+
+    public void inviaPos(String id_utente, int[] position) {
+        JSONObject json = new JSONObject();
+        JSONObject posizioneutenteJson = new JSONObject();
+        String urlPos = url.concat("/blog");
+        try{
+            posizioneutenteJson.put("id_utente", id_utente );
+            posizioneutenteJson.put("posizione_x", position[0]);
+            posizioneutenteJson.put("posizione_y", position[1]);
+            posizioneutenteJson.put("quota",position[2]);
+            json.put("posizione_utente",posizioneutenteJson);
+        }catch(JSONException e){
+            e.printStackTrace();
+            Log.i("DriverServer", "Creazione PosizioneUtenteJson Exception: "+e.toString());
+        }
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.POST, url, json,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.i("POST Response",response.toString());
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        String err = error.getMessage();
+                        Log.i("POST Response Error",err);
+                    }
+                });
+        queue.add(request);
+    }
+
 
     public void riceviJson(String url) {
         JSONObject json;
