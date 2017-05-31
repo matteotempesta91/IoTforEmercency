@@ -271,6 +271,7 @@ public class BeaconDriver extends AsyncTask<Object, Void, Object[]> {
             UUID mtempDataUuid = UUID.fromString("f000aa01-0451-4000-b000-000000000000");
 
             // Attende lettura completa per max 5*2,5 sec
+            // Attesa resta true finchè non sono disponibili tutti i dati ambientali
             for (int i=0; attesa && i < 5;  i++) {
                 try {
                     Thread.sleep(2500);
@@ -287,7 +288,8 @@ public class BeaconDriver extends AsyncTask<Object, Void, Object[]> {
 
                 }
             }
-            if (attesa) { Log.i("attesa", "massime iterazioni"); }
+            // Se per qualche motivo non sono disponibili in un tempo limite, viene stampato il log di errore
+            if (attesa) { Log.i("BeaconDriver", "attesa: true, massime iterazioni"); }
             else if (error != null) {Log.i("Errore ", error); }
             gattBLE.disconnect();
             gattBLE.close();
@@ -301,7 +303,7 @@ public class BeaconDriver extends AsyncTask<Object, Void, Object[]> {
     @Override
     protected void onPostExecute(Object[] sensorData) {
             // ogni tanto il context è null ...
-            if (context != null && error == null) {
+            if (context != null && error == null && !attesa) {
                 salvataggioDatiDB(gattBLE.getDevice().getAddress().toString());
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);

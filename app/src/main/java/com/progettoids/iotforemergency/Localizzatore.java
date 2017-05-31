@@ -31,7 +31,7 @@ public class Localizzatore {
     private final Runnable findMe = new Runnable() {
         @Override
         public void run() {
-            Log.i("finder", "Ricerca pos");
+            Log.i("Localizzatore", "Inizio Ricerca pos");
             String macAdrs = bleList.closestBle();
             if (!macAdrs.equals("NN")) {
                 int[] pos = DBManager.getPosition(macAdrs);
@@ -40,6 +40,7 @@ public class Localizzatore {
                     y = pos[1];
                     z = pos[2];
                     mHome.disegnaPosizione(x, y, z);
+                    mHome.setBitmap();
 
 // PRENDO L'ID COME VARIABILE GLOBALE
                     final SharedPreferences reader = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
@@ -48,10 +49,11 @@ public class Localizzatore {
 
 // creazione file json per l'invio della posizione al server
               //      DriverServer driverServer=new DriverServer(context);
-                    mDriverServer.inviaPos(id_utente, pos);
+                    ///mDriverServer.inviaPos(id_utente, pos);
+                    mDriverServer.inviaPos(id_utente, DBManager.getNodo(macAdrs));
                 }
             }
-            finder.postDelayed(findMe, 21000);
+            finder.postDelayed(findMe, 21000); // prima era 21000
         }
     };
 

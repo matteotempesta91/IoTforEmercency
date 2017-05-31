@@ -231,7 +231,6 @@ public class MapHome extends AppCompatImageView {
             LoadMap lmap = new LoadMap(quota);
             lmap.execute(getResources());
         }
-
         switch (quota) {
             case 145:
                 pixelPos = conversioneCoordQ145(x, y);
@@ -296,7 +295,6 @@ public class MapHome extends AppCompatImageView {
                 pixelCoord = conversioneCoordQ155(x, y);
                 break;
         }
-
         // prende come riferimento il centro dell'icona anzichè l'angolo in alto a sinistra
         pixelCoord[0] = pixelCoord[0] - bmInc.getWidth() / 2;
         pixelCoord[1] = pixelCoord[1] - bmInc.getHeight() / 2;

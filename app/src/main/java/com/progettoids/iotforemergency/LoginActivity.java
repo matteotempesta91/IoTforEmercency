@@ -93,10 +93,8 @@ public class LoginActivity extends Activity {
                         Log.i("mDriverServer","not null");
                     }
                     mDriverServer.verificaLogin(editUser.getText().toString(),editPass.getText().toString());
-                    mDriverServer.metodoProva(editUser.getText().toString(),editPass.getText().toString());
 
-
-                    // salva i dati solo se checkbox segnato
+                    // salva i dati solo se checkbox è segnato
                     if (ricordami.isChecked()) {
                         File path = context.getCacheDir();
                         File memo = new File(path, "memo");

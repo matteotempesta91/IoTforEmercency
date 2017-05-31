@@ -11,7 +11,6 @@ import com.android.volley.*;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-
 import java.util.ArrayList;
 
 public class DriverServer {
@@ -19,7 +18,7 @@ public class DriverServer {
     private static DriverServer mDriverServer;
     private final Handler sender = new Handler();
     private final RequestQueue queue;
-    private Context contextLogin;            // Questo campo contiene il primo context: ovvero quello di loginActivity
+    private Context contextLogin;               // Questo campo contiene il primo context: ovvero quello di loginActivity
     private final String url;
     private boolean loginValido, registrato;
 
@@ -28,13 +27,17 @@ public class DriverServer {
         @Override
         public void run() {
             //creazione json ed invio dei dati ambientali di tutti i beacon trovati
-            inviaDatiAmb(DBManager.getdatiambientali());
-            sender.postDelayed(sendDatiAmb, 60000);
+            ArrayList<String[]> datiArrayList = DBManager.getdatiambientali();
+            // Invia i dati ambientali solo se ci sono
+            if(!datiArrayList.isEmpty()) {
+                inviaDatiAmb(datiArrayList);
+            }
+            sender.postDelayed(sendDatiAmb, 6000);  //ERA 60000, L'HO ABBASSATO PER TESTARLO
         }
     };
 
     private DriverServer(Context cont) {
-        contextLogin = cont;                 // viene inizializzato con il context di loginActivity
+        contextLogin = cont;                    // Viene inizializzato con il context di loginActivity
         queue = Volley.newRequestQueue(contextLogin);
         url = "http://www.bandaappignano.altervista.org/Project/web/app_dev.php";   // ROOT della url del server
         loginValido = false;
@@ -52,41 +55,22 @@ public class DriverServer {
     // Attiva e disattiva invio dati ambientali al server
     public void startAmb(boolean onOff) {
         if (onOff) {
-            sender.postDelayed(sendDatiAmb, 60000);
+            sender.postDelayed(sendDatiAmb, 6000); // ERA 60000 L0HO ABBASSATO PER FARE UNA PROVA
         } else {
           sender.removeCallbacks(sendDatiAmb);
         }
     }
 
-    public  void createJsonPosizione(String id_utente, int[] position){
-        JSONObject json = new JSONObject();
-        JSONObject posizioneutenteJson = new JSONObject();
-        try{
-            posizioneutenteJson.put("id_utente", id_utente );
-            posizioneutenteJson.put("posizione_x", position[0]);
-            posizioneutenteJson.put("posizione_y", position[1]);
-            posizioneutenteJson.put("quota",position[2]);
-            json.put("posizione_utente",posizioneutenteJson);
-            Log.i("KKKKKKKK", "MMMMMMMMM");
-        }catch(JSONException e){
-            e.printStackTrace();
-            Log.i("ERRRRRRRRR", "MMMMMMMMM");
-        }
-
-        //Log.i("File Json", json.toString());
-        //inviaPos(json,"http://www.bandaappignano.altervista.org/Project/web/app_dev.php/blog");
-    }
-
-
     public void inviaDatiAmb(ArrayList<String[]> elencoBeacon) {
 
-        String urlDA = url.concat("/blog");
+        String urlDA = url.concat("/dati");
         JSONArray elencoB = new JSONArray();
         JSONObject datiambientaliJson = new JSONObject();
+       // JSONObject dato = new JSONObject();
 
         try{
             for (String[] datiambientali : elencoBeacon) {
-            datiambientaliJson.put("Beacon_Mac", datiambientali[0]);
+            datiambientaliJson.put("mac_beacon", datiambientali[0]);
             datiambientaliJson.put("temperatura", datiambientali[1]);
             datiambientaliJson.put("accelerazione_x", datiambientali[2]);
             datiambientaliJson.put("accelerazione_y", datiambientali[3]);
@@ -94,26 +78,29 @@ public class DriverServer {
             datiambientaliJson.put("umidita",datiambientali[5]);
             datiambientaliJson.put("luminosita",datiambientali[6]);
             datiambientaliJson.put("pressione",datiambientali[7]);
+            //    dato.put("dati_ambientali",datiambientaliJson);
             elencoB.put(datiambientaliJson);
+            //    elencoB.put(dato);
+                Log.i("DriverServer","InviaDatiAmbientali-JSONArray: "+elencoB.toString());
             }
         }catch(JSONException e){
             e.printStackTrace();
         }
         JsonArrayRequest request = new JsonArrayRequest(
-                Request.Method.POST, urlDA, elencoB,
+                Request.Method.PUT, urlDA, elencoB,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        Log.i("POST Response",response.toString());
+                        Log.i("Driver Server","InviaDatiAmbientali RESPONSE:"+response.toString());
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        String err = error.getMessage();
-                        Log.i("POST Response Error",err);
+                        errorHendler("Invio Dati Ambientali",error);
                     }
                 });
+
         queue.add(request);
     }
 
@@ -214,19 +201,7 @@ public class DriverServer {
                     public void onErrorResponse(VolleyError error) {
                         // Chiude la progress dialog quando il server risponde errore alla richiesta di login
                         progDialog.dismiss();
-                        // Salva il messaggio e la causa dell'errore, se sono null significa che si sta aggiornando il server
-                        String msgError = error.getMessage()+" "+error.getCause();
-                        if(msgError.equals("null null"))
-                        {
-                            msgError = "SERVER DOWN";
-                        }
-                        Log.i("POST Response Error",msgError);
-                        // Visualizza anche il codice errore data, soltanto nel caso in cui networkResponse non sia nullo
-                        if(error.networkResponse!=null)
-                        {
-                            Log.i("POST Response Error",String.valueOf(error.networkResponse.statusCode)+" "
-                                +error.networkResponse.data+" !");
-                        }
+                        errorHendler("Login",error);
                     }
                 });
 //-------------------------------------------------------------------------------------------------------------
@@ -267,8 +242,7 @@ public class DriverServer {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progDialog.dismiss();
-                        String err = error.getMessage();
-                        Log.i("DriverServer","inviaLoginGuest Response ERROR: " +err);
+                        errorHendler("Login Guest",error);
                     }
                 });
         queue.add(request);
@@ -277,22 +251,22 @@ public class DriverServer {
         progDialog.show();
     }
 
-    public void inviaPos(String id_utente, int[] position) {
+   // public void inviaPos(String id_utente, int[] position) {
+   public void inviaPos(String id_utente, String id_nodo) {
+        Log.i("DriverServer:","inviaPos: Invio in corso........................................................");
         JSONObject json = new JSONObject();
-        JSONObject posizioneutenteJson = new JSONObject();
-        String urlPos = url.concat("/blog");
+        JSONObject posizioneUtenteJson = new JSONObject();
+        String urlPos = url.concat("/posizione");
         try{
-            posizioneutenteJson.put("id_utente", id_utente );
-            posizioneutenteJson.put("posizione_x", position[0]);
-            posizioneutenteJson.put("posizione_y", position[1]);
-            posizioneutenteJson.put("quota",position[2]);
-            json.put("posizione_utente",posizioneutenteJson);
+            posizioneUtenteJson.put("id_utente", id_utente );
+            posizioneUtenteJson.put("id_nodo",id_nodo);
+          json.put("posizione_utente",posizioneUtenteJson);
         }catch(JSONException e){
             e.printStackTrace();
             Log.i("DriverServer", "Creazione PosizioneUtenteJson Exception: "+e.toString());
         }
         JsonObjectRequest request = new JsonObjectRequest(
-                Request.Method.POST, url, json,
+                Request.Method.PUT, urlPos, json,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -302,13 +276,28 @@ public class DriverServer {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        String err = error.getMessage();
-                        Log.i("POST Response Error",err);
+                        errorHendler("Invio Posizione",error);
                     }
                 });
         queue.add(request);
     }
 
+    // errorHandler gestisce la risposta quando arriva un errore dal server, prende in input il nome del metodo in cui viene chiamato e l'errore del server
+   private void errorHendler(String chiamata, VolleyError error){
+       // Salva il messaggio e la causa dell'errore, se sono null significa che il server non è in grado di rispondere perchè lo si sta aggiornando
+       String msgError = error.getMessage()+" "+error.getCause();
+       if(msgError.equals("null null"))
+       {
+           msgError = "SERVER DOWN";
+       }
+       Log.i("DriverServer",chiamata+" Error Response: "+msgError);
+       // Visualizza anche il codice errore data, soltanto nel caso in cui networkResponse non sia nullo
+       if(error.networkResponse!=null)
+       {
+           Log.i("POST Response Error",String.valueOf(error.networkResponse.statusCode)+" "
+                   +error.networkResponse.data+" !");
+       }
+   }
 
     public void riceviJson(String url) {
         JSONObject json;

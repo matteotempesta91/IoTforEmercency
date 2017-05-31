@@ -56,13 +56,13 @@ public class DBManager {
 
         cv.put(DatabaseStrings.FIELD_BEACON_MAC, mac);
         cv.put(DatabaseStrings.FIELD_BEACON_CODICE_NODO, codicenodo);
-        cv.put(DatabaseStrings.FIELD_BEACON_TEMPERATURA, "");
-        cv.put(DatabaseStrings.FIELD_BEACON_ACCELERAZIONEX, "");
-        cv.put(DatabaseStrings.FIELD_BEACON_ACCELERAZIONEY, "");
-        cv.put(DatabaseStrings.FIELD_BEACON_ACCELERAZIONEZ, "");
-        cv.put(DatabaseStrings.FIELD_BEACON_UMIDITA, "");
-        cv.put(DatabaseStrings.FIELD_BEACON_PRESSIONE, "");
-        cv.put(DatabaseStrings.FIELD_BEACON_LUMINOSITA, "");
+        cv.put(DatabaseStrings.FIELD_BEACON_TEMPERATURA, -300);
+        cv.put(DatabaseStrings.FIELD_BEACON_ACCELERAZIONEX, 0);
+        cv.put(DatabaseStrings.FIELD_BEACON_ACCELERAZIONEY, 0);
+        cv.put(DatabaseStrings.FIELD_BEACON_ACCELERAZIONEZ, 0);
+        cv.put(DatabaseStrings.FIELD_BEACON_UMIDITA, 0);
+        cv.put(DatabaseStrings.FIELD_BEACON_PRESSIONE, 0);
+        cv.put(DatabaseStrings.FIELD_BEACON_LUMINOSITA, 0);
 
         try {
             db.insert(DatabaseStrings.TBL_NAME_BEACON, null, cv);
@@ -83,18 +83,18 @@ public class DBManager {
         Cursor crs = null;
         SQLiteDatabase db = DBHelper.getInstance(null).getWritableDatabase();
         String query1 = "SELECT * FROM " + DatabaseStrings.TBL_NAME_BEACON +
-                " WHERE NOT" + DatabaseStrings.FIELD_BEACON_TEMPERATURA + "IS NULL" + "';";
+                " WHERE " + DatabaseStrings.FIELD_BEACON_TEMPERATURA + " !=-300;";
         try {
             crs = db.rawQuery(query1, null);
         } catch(SQLiteException sqle) {
-            Log.e("DBManager","Errore getDatiAmb");
+            Log.e("DBManager",sqle.toString());
             return null;
         }
         ArrayList<String[]> listaBeacon = new ArrayList<>();
         String[] datiambientali = new String[8];
         // content value per svuotare i campi letti
         ContentValues cv = new ContentValues();
-        cv.put(DatabaseStrings.FIELD_BEACON_TEMPERATURA, 0);
+        cv.put(DatabaseStrings.FIELD_BEACON_TEMPERATURA, -300);
         cv.put(DatabaseStrings.FIELD_BEACON_ACCELERAZIONEX, 0);
         cv.put(DatabaseStrings.FIELD_BEACON_ACCELERAZIONEY, 0);
         cv.put(DatabaseStrings.FIELD_BEACON_ACCELERAZIONEZ, 0);
@@ -130,6 +130,7 @@ public class DBManager {
         SQLiteDatabase db = DBHelper.getInstance(null).getReadableDatabase();
         String query1 = "SELECT "+DatabaseStrings.FIELD_BEACON_CODICE_NODO+" FROM "
                 +DatabaseStrings.TBL_NAME_BEACON+" WHERE "+DatabaseStrings.FIELD_BEACON_MAC+"='"+mac_beacon+"';";
+        Log.i("DBManager","getPosizione query:"+query1);
         Cursor c = db.rawQuery(query1, null);
 
         int[] posizione=new int[3];
@@ -154,6 +155,22 @@ public class DBManager {
         c.close();
         db.close();
         return posizione;
+    }
+
+    // Restituisce il codice del nodo associato con il codice beacon dato in input
+    public static String getNodo(String mac_beacon){
+        String codice_nodo="";
+        SQLiteDatabase db = DBHelper.getInstance(null).getReadableDatabase();
+        String query1 = "SELECT "+DatabaseStrings.FIELD_BEACON_CODICE_NODO+" FROM "
+                +DatabaseStrings.TBL_NAME_BEACON+" WHERE "+DatabaseStrings.FIELD_BEACON_MAC+"='"+mac_beacon+"';";
+        Log.i("DBManager","getPosizione query:"+query1);
+        Cursor c = db.rawQuery(query1, null);
+        if(c.moveToFirst()){
+            codice_nodo= c.getString(0);
+        }
+        c.close();
+        db.close();
+        return codice_nodo;
     }
 
     /**

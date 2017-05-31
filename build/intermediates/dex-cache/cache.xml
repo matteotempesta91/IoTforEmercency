@@ -11,6 +11,24 @@
         <dex dex="C:\Users\marco\Documents\IoTforEmercency\app\build\intermediates\pre-dexed\debug\classes_35904dabe8ee64c69662fd202a7ea550f4775df5.jar" />
     </item>
     <item
+        is-multidex="true"
+        jar="C:\Users\marco\Documents\IoTforEmercency\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="9f320644adeb826b55f3eb03d934e345a4e03de5">
+        <dex dex="C:\Users\marco\Documents\IoTforEmercency\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_50181dae6ff40867fa1dfc292ad9cc059a6f19cf\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\marco\.gradle\caches\modules-2\files-2.1\eu.the4thfloor.volley\com.android.volley\2015.05.28\b0b08cc0ac897e596abe6b263a9507cba875b705\com.android.volley-2015.05.28.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="b0b08cc0ac897e596abe6b263a9507cba875b705">
+        <dex dex="C:\Users\marco\Documents\IoTforEmercency\app\build\intermediates\pre-dexed\debug\com.android.volley-2015.05.28_e527111a18bcca93679ac428d674e903e5993c0f.jar" />
+    </item>
+    <item
         is-multidex="false"
         jar="C:\Users\marco\.android\build-cache\c87178bdb6a844032e9539b1fff65cfcd75e6407\output\jars\classes.jar"
         jumboMode="false"
@@ -36,24 +54,6 @@
         revision="25.0.2"
         sha1="c82741bc129dd5f99f11a4ab8666ae24262053b6">
         <dex dex="C:\Users\marco\Documents\IoTforEmercency\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_aaa658005aa2b48dc4b48f2340d5922b8331728a\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\marco\Documents\IoTforEmercency\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="79c8aa1c02f1096fb2abbb4045c2f35ad25e88bd">
-        <dex dex="C:\Users\marco\Documents\IoTforEmercency\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_50181dae6ff40867fa1dfc292ad9cc059a6f19cf\classes.dex" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\marco\.gradle\caches\modules-2\files-2.1\eu.the4thfloor.volley\com.android.volley\2015.05.28\b0b08cc0ac897e596abe6b263a9507cba875b705\com.android.volley-2015.05.28.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="b0b08cc0ac897e596abe6b263a9507cba875b705">
-        <dex dex="C:\Users\marco\Documents\IoTforEmercency\app\build\intermediates\pre-dexed\debug\com.android.volley-2015.05.28_e527111a18bcca93679ac428d674e903e5993c0f.jar" />
     </item>
 
 </items>
