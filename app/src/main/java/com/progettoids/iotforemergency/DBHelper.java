@@ -32,8 +32,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 DatabaseStrings.FIELD_NODO_POSIZIONE_X + " INTEGER," +
                 DatabaseStrings.FIELD_NODO_POSIZIONE_Y + " INTEGER," +
                 DatabaseStrings.FIELD_NODO_QUOTA + " INTEGER," +
-                DatabaseStrings.FIELD_NODO_STATO + " INTEGER," +
-                DatabaseStrings.FIELD_NODO_ORARIO_ULTIMA_RICEZIONE + " TEXT)";
+                DatabaseStrings.FIELD_NODO_STATO + " INTEGER);";
 
         String q2=" CREATE TABLE " + DatabaseStrings.TBL_NAME_BEACON +
                 "("+DatabaseStrings.FIELD_BEACON_MAC + " TEXT PRIMARY KEY NOT NULL," +
@@ -44,14 +43,23 @@ public class DBHelper extends SQLiteOpenHelper {
                 DatabaseStrings.FIELD_BEACON_ACCELERAZIONEZ + " REAL," +
                 DatabaseStrings.FIELD_BEACON_UMIDITA + " REAL," +
                 DatabaseStrings.FIELD_BEACON_LUMINOSITA + " REAL," +
-                DatabaseStrings.FIELD_BEACON_PRESSIONE + " REAL);";
+                DatabaseStrings.FIELD_BEACON_PRESSIONE + " REAL" +
+                DatabaseStrings.FIELD_BEACON_ORARIO + " DATE);";
+
+        // CREATE della tabella notifiche, identica a quella presente sul server
+        String q3=" CREATE TABLE " + DatabaseStrings.TBL_NAME_NOTIFICA +
+                "("+DatabaseStrings.FIELD_NOTIFICA_NOME + " TEXT PRIMARY KEY NOT NULL," +
+                DatabaseStrings.FIELD_NOTIFICA_DATA + " DATE);";
+
 
         Log.i("Creazione tabella nodo:",q);
         sqLiteDatabase.execSQL(q);
 
-
         Log.i("Creazione tab beacon:",q2);
         sqLiteDatabase.execSQL(q2);
+
+        Log.i("Creazione tab beacon:",q3);
+        sqLiteDatabase.execSQL(q3);
 
         Log.i("DBHelper","DATABASE CREATO");
 

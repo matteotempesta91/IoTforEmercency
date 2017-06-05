@@ -11,7 +11,12 @@ import com.android.volley.*;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class DriverServer {
 
@@ -21,6 +26,11 @@ public class DriverServer {
     private Context contextLogin;               // Questo campo contiene il primo context: ovvero quello di loginActivity
     private final String url;
     private boolean loginValido, registrato;
+    String emergenza;
+    DateFormat dataNodi;
+    DateFormat dataBeacon;
+    Date dataB;
+    Date dataN;
 
     // Runnable per invio dati ambientali periodico
     private Runnable sendDatiAmb = new Runnable() {
@@ -32,6 +42,7 @@ public class DriverServer {
             if(!datiArrayList.isEmpty()) {
                 inviaDatiAmb(datiArrayList);
             }
+            ricezioneNotifica();
             sender.postDelayed(sendDatiAmb, 6000);  //ERA 60000, L'HO ABBASSATO PER TESTARLO
         }
     };
@@ -97,7 +108,7 @@ public class DriverServer {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        errorHendler("Invio Dati Ambientali",error);
+                        errorHandler("Invio Dati Ambientali",error);
                     }
                 });
 
@@ -201,7 +212,7 @@ public class DriverServer {
                     public void onErrorResponse(VolleyError error) {
                         // Chiude la progress dialog quando il server risponde errore alla richiesta di login
                         progDialog.dismiss();
-                        errorHendler("Login",error);
+                        errorHandler("Login",error);
                     }
                 });
 //-------------------------------------------------------------------------------------------------------------
@@ -242,7 +253,7 @@ public class DriverServer {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progDialog.dismiss();
-                        errorHendler("Login Guest",error);
+                        errorHandler("Login Guest",error);
                     }
                 });
         queue.add(request);
@@ -276,32 +287,14 @@ public class DriverServer {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        errorHendler("Invio Posizione",error);
+                        errorHandler("Invio Posizione",error);
                     }
                 });
         queue.add(request);
     }
 
-    // errorHandler gestisce la risposta quando arriva un errore dal server, prende in input il nome del metodo in cui viene chiamato e l'errore del server
-   private void errorHendler(String chiamata, VolleyError error){
-       // Salva il messaggio e la causa dell'errore, se sono null significa che il server non è in grado di rispondere perchè lo si sta aggiornando
-       String msgError = error.getMessage()+" "+error.getCause();
-       if(msgError.equals("null null"))
-       {
-           msgError = "SERVER DOWN";
-       }
-       Log.i("DriverServer",chiamata+" Error Response: "+msgError);
-       // Visualizza anche il codice errore data, soltanto nel caso in cui networkResponse non sia nullo
-       if(error.networkResponse!=null)
-       {
-           Log.i("POST Response Error",String.valueOf(error.networkResponse.statusCode)+" "
-                   +error.networkResponse.data+" !");
-       }
-   }
-
     public void riceviJson(String url) {
         JSONObject json;
-
         // Request a string response from the provided URL.
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -319,43 +312,83 @@ public class DriverServer {
         queue.add(request);
     }
 
-    //TODO
-    // fare update server per registrazione, controllo login di username e password,
-    //ricezione cambiamento emergenza, stato nodi
-
-    public void metodoProva(String username, String password) {
-
-        String urlLogin =url.concat("/database");
-        JsonArrayRequest request = new JsonArrayRequest(
-                Request.Method.GET, urlLogin, null,
-                new Response.Listener<JSONArray>() {
+    // Invia la richiesta al server per ricevere la notifiche di emergenza e dello stato delle tabelle
+    public void ricezioneNotifica() {
+        String urlNotifiche = url.concat("/notifiche");
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.GET, urlNotifiche, null,
+                new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(JSONArray response) {
+                    public void onResponse(JSONObject response) {
                         try {
-                            Log.i("PROVA GET", response.getJSONObject(0).toString());
-                            ((LoginActivity)contextLogin).mostraDialog(loginValido);  // usiamo contRegistrazione (RegistrazioneActivity) e non context che si riferisce a LoginActivity
+                            Log.i("DriverServer", "Ricezione Notifica Emergenza RESPONSE: "+response.toString());
+                            dataBeacon = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+                            dataNodi = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+                            emergenza = response.getString("nome_emergenza");
+                            //dataBeacon=df.parse(response.getString("tabella_beacon"));
+                            dataNodi.parse(response.getString("tabella_nodo"));
+                            dataB = dataBeacon.parse(response.getString("tabella_beacon"));
+                            dataN = dataBeacon.parse(response.getString("tabella_nodo"));
+                            Log.i("DriverServer", "DATA NODI: "+dataBeacon.format(dataB));
+                            Log.i("DriverServer", "DATA Beacon: "+dataBeacon.format(dataN));
                         }
                         catch (Exception e) {
-                            Log.i("RESPONSE LOGIN","Exception "+e.toString());
+                            Log.i("DriverServer","Ricezione Notifica Emergenza EXCEPTION "+e.toString());
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        String msgError = error.getMessage()+" "+error.getCause();
-                        if(msgError.equals("null null"))
-                        {
-                            msgError = "SERVER DOWN";
-                        }
-                        Log.i("POST Response Error",msgError);
-                        if(error.networkResponse!=null)
-                        {
-                            Log.i("POST Response Error",String.valueOf(error.networkResponse.statusCode)+" "
-                                    +error.networkResponse.data+" !");
-                        }
+                        errorHandler("Ricezione notifiche nodi",error);
                     }
                 });
         queue.add(request);
     }
+
+    // Invia la richiesta al server per ricevere i nodi il cui stato è diverso da zero
+    public void ricezioneStatoNodi() {
+        String urlNotifiche =url.concat("/notifiche");
+        JsonArrayRequest request = new JsonArrayRequest(
+                Request.Method.GET, urlNotifiche, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            Log.i("PROVA GET", response.getJSONObject(0).toString());
+                        }
+                        catch (Exception e) {
+                            Log.i("RESPONSE GET","Exception "+e.toString());
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        errorHandler("Ricezione notifiche nodi",error);
+                    }
+                });
+        queue.add(request);
+    }
+
+    // errorHandler gestisce la risposta quando arriva un errore dal server, prende in input il nome del metodo in cui viene chiamato e l'errore del server
+    private void errorHandler(String chiamata, VolleyError error){
+        // Salva il messaggio e la causa dell'errore, se sono null significa che il server non è in grado di rispondere perchè lo si sta aggiornando
+        String msgError = error.getMessage()+" "+error.getCause();
+        if(msgError.equals("null null"))
+        {
+            msgError = "SERVER DOWN";
+        }
+        Log.i("DriverServer",chiamata+" Error Response: "+msgError);
+        // Visualizza anche il codice errore data, soltanto nel caso in cui networkResponse non sia nullo
+        if(error.networkResponse!=null)
+        {
+            Log.i("POST Response Error",String.valueOf(error.networkResponse.statusCode)+" "
+                    +error.networkResponse.data+" !");
+        }
+    }
+
+    //TODO
+    // fare update server per registrazione, controllo login di username e password,
+    //ricezione cambiamento emergenza, stato nodi
 }

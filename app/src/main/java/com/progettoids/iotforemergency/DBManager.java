@@ -33,7 +33,7 @@ public class DBManager {
         cv.put(DatabaseStrings.FIELD_NODO_POSIZIONE_Y, posizione_y);
         cv.put(DatabaseStrings.FIELD_NODO_QUOTA, quota);
         cv.put(DatabaseStrings.FIELD_NODO_STATO, 0);
-        cv.put(DatabaseStrings.FIELD_NODO_ORARIO_ULTIMA_RICEZIONE, "");
+       // cv.put(DatabaseStrings.FIELD_NODO_ORARIO_ULTIMA_RICEZIONE, "");
 
         try {
             db.insert(DatabaseStrings.TBL_NAME_NODO, null, cv);
@@ -63,6 +63,7 @@ public class DBManager {
         cv.put(DatabaseStrings.FIELD_BEACON_UMIDITA, 0);
         cv.put(DatabaseStrings.FIELD_BEACON_PRESSIONE, 0);
         cv.put(DatabaseStrings.FIELD_BEACON_LUMINOSITA, 0);
+        cv.put(DatabaseStrings.FIELD_BEACON_ORARIO, 0);
 
         try {
             db.insert(DatabaseStrings.TBL_NAME_BEACON, null, cv);
@@ -171,6 +172,24 @@ public class DBManager {
         c.close();
         db.close();
         return codice_nodo;
+    }
+
+    // Restituisce il codice del nodo associato con il codice beacon dato in input
+    public static String[] getNotifiche(String data){
+        int i=0;
+        String[] notifiche = new String[4];
+        SQLiteDatabase db = DBHelper.getInstance(null).getReadableDatabase();
+        String query = "SELECT "+DatabaseStrings.FIELD_NOTIFICA_NOME+" FROM "
+                +DatabaseStrings.TBL_NAME_NOTIFICA+" WHERE "+DatabaseStrings.FIELD_NOTIFICA_DATA+"<='"+data+"';";
+        Log.i("DBManager","getPosizione query:"+query);
+        Cursor c = db.rawQuery(query, null);
+        while(c.moveToNext()){
+            notifiche[i]= c.getString(0);
+            i++;
+        }
+        c.close();
+        db.close();
+        return notifiche;
     }
 
     /**

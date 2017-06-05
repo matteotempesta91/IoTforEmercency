@@ -13,8 +13,6 @@ public class DatabaseStrings {
     public static final String FIELD_NODO_POSIZIONE_Y = "posizione_y";
     public static final String FIELD_NODO_STATO = "stato";
     public static final String FIELD_NODO_QUOTA = "quota";
-    public static final String FIELD_NODO_ORARIO_ULTIMA_RICEZIONE = "orario_ultima_ricezione"; // va su beacon
-
 
     /*
     CAMPI BEACON
@@ -28,14 +26,16 @@ public class DatabaseStrings {
     public static final String FIELD_BEACON_UMIDITA = "umidita";
     public static final String FIELD_BEACON_LUMINOSITA = "luminosita";
     public static final String FIELD_BEACON_PRESSIONE = "pressione";
+    public static final String FIELD_BEACON_ORARIO = "orario";
 
-
-
+    /*
+    CAMPI NOTIFICHE
+     */
+    public static final String FIELD_NOTIFICA_NOME = "nome";
+    public static final String FIELD_NOTIFICA_DATA = "data";
     public static final String TBL_NAME_NODO = "Nodo";
     public static final String TBL_NAME_BEACON = "Beacon";
-
-
-
+    public static final String TBL_NAME_NOTIFICA = "Notifica";
 
     public static final String[] mac_beacon = {
             "B0:B4:48:BD:93:82"

@@ -299,22 +299,22 @@ public class MapHome extends AppCompatImageView {
         pixelCoord[0] = pixelCoord[0] - bmInc.getWidth() / 2;
         pixelCoord[1] = pixelCoord[1] - bmInc.getHeight() / 2;
 
-        // In base al tipo di notifica che riceve disegna la corrispondente icona sulla mappa
+        // In base al tipo di notifica che riceve disegna l'icona dello stato del nodo (incendio, crollo, o affollamento) sulla mappa
         switch (stato) {
-            case 0:
+            case 0:                 // Nessun pericolo
                 int w = bmInc.getWidth();
                 int h = bmInc.getHeight();
                 int[] pix = new int[w*h];
                 Arrays.fill(pix, 0x0000);
                 bmNodi.setPixels(pix, 0, w, pixelCoord[0], pixelCoord[1], w, h);
                 break;
-            case 1:
+            case 1:                 // Incendio
                 canvas.drawBitmap(bmInc, pixelCoord[0], pixelCoord[1], null);
                 break;
-            case 2:
+            case 2:                 // Crollo
                 canvas.drawBitmap(bmCrollo, pixelCoord[0], pixelCoord[1], null);
                 break;
-            case 3:
+            case 3:                 // Affollato
                 canvas.drawBitmap(bmAffollato, pixelCoord[0], pixelCoord[1], null);
                 break;
         }
