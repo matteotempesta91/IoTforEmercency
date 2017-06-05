@@ -6,7 +6,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Fornisce i metodi per effettuare ed interpretare le query al DB locale
@@ -175,21 +178,29 @@ public class DBManager {
     }
 
     // Restituisce il codice del nodo associato con il codice beacon dato in input
-    public static String[] getNotifiche(String data){
-        int i=0;
-        String[] notifiche = new String[4];
+    public static Date getDataNotifica(String nomeNotifica){
+        Date dataNotifica = new Date();
+        DateFormat dataFormat;
         SQLiteDatabase db = DBHelper.getInstance(null).getReadableDatabase();
-        String query = "SELECT "+DatabaseStrings.FIELD_NOTIFICA_NOME+" FROM "
-                +DatabaseStrings.TBL_NAME_NOTIFICA+" WHERE "+DatabaseStrings.FIELD_NOTIFICA_DATA+"<='"+data+"';";
+        String query = "SELECT "+DatabaseStrings.FIELD_NOTIFICA_DATA+" FROM "
+                +DatabaseStrings.TBL_NAME_NOTIFICA+" WHERE "+DatabaseStrings.FIELD_NOTIFICA_NOME+"='"+nomeNotifica+"';";
+
         Log.i("DBManager","getPosizione query:"+query);
         Cursor c = db.rawQuery(query, null);
+        dataFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+
         while(c.moveToNext()){
-            notifiche[i]= c.getString(0);
-            i++;
+            String dataString= c.getString(0);
+            try {
+                dataNotifica = dataFormat.parse(dataString);
+            } catch (Exception e) {
+                Log.i("DBManager", e.toString());
+            }
+
         }
         c.close();
         db.close();
-        return notifiche;
+        return dataNotifica;
     }
 
     /**

@@ -11,12 +11,7 @@ import com.android.volley.*;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
 public class DriverServer {
 
@@ -26,11 +21,6 @@ public class DriverServer {
     private Context contextLogin;               // Questo campo contiene il primo context: ovvero quello di loginActivity
     private final String url;
     private boolean loginValido, registrato;
-    String emergenza;
-    DateFormat dataNodi;
-    DateFormat dataBeacon;
-    Date dataB;
-    Date dataN;
 
     // Runnable per invio dati ambientali periodico
     private Runnable sendDatiAmb = new Runnable() {
@@ -42,7 +32,7 @@ public class DriverServer {
             if(!datiArrayList.isEmpty()) {
                 inviaDatiAmb(datiArrayList);
             }
-            ricezioneNotifica();
+            //ricezioneNotifica();
             sender.postDelayed(sendDatiAmb, 6000);  //ERA 60000, L'HO ABBASSATO PER TESTARLO
         }
     };
@@ -312,40 +302,6 @@ public class DriverServer {
         queue.add(request);
     }
 
-    // Invia la richiesta al server per ricevere la notifiche di emergenza e dello stato delle tabelle
-    public void ricezioneNotifica() {
-        String urlNotifiche = url.concat("/notifiche");
-        JsonObjectRequest request = new JsonObjectRequest(
-                Request.Method.GET, urlNotifiche, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            Log.i("DriverServer", "Ricezione Notifica Emergenza RESPONSE: "+response.toString());
-                            dataBeacon = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-                            dataNodi = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-                            emergenza = response.getString("nome_emergenza");
-                            //dataBeacon=df.parse(response.getString("tabella_beacon"));
-                            dataNodi.parse(response.getString("tabella_nodo"));
-                            dataB = dataBeacon.parse(response.getString("tabella_beacon"));
-                            dataN = dataBeacon.parse(response.getString("tabella_nodo"));
-                            Log.i("DriverServer", "DATA NODI: "+dataBeacon.format(dataB));
-                            Log.i("DriverServer", "DATA Beacon: "+dataBeacon.format(dataN));
-                        }
-                        catch (Exception e) {
-                            Log.i("DriverServer","Ricezione Notifica Emergenza EXCEPTION "+e.toString());
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        errorHandler("Ricezione notifiche nodi",error);
-                    }
-                });
-        queue.add(request);
-    }
-
     // Invia la richiesta al server per ricevere i nodi il cui stato è diverso da zero
     public void ricezioneStatoNodi() {
         String urlNotifiche =url.concat("/notifiche");
@@ -372,7 +328,7 @@ public class DriverServer {
     }
 
     // errorHandler gestisce la risposta quando arriva un errore dal server, prende in input il nome del metodo in cui viene chiamato e l'errore del server
-    private void errorHandler(String chiamata, VolleyError error){
+    public static void errorHandler(String chiamata, VolleyError error){
         // Salva il messaggio e la causa dell'errore, se sono null significa che il server non è in grado di rispondere perchè lo si sta aggiornando
         String msgError = error.getMessage()+" "+error.getCause();
         if(msgError.equals("null null"))

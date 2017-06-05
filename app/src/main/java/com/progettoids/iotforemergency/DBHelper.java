@@ -43,7 +43,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 DatabaseStrings.FIELD_BEACON_ACCELERAZIONEZ + " REAL," +
                 DatabaseStrings.FIELD_BEACON_UMIDITA + " REAL," +
                 DatabaseStrings.FIELD_BEACON_LUMINOSITA + " REAL," +
-                DatabaseStrings.FIELD_BEACON_PRESSIONE + " REAL" +
+                DatabaseStrings.FIELD_BEACON_PRESSIONE + " REAL," +
                 DatabaseStrings.FIELD_BEACON_ORARIO + " DATE);";
 
         // CREATE della tabella notifiche, identica a quella presente sul server

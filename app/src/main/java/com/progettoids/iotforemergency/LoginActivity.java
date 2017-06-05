@@ -27,6 +27,7 @@ public class LoginActivity extends Activity {
     private boolean flag1stLog;
     private static final int NUMERO_NODI=63;
     private DriverServer mDriverServer;
+    private UpdateFromServer mUpdateFromServer;
     private DBHelper mDBhelper;
 
     @Override
@@ -36,6 +37,7 @@ public class LoginActivity extends Activity {
 
         loginUtils = new Login();
         flag1stLog = true;
+        mUpdateFromServer = new UpdateFromServer(context);
         mDriverServer = DriverServer.getInstance(context);
         mDBhelper = DBHelper.getInstance(context);
         login();
