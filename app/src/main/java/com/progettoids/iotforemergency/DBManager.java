@@ -77,6 +77,23 @@ public class DBManager {
         db.close();
     }
 
+    public static void salvaNotifica(String nomeNotifica, int dataNotifica) {
+        SQLiteDatabase db = DBHelper.getInstance(null).getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        // Converte il formato Date in String per salvarlo nel DB
+        //SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+        //String dateString = sdf.format(dataNotifica);
+        cv.put(DatabaseStrings.FIELD_NOTIFICA_DATA, dataNotifica);
+        cv.put(DatabaseStrings.FIELD_NOTIFICA_NOME, nomeNotifica);
+        try {
+            db.insert(DatabaseStrings.TBL_NAME_NOTIFICA, null, cv);
+            Log.i("DBManager", "Notifica Inizializzata");
+        } catch (SQLiteException sqle) {
+            Log.e("DBManager", "Errore sql saveBeacon: "+sqle.toString());
+        }
+        db.close();
+    }
+
     /**
      * Legge e poi elimina i dati ambientali salvati nel DB locale dei beacon incontrati
      * @return : array bidimensionale di lunghezza pari al numero di beacon incontrati contenente
@@ -95,7 +112,7 @@ public class DBManager {
             return null;
         }
         ArrayList<String[]> listaBeacon = new ArrayList<>();
-        String[] datiambientali = new String[8];
+        String[] datiambientali = new String[9];
         // content value per svuotare i campi letti
         ContentValues cv = new ContentValues();
         cv.put(DatabaseStrings.FIELD_BEACON_TEMPERATURA, -300);
@@ -105,6 +122,7 @@ public class DBManager {
         cv.put(DatabaseStrings.FIELD_BEACON_UMIDITA,0);
         cv.put(DatabaseStrings.FIELD_BEACON_PRESSIONE, 0);
         cv.put(DatabaseStrings.FIELD_BEACON_LUMINOSITA, 0);
+        cv.put(DatabaseStrings.FIELD_BEACON_ORARIO, 0);
         // Ciclo per interpretare i risultati
         while (crs.moveToNext()) {
             datiambientali[0] = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_BEACON_MAC));
@@ -115,13 +133,24 @@ public class DBManager {
             datiambientali[5] = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_BEACON_UMIDITA));
             datiambientali[6] = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_BEACON_LUMINOSITA));
             datiambientali[7] = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_BEACON_PRESSIONE));
+            datiambientali[8] = crs.getString(crs.getColumnIndex(DatabaseStrings.FIELD_BEACON_ORARIO));
             listaBeacon.add(datiambientali);
+
             db.update(DatabaseStrings.TBL_NAME_BEACON, cv, DatabaseStrings.FIELD_BEACON_MAC
                       + "=" + "'" + datiambientali[0] + "'", null);
         }
         crs.close();
         db.close();
         return listaBeacon;
+    }
+
+    public static void aggiornaNotifiche(String nomeNotifica, int dataNotifica){
+        SQLiteDatabase db = DBHelper.getInstance(null).getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(DatabaseStrings.FIELD_NOTIFICA_DATA, dataNotifica);
+        db.update(DatabaseStrings.TBL_NAME_BEACON, cv, DatabaseStrings.FIELD_BEACON_MAC
+                + "=" + "'" + nomeNotifica + "'", null);
+        db.close();
     }
 
     /**
@@ -134,10 +163,10 @@ public class DBManager {
         SQLiteDatabase db = DBHelper.getInstance(null).getReadableDatabase();
         String query1 = "SELECT "+DatabaseStrings.FIELD_BEACON_CODICE_NODO+" FROM "
                 +DatabaseStrings.TBL_NAME_BEACON+" WHERE "+DatabaseStrings.FIELD_BEACON_MAC+"='"+mac_beacon+"';";
-        Log.i("DBManager","getPosizione query:"+query1);
+         Log.i("DBManager","getPosition query:"+query1);
         Cursor c = db.rawQuery(query1, null);
 
-        int[] posizione=new int[3];
+        int[] posizione = new int[3];
         if(c.moveToFirst()){
             String codice_nodo= c.getString(0);
             String query2="SELECT "+DatabaseStrings.FIELD_NODO_POSIZIONE_X+","
@@ -167,7 +196,7 @@ public class DBManager {
         SQLiteDatabase db = DBHelper.getInstance(null).getReadableDatabase();
         String query1 = "SELECT "+DatabaseStrings.FIELD_BEACON_CODICE_NODO+" FROM "
                 +DatabaseStrings.TBL_NAME_BEACON+" WHERE "+DatabaseStrings.FIELD_BEACON_MAC+"='"+mac_beacon+"';";
-        Log.i("DBManager","getPosizione query:"+query1);
+        Log.i("DBManager","getNodo query:"+query1);
         Cursor c = db.rawQuery(query1, null);
         if(c.moveToFirst()){
             codice_nodo= c.getString(0);
@@ -185,7 +214,7 @@ public class DBManager {
         String query = "SELECT "+DatabaseStrings.FIELD_NOTIFICA_DATA+" FROM "
                 +DatabaseStrings.TBL_NAME_NOTIFICA+" WHERE "+DatabaseStrings.FIELD_NOTIFICA_NOME+"='"+nomeNotifica+"';";
 
-        Log.i("DBManager","getPosizione query:"+query);
+        Log.i("DBManager","getDataNotifica query:"+query);
         Cursor c = db.rawQuery(query, null);
         dataFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 

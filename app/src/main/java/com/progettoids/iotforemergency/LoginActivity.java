@@ -223,7 +223,9 @@ public class LoginActivity extends Activity {
                     DBManager.saveNodo(codice,posizione_x,posizione_y,quota);
                 }
             }
-
+            for (int i=0;i<4;i++) {
+                DBManager.salvaNotifica(DatabaseStrings.nome_notifica[i], 0);
+            }
             DBManager.saveBeacon("B0:B4:48:BD:93:82","155R4");
            // provaStoriaUtente3(dbManager);
         }

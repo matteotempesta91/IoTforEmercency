@@ -43,7 +43,12 @@ public class DatabaseStrings {
     public static final String[] codice_nodo_beacon = {
             "145DICEA"
     };
-
+    public static final String[] nome_notifica = {
+            "nodi",
+            "beacon",
+            "parametri",
+            "noEmergenza"
+    };
 
     public static final int[] posizione_x = {
             71,

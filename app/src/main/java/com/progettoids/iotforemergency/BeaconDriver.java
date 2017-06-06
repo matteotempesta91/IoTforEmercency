@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import static java.lang.Math.pow;
 
@@ -219,7 +220,7 @@ public class BeaconDriver extends AsyncTask<Object, Void, Object[]> {
             };
         }
 
-    //Metodo per salvare i dati sul DataBase
+    // Metodo per salvare i dati sul DataBase
     public void salvataggioDatiDB(String mac) {
 
         Log.i("punto 1 ->", "Help");
@@ -233,13 +234,13 @@ public class BeaconDriver extends AsyncTask<Object, Void, Object[]> {
         cv.put(DatabaseStrings.FIELD_BEACON_UMIDITA,((double) sensorData[2]));
         cv.put(DatabaseStrings.FIELD_BEACON_PRESSIONE, ((double) sensorData[3]));
         cv.put(DatabaseStrings.FIELD_BEACON_LUMINOSITA, ((double) sensorData[4]));
+        Long tsLong = (System.currentTimeMillis()/1000)+ 7200;
+        Log.i("BeaconDriver","salvataggioDatiDB time now: "+tsLong);
+        cv.put(DatabaseStrings.FIELD_BEACON_ORARIO, tsLong);
 
         Log.i("Indirizzo Mac ->", mac);
         db.update(DatabaseStrings.TBL_NAME_BEACON, cv, DatabaseStrings.FIELD_BEACON_MAC + "=" + "'" + mac + "'", null);
         Log.i("punto2 _->", "Goooooo");
-
-
-
     }
 
     // Recupera i UNSIGNED dati dalla characteristic

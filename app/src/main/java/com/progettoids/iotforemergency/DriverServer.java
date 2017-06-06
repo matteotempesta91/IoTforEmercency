@@ -79,6 +79,7 @@ public class DriverServer {
             datiambientaliJson.put("umidita",datiambientali[5]);
             datiambientaliJson.put("luminosita",datiambientali[6]);
             datiambientaliJson.put("pressione",datiambientali[7]);
+                datiambientaliJson.put("orario",datiambientali[8]);
             //    dato.put("dati_ambientali",datiambientaliJson);
             elencoB.put(datiambientaliJson);
             //    elencoB.put(dato);

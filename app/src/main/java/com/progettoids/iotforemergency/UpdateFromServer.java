@@ -24,8 +24,9 @@ public class UpdateFromServer {
     private final RequestQueue queue;
     private Context contextLogin;               // Questo campo contiene il context di loginActivity
     private final String url;
+    private int dataBeacon,dataNodi,dataParam;
     DateFormat dataFormat;
-    Date dataBeacon,dataNodi,dataParam;
+   // Date dataBeacon,dataNodi,dataParam;
     String emergenza;
 
     private Runnable sendNotifiche = new Runnable() {
@@ -96,9 +97,16 @@ public class UpdateFromServer {
                     public void onResponse(JSONObject response) {
                         try {
                             Log.i("DriverServer", "Ricezione Notifica Emergenza RESPONSE: "+response.toString());
-                            dataFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");   // Definisce il formato della data
-                            // Salva il tipo ti emergenza e le date in cui sono state cambiate la tebelle nodo, beacon e parametri sul server
                             emergenza = response.getString("nome_emergenza");
+                            dataBeacon = response.getInt("tabella_beacon");
+                            dataNodi = response.getInt("tabella_nodo");
+                            dataParam = response.getInt("tabella_parametri");
+
+                            Log.i("DriverServer", "DATA Beacon: "+dataBeacon);
+                            Log.i("DriverServer", "DATA NODI: "+dataNodi);
+                            Log.i("DriverServer", "DATA Parametri: "+dataParam);
+                /*            dataFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");   // Definisce il formato della data
+                            // Salva il tipo ti emergenza e le date in cui sono state cambiate la tebelle nodo, beacon e parametri sul server
                             dataBeacon = dataFormat.parse(response.getString("tabella_beacon"));
                             dataNodi = dataFormat.parse(response.getString("tabella_nodo"));
                             dataParam = dataFormat.parse(response.getString("tabella_parametri"));
@@ -110,8 +118,13 @@ public class UpdateFromServer {
                             if(dataBeacon.after(DBManager.getDataNotifica("beacon"))){
 
                             }
-                            DBManager.getDataNotifica("nodi");
-                            DBManager.getDataNotifica("parametri");
+                            if(dataNodi.after(DBManager.getDataNotifica("nodi"))){
+
+                            }
+                            if(dataParam.after(DBManager.getDataNotifica("parametri"))){
+
+                            }
+               */
                         }
                         catch (Exception e) {
                             Log.i("DriverServer","Ricezione Notifica Emergenza EXCEPTION "+e.toString());

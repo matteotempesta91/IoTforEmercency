@@ -44,12 +44,12 @@ public class DBHelper extends SQLiteOpenHelper {
                 DatabaseStrings.FIELD_BEACON_UMIDITA + " REAL," +
                 DatabaseStrings.FIELD_BEACON_LUMINOSITA + " REAL," +
                 DatabaseStrings.FIELD_BEACON_PRESSIONE + " REAL," +
-                DatabaseStrings.FIELD_BEACON_ORARIO + " DATE);";
+                DatabaseStrings.FIELD_BEACON_ORARIO + " INTEGER);";     // E' integer perchè stiamo usando timestamp
 
         // CREATE della tabella notifiche, identica a quella presente sul server
         String q3=" CREATE TABLE " + DatabaseStrings.TBL_NAME_NOTIFICA +
                 "("+DatabaseStrings.FIELD_NOTIFICA_NOME + " TEXT PRIMARY KEY NOT NULL," +
-                DatabaseStrings.FIELD_NOTIFICA_DATA + " DATE);";
+                DatabaseStrings.FIELD_NOTIFICA_DATA + " INTEGER);";     // E' integer perchè stiamo usando timestamp
 
 
         Log.i("Creazione tabella nodo:",q);
