@@ -111,7 +111,7 @@ public class RegistrazioneActivity extends Activity {
         if(control==6){
             // Crea l'istanza di driver server che invia i dati al server e controlla se lo username è già presente nel DB
             mdriverServer=DriverServer.getInstance(context);
-            mdriverServer.inviaRegistrazione(datiReg, context);
+            mdriverServer.mToServer.inviaRegistrazione(datiReg, context);
         }
     }
 

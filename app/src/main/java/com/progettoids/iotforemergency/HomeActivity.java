@@ -58,7 +58,7 @@ public class HomeActivity extends Activity {
             EnableGPS();
             bleList.Scansione(true);
             locMe.startFinder();
-            mDriverServer.startAmb(true);
+            mDriverServer.mToServer.startAmb(true);
         }
 
         // Registra il ricevitore per le notifiche di stato
@@ -89,7 +89,7 @@ public class HomeActivity extends Activity {
         locMe = null;
         // Cancella il ricevitore dalle notifiche di stato
         unregisterReceiver(mReceiver);
-        mDriverServer.startAmb(false);
+        mDriverServer.mToServer.startAmb(false);
     }
 
     // Gestisce il risultato della richiesta dei permessi
@@ -105,7 +105,7 @@ public class HomeActivity extends Activity {
                             EnableGPS();
                             bleList.Scansione(true);
                             locMe.startFinder();
-                            mDriverServer.startAmb(true);
+                            mDriverServer.mToServer.startAmb(true);
                         }
                     } else {
                         Log.i("Localizzazione", "Permessi di localizzazione negati");
@@ -130,7 +130,7 @@ public class HomeActivity extends Activity {
                         EnableGPS();
                         bleList.Scansione(true);
                         locMe.startFinder();
-                        mDriverServer.startAmb(true);
+                        mDriverServer.mToServer.startAmb(true);
                         break;
                     case BluetoothAdapter.STATE_OFF:
                         bleList.stopAll();
@@ -139,7 +139,6 @@ public class HomeActivity extends Activity {
                         // Segalare all'utente che l'app non funziona senza ble
                         break;
                 }
-                // Aggiungere azione in caso l'utente spenga il ble con app attiva
             }
         }
     };

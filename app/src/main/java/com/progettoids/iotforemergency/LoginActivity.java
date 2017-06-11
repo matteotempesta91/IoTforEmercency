@@ -27,7 +27,7 @@ public class LoginActivity extends Activity {
     private boolean flag1stLog;
     private static final int NUMERO_NODI=63;
     private DriverServer mDriverServer;
-    private UpdateFromServer mUpdateFromServer;
+    private Parametri mParametri;
     private DBHelper mDBhelper;
 
     @Override
@@ -37,9 +37,9 @@ public class LoginActivity extends Activity {
 
         loginUtils = new Login();
         flag1stLog = true;
-        mUpdateFromServer = new UpdateFromServer(context);
-        mDriverServer = DriverServer.getInstance(context);
         mDBhelper = DBHelper.getInstance(context);
+        mParametri = Parametri.getInstance();
+        mDriverServer = DriverServer.getInstance(context);
         login();
         //loginGuest();
 
@@ -51,6 +51,9 @@ public class LoginActivity extends Activity {
             }
         });
         registrazione();
+
+        // Spostare in dbhelper con connessione al server per primo sync
+        // deve essere fatto prima di creare gli altri oggetti Server in modo bloccante
         gestioneCreazineDB();
     }
 
@@ -180,6 +183,7 @@ public class LoginActivity extends Activity {
             }
         });
     }
+
     public boolean controlloCampi() {
         if(Pattern.matches("[a-zA-Z0-9_-]*", editUser.getText().toString())&&Pattern.matches("[a-zA-Z0-9_-]*", editPass.getText().toString()))
         {

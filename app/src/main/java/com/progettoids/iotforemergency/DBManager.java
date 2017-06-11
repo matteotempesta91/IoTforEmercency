@@ -242,7 +242,7 @@ public class DBManager {
         String query1 = "SELECT " + DatabaseStrings.FIELD_NODO_STATO+","
                 +DatabaseStrings.FIELD_NODO_POSIZIONE_X+","+DatabaseStrings.FIELD_NODO_POSIZIONE_Y
                 +","+DatabaseStrings.FIELD_NODO_QUOTA + " FROM " + DatabaseStrings.TBL_NAME_NODO
-                + " WHERE " + DatabaseStrings.FIELD_NODO_STATO + "<>'" + 0+ "';";
+                + " WHERE " + DatabaseStrings.FIELD_NODO_STATO + "<>'" + 0 + "';";
         Cursor c = db.rawQuery(query1, null);
         return c;
         /* Debug code
@@ -261,5 +261,25 @@ public class DBManager {
 
         }
         */
+    }
+
+    /**
+     * Salva i parametri aggiornati nel DB locale inviati dal server
+     * è necessario riavviare l'app per caricare i nuovi valori
+     * @param param array di object contenente i valori ordinati come nel DB
+     */
+    public static void updateParametri(Object[] param) {
+        // salvare i parametri passati dal server come update row
+    }
+
+    /**
+     * Carica i parametri salvati nel DB locale,
+     * è necessario riavviare l'app in caso di aggiornamento
+     * @return array di object contenente i valori ordinati come nel DB
+     */
+    public static Object[] loadParametri() {
+        Object[] param = new Object[11];
+        // load from DB
+        return param;
     }
 }

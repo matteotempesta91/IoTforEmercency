@@ -13,6 +13,7 @@ public class Localizzatore {
     private Context context;
     private Handler finder;
     private DriverServer mDriverServer;
+    private Parametri mParametri;
 
     public Localizzatore(Context context, BeaconListener ble, MapHome maphome) {
         this.context = context;
@@ -20,8 +21,8 @@ public class Localizzatore {
         mHome = maphome;
         finder = new Handler();
         mDriverServer = DriverServer.getInstance(context);
-
-// Se 0 0 0 => pos sconosciuta
+        mParametri = Parametri.getInstance();
+        // Se 0 0 0 => pos sconosciuta
         x=0;
         y=0;
         z=0;
@@ -42,24 +43,23 @@ public class Localizzatore {
                     mHome.disegnaPosizione(x, y, z);
                     mHome.setBitmap();
 
-// PRENDO L'ID COME VARIABILE GLOBALE
+                    // PRENDO L'ID COME VARIABILE GLOBALE
                     final SharedPreferences reader = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
                     final String id_utente= reader.getString("id_utente", null);
 
-
-// creazione file json per l'invio della posizione al server
-              //      DriverServer driverServer=new DriverServer(context);
-                    ///mDriverServer.inviaPos(id_utente, pos);
-                    mDriverServer.inviaPos(id_utente, DBManager.getNodo(macAdrs));
+                    // creazione file json per l'invio della posizione al server
+                    // DriverServer driverServer=new DriverServer(context);
+                    // mDriverServer.inviaPos(id_utente, pos);
+                    mDriverServer.mToServer.inviaPos(id_utente, DBManager.getNodo(macAdrs));
                 }
             }
-            finder.postDelayed(findMe, 21000); // prima era 21000
+            finder.postDelayed(findMe, mParametri.timerPos());
         }
     };
 
     // Avvia la localizzazione
     public void startFinder() {
-        finder.postDelayed(findMe, 5000);
+        finder.postDelayed(findMe, mParametri.timerPos());
     }
 
     // Ferma la localizzazione

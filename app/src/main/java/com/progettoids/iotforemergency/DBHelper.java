@@ -51,6 +51,20 @@ public class DBHelper extends SQLiteOpenHelper {
                 "("+DatabaseStrings.FIELD_NOTIFICA_NOME + " TEXT PRIMARY KEY NOT NULL," +
                 DatabaseStrings.FIELD_NOTIFICA_DATA + " INTEGER);";     // E' integer perchè stiamo usando timestamp
 
+        // Tabella per i parametri di configurazione
+        String q4=" CREATE TABLE " + DatabaseStrings.TBL_NAME_PARAMETRI +
+                "("+DatabaseStrings.FIELD_URL_SERVER + " TEXT PRIMARY KEY NOT NULL," +
+                DatabaseStrings.FIELD_T_NOTIFICHE + " INTEGER," +
+                DatabaseStrings.FIELD_T_STATO_NODI + " INTEGER," +
+                DatabaseStrings.FIELD_T_SCAN + " INTEGER," +
+                DatabaseStrings.FIELD_T_SCAN_EMERGENZA + " INTEGER," +
+                DatabaseStrings.FIELD_T_SCAN_PERIOD + " INTEGER," +
+                DatabaseStrings.FIELD_T_DATIAMB + " INTEGER," +
+                DatabaseStrings.FIELD_T_DATIAMB_EMERGENZA + " INTEGER," +
+                DatabaseStrings.FIELD_T_POSIZIONE + " INTEGER," +
+                DatabaseStrings.FIELD_T_POSIZIONE_EMERGENZA + " INTEGER," +
+                DatabaseStrings.FIELD_MAX_TRY_BEACON + " INTEGER," +
+                DatabaseStrings.FIELD_FILTRO_BLE + "TEXT);";
 
         Log.i("Creazione tabella nodo:",q);
         sqLiteDatabase.execSQL(q);
@@ -58,8 +72,11 @@ public class DBHelper extends SQLiteOpenHelper {
         Log.i("Creazione tab beacon:",q2);
         sqLiteDatabase.execSQL(q2);
 
-        Log.i("Creazione tab beacon:",q3);
+        Log.i("Creazione tab notif:",q3);
         sqLiteDatabase.execSQL(q3);
+
+        Log.i("Creazione tab param:",q4);
+        sqLiteDatabase.execSQL(q4);
 
         Log.i("DBHelper","DATABASE CREATO");
 

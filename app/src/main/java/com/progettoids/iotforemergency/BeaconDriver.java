@@ -273,7 +273,7 @@ public class BeaconDriver extends AsyncTask<Object, Void, Object[]> {
 
             // Attende lettura completa per max 5*2,5 sec
             // Attesa resta true finchè non sono disponibili tutti i dati ambientali
-            for (int i=0; attesa && i < 5;  i++) {
+            for (int i=0; attesa && i < Parametri.getInstance().MAX_TRY_BEACON;  i++) {
                 try {
                     Thread.sleep(2500);
                 } catch (InterruptedException e) {

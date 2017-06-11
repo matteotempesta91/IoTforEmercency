@@ -22,6 +22,7 @@ public class BeaconListener {
     private boolean statoScan;
     private ArrayList<ScanResult> fari = new ArrayList<ScanResult>();
     private int refresh = 0;
+    private Parametri mParametri;
 
     // Codice task ferma scanner
     private final Runnable stop = new Runnable() {
@@ -30,7 +31,7 @@ public class BeaconListener {
             scanner.stopScan(mScanCB);
             statoScan = false;
             Log.i("Scanning", "Stop");
-            goScanH.postDelayed(start, 20000);
+            goScanH.postDelayed(start, mParametri.timerScan());
         }
     };
 
@@ -48,7 +49,7 @@ public class BeaconListener {
             scanner.startScan(mScanCB);
             statoScan = true;
             Log.i("Scanning", "Start");
-            altScanH.postDelayed(stop, 2000);
+            altScanH.postDelayed(stop, mParametri.T_SCAN_PERIOD);
         }
     };
 
@@ -57,6 +58,7 @@ public class BeaconListener {
         bluetoothManager =
                 (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
         this.context = context;
+        mParametri = Parametri.getInstance();
         statoScan = false;
         // Implementa cosa fare per i vari casi di callback
         mScanCB = new ScanCallback() {
@@ -116,7 +118,8 @@ public class BeaconListener {
         } catch (Exception ex) {
             nomeDev = "SenzaNome";
         }
-        if (nomeDev.equals("CC2650 SensorTag")) {  // Mac nostro: B0:B4:48:BD:93:82
+        // Vengono considerati solo i dispositivi bluetooth con nome definito nel filtro
+        if (nomeDev.equals(mParametri.FILTRO_BLE_DEVICE)) {  // Mac nostro: B0:B4:48:BD:93:82
             for (ScanResult faroNoto : fari) {
                 if (foundDev.getAddress().toString().equals(faroNoto.getDevice().getAddress().toString())) {
                     presente = true;

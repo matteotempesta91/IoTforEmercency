@@ -37,6 +37,21 @@ public class DatabaseStrings {
     public static final String TBL_NAME_BEACON = "Beacon";
     public static final String TBL_NAME_NOTIFICA = "Notifica";
 
+    // CAMPI PARAMETRI
+    public static final String TBL_NAME_PARAMETRI = "Parametri";
+    public static final String FIELD_URL_SERVER = "url_server";
+    public static final String FIELD_T_NOTIFICHE = "t_notifiche";
+    public static final String FIELD_T_STATO_NODI = "t_nodi";
+    public static final String FIELD_T_SCAN = "t_scan";
+    public static final String FIELD_T_SCAN_EMERGENZA = "t_scan_emergenza";
+    public static final String FIELD_T_SCAN_PERIOD = "t_scan_period";
+    public static final String FIELD_T_DATIAMB = "t_datiamb";
+    public static final String FIELD_T_DATIAMB_EMERGENZA = "t_datiamb_emergenza";
+    public static final String FIELD_T_POSIZIONE = "t_posizione";
+    public static final String FIELD_T_POSIZIONE_EMERGENZA = "t_posizione_emergenza";
+    public static final String FIELD_MAX_TRY_BEACON = "max_try_beacon";
+    public static final String FIELD_FILTRO_BLE = "filtro_ble";
+
     public static final String[] mac_beacon = {
             "B0:B4:48:BD:93:82"
     };
