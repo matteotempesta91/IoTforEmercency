@@ -5,11 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Fornisce i metodi per effettuare ed interpretare le query al DB locale
@@ -25,8 +21,7 @@ public class DBManager {
      * @param posizione_y
      * @param quota : o posizione z
      */
-    public static void saveNodo(String codice,String posizione_x,String posizione_y,
-                         String quota) {
+    public static void saveNodo(String codice, int posizione_x, int posizione_y, int quota) {
 
         SQLiteDatabase db = DBHelper.getInstance(null).getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -34,7 +29,7 @@ public class DBManager {
         cv.put(DatabaseStrings.FIELD_NODO_CODICE, codice);
         cv.put(DatabaseStrings.FIELD_NODO_POSIZIONE_X, posizione_x);
         cv.put(DatabaseStrings.FIELD_NODO_POSIZIONE_Y, posizione_y);
-        cv.put(DatabaseStrings.FIELD_NODO_QUOTA, quota);
+        cv.put(DatabaseStrings.FIELD_NODO_POSIZIONE_Z, quota);
         cv.put(DatabaseStrings.FIELD_NODO_STATO, 0);
        // cv.put(DatabaseStrings.FIELD_NODO_ORARIO_ULTIMA_RICEZIONE, "");
 
@@ -144,7 +139,7 @@ public class DBManager {
         return listaBeacon;
     }
 
-    public static void aggiornaNotifiche(String nomeNotifica, int dataNotifica){
+    public static void updateNotifiche(String nomeNotifica, int dataNotifica){
         SQLiteDatabase db = DBHelper.getInstance(null).getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(DatabaseStrings.FIELD_NOTIFICA_DATA, dataNotifica);
@@ -170,7 +165,7 @@ public class DBManager {
         if(c.moveToFirst()){
             String codice_nodo= c.getString(0);
             String query2="SELECT "+DatabaseStrings.FIELD_NODO_POSIZIONE_X+","
-                    +DatabaseStrings.FIELD_NODO_POSIZIONE_Y+","+DatabaseStrings.FIELD_NODO_QUOTA
+                    +DatabaseStrings.FIELD_NODO_POSIZIONE_Y+","+DatabaseStrings.FIELD_NODO_POSIZIONE_Z
                     +" FROM "+DatabaseStrings.TBL_NAME_NODO+" WHERE "+DatabaseStrings.FIELD_NODO_CODICE+"='"+codice_nodo+"';";
             Cursor c2 = db.rawQuery(query2, null);
             if(c2.moveToFirst()) {
@@ -207,25 +202,17 @@ public class DBManager {
     }
 
     // Restituisce il codice del nodo associato con il codice beacon dato in input
-    public static Date getDataNotifica(String nomeNotifica){
-        Date dataNotifica = new Date();
-        DateFormat dataFormat;
+    public static int getDataNotifica(String nomeNotifica){
+        int dataNotifica =0;
         SQLiteDatabase db = DBHelper.getInstance(null).getReadableDatabase();
         String query = "SELECT "+DatabaseStrings.FIELD_NOTIFICA_DATA+" FROM "
                 +DatabaseStrings.TBL_NAME_NOTIFICA+" WHERE "+DatabaseStrings.FIELD_NOTIFICA_NOME+"='"+nomeNotifica+"';";
 
         Log.i("DBManager","getDataNotifica query:"+query);
         Cursor c = db.rawQuery(query, null);
-        dataFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-
+        //dataFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
         while(c.moveToNext()){
-            String dataString= c.getString(0);
-            try {
-                dataNotifica = dataFormat.parse(dataString);
-            } catch (Exception e) {
-                Log.i("DBManager", e.toString());
-            }
-
+            dataNotifica = c.getInt(0);
         }
         c.close();
         db.close();
@@ -241,26 +228,10 @@ public class DBManager {
         SQLiteDatabase db = DBHelper.getInstance(null).getReadableDatabase();
         String query1 = "SELECT " + DatabaseStrings.FIELD_NODO_STATO+","
                 +DatabaseStrings.FIELD_NODO_POSIZIONE_X+","+DatabaseStrings.FIELD_NODO_POSIZIONE_Y
-                +","+DatabaseStrings.FIELD_NODO_QUOTA + " FROM " + DatabaseStrings.TBL_NAME_NODO
+                +","+DatabaseStrings.FIELD_NODO_POSIZIONE_Z + " FROM " + DatabaseStrings.TBL_NAME_NODO
                 + " WHERE " + DatabaseStrings.FIELD_NODO_STATO + "<>'" + 0 + "';";
         Cursor c = db.rawQuery(query1, null);
         return c;
-        /* Debug code
-        if(c.moveToFirst()) {
-            String stato= c.getString(0);
-            Log.i("stato:",stato);
-
-            String x= c.getString(1);
-            Log.i("---->x:",x);
-
-            String y= c.getString(2);
-            Log.i("---->y:",y);
-
-            String z= c.getString(3);
-            Log.i("---->z:",z);
-
-        }
-        */
     }
 
     /**
@@ -268,8 +239,39 @@ public class DBManager {
      * è necessario riavviare l'app per caricare i nuovi valori
      * @param param array di object contenente i valori ordinati come nel DB
      */
-    public static void updateParametri(Object[] param) {
+    public static void updateParametri(int[] param, String filtroBeacon) {
         // salvare i parametri passati dal server come update row
+        SQLiteDatabase db = DBHelper.getInstance(null).getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(DatabaseStrings.FIELD_T_NOTIFICHE, param[0]);
+        cv.put(DatabaseStrings.FIELD_T_STATO_NODI, param[1]);
+        cv.put(DatabaseStrings.FIELD_T_SCAN, param[2]);
+        cv.put(DatabaseStrings.FIELD_T_SCAN_EMERGENZA, param[3]);
+        cv.put(DatabaseStrings.FIELD_T_SCAN_PERIOD, param[4]);
+        cv.put(DatabaseStrings.FIELD_T_DATIAMB, param[5]);
+        cv.put(DatabaseStrings.FIELD_T_DATIAMB_EMERGENZA, param[6]);
+        cv.put(DatabaseStrings.FIELD_T_POSIZIONE, param[7]);
+        cv.put(DatabaseStrings.FIELD_T_POSIZIONE_EMERGENZA, param[8]);
+        cv.put(DatabaseStrings.FIELD_MAX_TRY_BEACON, param[9]);
+        cv.put(DatabaseStrings.FIELD_FILTRO_BLE, filtroBeacon);
+        cv.put(DatabaseStrings.FIELD_ID_PARAM, 0);
+
+      //  db.update(DatabaseStrings.TBL_NAME_PARAMETRI, cv, DatabaseStrings.FIELD_ID_PARAM
+       //         + "=" + "'" + 0 + "'", null);
+        db.insert(DatabaseStrings.TBL_NAME_PARAMETRI,null, cv);
+        db.close();
+    }
+
+    public  static void deleteNodi() {
+        SQLiteDatabase db = DBHelper.getInstance(null).getWritableDatabase();
+        db.execSQL("delete from "+ DatabaseStrings.TBL_NAME_NODO);
+        db.close();
+    }
+
+    public  static void deleteBeacon() {
+        SQLiteDatabase db = DBHelper.getInstance(null).getWritableDatabase();
+        db.execSQL("delete from "+ DatabaseStrings.TBL_NAME_BEACON);
+        db.close();
     }
 
     /**

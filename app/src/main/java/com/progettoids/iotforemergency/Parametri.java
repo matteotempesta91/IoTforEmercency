@@ -1,9 +1,5 @@
 package com.progettoids.iotforemergency;
 
-/**
- * Created by gaesse on 01/06/17.
- */
-
 class Parametri {
     private static Parametri mParametri;
 

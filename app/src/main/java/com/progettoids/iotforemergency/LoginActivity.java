@@ -209,9 +209,14 @@ public class LoginActivity extends Activity {
 
             for (int i=0;i<NUMERO_NODI;i++) {
                 String codice = DatabaseStrings.codice[i];
-                String posizione_x = String.valueOf(DatabaseStrings.posizione_x[i]);
+           /*     String posizione_x = String.valueOf(DatabaseStrings.posizione_x[i]);
                 String posizione_y = String.valueOf(DatabaseStrings.posizione_y[i]);
                 String quota = String.valueOf(DatabaseStrings.quota[i]);
+
+          */
+                int posizione_x = DatabaseStrings.posizione_x[i];
+                int posizione_y = DatabaseStrings.posizione_y[i];
+                int quota = DatabaseStrings.quota[i];
                 Log.i("Login:", codice);
 
                 if (i == 34){

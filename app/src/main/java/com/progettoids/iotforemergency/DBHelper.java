@@ -31,7 +31,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "("+DatabaseStrings.FIELD_NODO_CODICE + " TEXT PRIMARY KEY NOT NULL," +
                 DatabaseStrings.FIELD_NODO_POSIZIONE_X + " INTEGER," +
                 DatabaseStrings.FIELD_NODO_POSIZIONE_Y + " INTEGER," +
-                DatabaseStrings.FIELD_NODO_QUOTA + " INTEGER," +
+                DatabaseStrings.FIELD_NODO_POSIZIONE_Z + " INTEGER," +
                 DatabaseStrings.FIELD_NODO_STATO + " INTEGER);";
 
         String q2=" CREATE TABLE " + DatabaseStrings.TBL_NAME_BEACON +
@@ -53,7 +53,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         // Tabella per i parametri di configurazione
         String q4=" CREATE TABLE " + DatabaseStrings.TBL_NAME_PARAMETRI +
-                "("+DatabaseStrings.FIELD_URL_SERVER + " TEXT PRIMARY KEY NOT NULL," +
+                "("+DatabaseStrings.FIELD_ID_PARAM + " INTEGER PRIMARY KEY NOT NULL," +
                 DatabaseStrings.FIELD_T_NOTIFICHE + " INTEGER," +
                 DatabaseStrings.FIELD_T_STATO_NODI + " INTEGER," +
                 DatabaseStrings.FIELD_T_SCAN + " INTEGER," +

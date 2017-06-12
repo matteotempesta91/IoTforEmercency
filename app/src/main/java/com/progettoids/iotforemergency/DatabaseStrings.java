@@ -8,15 +8,20 @@ public class DatabaseStrings {
     /*
     CAMPI NODO
      */
+
+    public static final String TBL_NAME_NODO = "Nodo";
     public static final String FIELD_NODO_CODICE = "codice";
     public static final String FIELD_NODO_POSIZIONE_X = "posizione_x";
     public static final String FIELD_NODO_POSIZIONE_Y = "posizione_y";
+    public static final String FIELD_NODO_POSIZIONE_Z = "posizione_z";
     public static final String FIELD_NODO_STATO = "stato";
-    public static final String FIELD_NODO_QUOTA = "quota";
+
 
     /*
     CAMPI BEACON
      */
+
+    public static final String TBL_NAME_BEACON = "Beacon";
     public static final String FIELD_BEACON_MAC = "mac_beacon";
     public static final String FIELD_BEACON_CODICE_NODO= "codice_nodo_beacon";
     public static final String FIELD_BEACON_TEMPERATURA = "temperatura";
@@ -31,15 +36,13 @@ public class DatabaseStrings {
     /*
     CAMPI NOTIFICHE
      */
+    public static final String TBL_NAME_NOTIFICA = "Notifica";
     public static final String FIELD_NOTIFICA_NOME = "nome";
     public static final String FIELD_NOTIFICA_DATA = "data";
-    public static final String TBL_NAME_NODO = "Nodo";
-    public static final String TBL_NAME_BEACON = "Beacon";
-    public static final String TBL_NAME_NOTIFICA = "Notifica";
 
     // CAMPI PARAMETRI
     public static final String TBL_NAME_PARAMETRI = "Parametri";
-    public static final String FIELD_URL_SERVER = "url_server";
+    public static final String FIELD_ID_PARAM = "id_parametri";
     public static final String FIELD_T_NOTIFICHE = "t_notifiche";
     public static final String FIELD_T_STATO_NODI = "t_nodi";
     public static final String FIELD_T_SCAN = "t_scan";
