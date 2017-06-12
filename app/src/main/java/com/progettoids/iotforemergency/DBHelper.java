@@ -64,7 +64,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 DatabaseStrings.FIELD_T_POSIZIONE + " INTEGER," +
                 DatabaseStrings.FIELD_T_POSIZIONE_EMERGENZA + " INTEGER," +
                 DatabaseStrings.FIELD_MAX_TRY_BEACON + " INTEGER," +
-                DatabaseStrings.FIELD_FILTRO_BLE + "TEXT);";
+                DatabaseStrings.FIELD_FILTRO_BLE + " TEXT);";
 
         Log.i("Creazione tabella nodo:",q);
         sqLiteDatabase.execSQL(q);

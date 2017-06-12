@@ -16,11 +16,11 @@ import java.util.ArrayList;
 public class DriverServer {
 
     private static DriverServer mDriverServer;
-    private final Handler sender = new Handler();
     private final RequestQueue queue;
     private boolean loginValido;
     public ToServer mToServer;
     public FromServer mFromServer;
+    private Parametri mParametri;
     // Questo campo contiene il primo context: ovvero quello di loginActivity
     private Context contextLogin;
 
@@ -28,8 +28,16 @@ public class DriverServer {
         contextLogin = cont;                    // Viene inizializzato con il context di loginActivity
         queue = Volley.newRequestQueue(contextLogin);
         loginValido = false;
-        mToServer = new ToServer(this);
-        mFromServer = new FromServer(this);
+        boolean first = LoginActivity.isFirst(cont);
+        if (first) {
+            firstUpdateDB();
+        } else {
+            // Queste istruzioni devono essere eseguite
+            // solo dopo aver ricevuto le tabelle dal server
+            mParametri = Parametri.getInstance();
+            mToServer = new ToServer(this, mParametri);
+            mFromServer = new FromServer(this, mParametri);
+        }
     }
 
     // Per accedere all'oggetto questo metodo fornisce il riferimento, in questo modo è creato una sola volta per tutta l'applicazione
@@ -91,12 +99,12 @@ public class DriverServer {
                     public void onErrorResponse(VolleyError error) {
                         // Chiude la progress dialog quando il server risponde errore alla richiesta di login
                         progDialog.dismiss();
-                        DriverServer.errorHandler("Login",error);
+                        errorHandler("Login",error);
                     }
                 });
 //-------------------------------------------------------------------------------------------------------------
         // Aggiunge la richiesta per il server alla queue
-        mDriverServer.addToQueue(request);
+        addToQueue(request);
         // Crea e visualizza la progress dialog che si chiuderà quando verrà ricevuta la risposta dal server
         progDialog.setTitle("Login in corso...");
         progDialog.setMessage("Attendere prego");
@@ -132,13 +140,74 @@ public class DriverServer {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progDialog.dismiss();
-                        DriverServer.errorHandler("Login Guest",error);
+                        errorHandler("Login Guest",error);
                     }
                 });
         addToQueue(request);
         progDialog.setTitle("Login in corso...");
         progDialog.setMessage("Attendere prego");
         progDialog.show();
+    }
+
+    /** Questo metodo è eseguito solo dopo la prima installazione,
+    *   scarica dal server le tabelle necessarie al funzionamento dell'app.
+    */
+    private void firstUpdateDB() {
+        /*
+        final ProgressDialog progDialog = new ProgressDialog(contextLogin);    // finestra di caricamente in attesa della risposta del server
+        String urlGetDB = Parametri.URL_SERVER.concat("/database");
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.GET, urlGetDB, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.i("GET Response","ricevuta");
+                        // TODO
+                        progDialog.dismiss();
+                        mParametri = Parametri.getInstance();
+                        mToServer = new ToServer(mDriverServer, mParametri);
+                        mFromServer = new FromServer(mDriverServer, mParametri);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progDialog.dismiss();
+                        errorHandler("Get DataBase",error);
+                    }
+                });
+        addToQueue(request);
+        progDialog.show();
+        */
+         // Debug code
+        for (int i=0; i<63; i++) {
+            String codice = DatabaseStrings.codice[i];
+            int posizione_x = DatabaseStrings.posizione_x[i];
+            int posizione_y = DatabaseStrings.posizione_y[i];
+            int quota = DatabaseStrings.quota[i];
+            Log.i("Login:", codice);
+
+            if (i == 34){
+                DBManager.saveNodo(codice, posizione_x, posizione_y, quota);
+            }
+            else if(i==35){
+                DBManager.saveNodo(codice, posizione_x, posizione_y, quota);
+            }
+            else if(i==36){
+                DBManager.saveNodo(codice, posizione_x, posizione_y, quota);
+            }
+            else{
+                DBManager.saveNodo(codice,posizione_x,posizione_y,quota);
+            }
+        }
+        for (int i=0;i<4;i++) {
+            DBManager.saveNotifica(DatabaseStrings.nome_notifica[i], 0);
+        }
+        DBManager.saveBeacon("B0:B4:48:BD:93:82","155R4");
+        mParametri = Parametri.getInstance();
+        mToServer = new ToServer(mDriverServer, mParametri);
+        mFromServer = new FromServer(mDriverServer, mParametri);
+        //*/
     }
 
     // errorHandler gestisce la risposta quando arriva un errore dal server, prende in input il nome del metodo in cui viene chiamato e l'errore del server
@@ -157,8 +226,4 @@ public class DriverServer {
                     +error.networkResponse.data+" !");
         }
     }
-
-    //TODO
-    // fare update server per registrazione, controllo login di username e password,
-    //ricezione cambiamento emergenza, stato nodi
 }

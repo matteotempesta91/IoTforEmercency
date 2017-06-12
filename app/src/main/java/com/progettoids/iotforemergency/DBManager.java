@@ -72,7 +72,7 @@ public class DBManager {
         db.close();
     }
 
-    public static void salvaNotifica(String nomeNotifica, int dataNotifica) {
+    public static void saveNotifica(String nomeNotifica, int dataNotifica) {
         SQLiteDatabase db = DBHelper.getInstance(null).getWritableDatabase();
         ContentValues cv = new ContentValues();
         // Converte il formato Date in String per salvarlo nel DB
@@ -185,6 +185,20 @@ public class DBManager {
         return posizione;
     }
 
+    /**
+     * Aggiorna lo stato del nodo ricevuto dal server nel DB locale
+     * @param codice del nodo interessato
+     * @param stato aggiornato del suddetto
+     */
+    public static void updateStatoNodo(String codice, int stato) {
+        SQLiteDatabase db = DBHelper.getInstance(null).getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(DatabaseStrings.FIELD_NODO_STATO, stato);
+        db.update(DatabaseStrings.TBL_NAME_NODO, cv, DatabaseStrings.FIELD_NODO_CODICE
+                + "=" + "'" + codice + "'", null);
+        db.close();
+    }
+
     // Restituisce il codice del nodo associato con il codice beacon dato in input
     public static String getNodo(String mac_beacon){
         String codice_nodo="";
@@ -254,11 +268,11 @@ public class DBManager {
         cv.put(DatabaseStrings.FIELD_T_POSIZIONE_EMERGENZA, param[8]);
         cv.put(DatabaseStrings.FIELD_MAX_TRY_BEACON, param[9]);
         cv.put(DatabaseStrings.FIELD_FILTRO_BLE, filtroBeacon);
-        cv.put(DatabaseStrings.FIELD_ID_PARAM, 0);
+        //cv.put(DatabaseStrings.FIELD_ID_PARAM, 0);
 
-      //  db.update(DatabaseStrings.TBL_NAME_PARAMETRI, cv, DatabaseStrings.FIELD_ID_PARAM
-       //         + "=" + "'" + 0 + "'", null);
-        db.insert(DatabaseStrings.TBL_NAME_PARAMETRI,null, cv);
+        db.update(DatabaseStrings.TBL_NAME_PARAMETRI, cv, DatabaseStrings.FIELD_ID_PARAM
+               + "=" + "'" + 0 + "'", null);
+        //db.insert(DatabaseStrings.TBL_NAME_PARAMETRI, null, cv);
         db.close();
     }
 
@@ -281,6 +295,7 @@ public class DBManager {
      */
     public static Object[] loadParametri() {
         Object[] param = new Object[11];
+        // TODO
         // load from DB
         return param;
     }

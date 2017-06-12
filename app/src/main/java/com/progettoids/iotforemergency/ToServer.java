@@ -18,6 +18,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class ToServer {
+
     private final Handler sender = new Handler();
     private Parametri mParametri;
     private DriverServer mDriverServer;
@@ -33,14 +34,13 @@ public class ToServer {
             if(!datiArrayList.isEmpty()) {
                 inviaDatiAmb(datiArrayList);
             }
-            //ricezioneNotifica();
             sender.postDelayed(sendDatiAmb, mParametri.timerDatiAmb());
         }
     };
 
-    public ToServer(DriverServer ds) {
+    public ToServer(DriverServer ds, Parametri pa) {
         mDriverServer = ds;
-        mParametri = Parametri.getInstance();
+        mParametri = pa;
     }
 
     // Attiva e disattiva invio dati ambientali al server
@@ -52,6 +52,7 @@ public class ToServer {
         }
     }
 
+    // Invio dati ambientali al server
     public void inviaDatiAmb(ArrayList<String[]> elencoBeacon) {
 
         String urlDA = Parametri.URL_SERVER.concat("/dati");
@@ -151,14 +152,14 @@ public class ToServer {
         progDialog.show();
     }
 
-    // public void inviaPos(String id_utente, int[] position) {
+    // Invia la posizione dell'utente al server
     public void inviaPos(String id_utente, String id_nodo) {
         Log.i("DriverServer:","inviaPos: Invio in corso........................................................");
         JSONObject json = new JSONObject();
         JSONObject posizioneUtenteJson = new JSONObject();
         String urlPos = Parametri.URL_SERVER.concat("/posizione");
         try{
-            posizioneUtenteJson.put("id_utente", id_utente );
+            posizioneUtenteJson.put("id_utente", id_utente);
             posizioneUtenteJson.put("id_nodo",id_nodo);
             json.put("posizione_utente",posizioneUtenteJson);
         }catch(JSONException e){

@@ -25,24 +25,19 @@ public class LoginActivity extends Activity {
     private CheckBox ricordami;
     private Login loginUtils;
     private boolean flag1stLog;
-    private static final int NUMERO_NODI=63;
     private DriverServer mDriverServer;
-    private Parametri mParametri;
     private DBHelper mDBhelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         loginUtils = new Login();
         flag1stLog = true;
         mDBhelper = DBHelper.getInstance(context);
-        mParametri = Parametri.getInstance();
         mDriverServer = DriverServer.getInstance(context);
         login();
-        //loginGuest();
-
+        registrazione();
         btnLoginGuest=(Button)findViewById(R.id.buttonLoginGuest);
         btnLoginGuest.setOnClickListener( new View.OnClickListener(){
             @Override
@@ -50,13 +45,9 @@ public class LoginActivity extends Activity {
                 mDriverServer.inviaLoginGuest(getMacAddr());
             }
         });
-        registrazione();
-
-        // Spostare in dbhelper con connessione al server per primo sync
-        // deve essere fatto prima di creare gli altri oggetti Server in modo bloccante
-        gestioneCreazineDB();
     }
 
+    // Pulsante login
     public void login() {
         btnLogin=(Button)findViewById(R.id.buttonLogin);
         editUser=(EditText)findViewById(R.id.username);
@@ -131,6 +122,7 @@ public class LoginActivity extends Activity {
         }
     }
 
+    // Invocato da driverServer solo se l'utente ospite è registrato sul server con successo
     public void loginGuest() {
                 Bundle bundle = new Bundle();
                 bundle.putString("welcomeMsg", "Benvenuto Utente Guest");
@@ -146,6 +138,7 @@ public class LoginActivity extends Activity {
                 editor.commit();
     }
 
+    // Recupera il macAddress del dispositivo wifi del telefono e lo associa all'utente guest
     public static String getMacAddr() {
         try {
             List<NetworkInterface> all = Collections.list(NetworkInterface.getNetworkInterfaces());
@@ -172,6 +165,7 @@ public class LoginActivity extends Activity {
         return "02:00:00:00:00:00";
     }
 
+    // Pulsante registrazione
     public void registrazione() {
         btnRegistrati=(Button)findViewById(R.id.buttonRegistrati);
         btnRegistrati.setOnClickListener( new View.OnClickListener(){
@@ -184,6 +178,7 @@ public class LoginActivity extends Activity {
         });
     }
 
+    // Verifica che nei campi login e pwd non siano presenti caratteri illeciti
     public boolean controlloCampi() {
         if(Pattern.matches("[a-zA-Z0-9_-]*", editUser.getText().toString())&&Pattern.matches("[a-zA-Z0-9_-]*", editPass.getText().toString()))
         {
@@ -195,65 +190,7 @@ public class LoginActivity extends Activity {
         }
     }
 
-    public void gestioneCreazineDB(){
-
-        int result = (isFirst(this)) ? 1 : 0;
-        Log.i("result INTERO:",String.valueOf(result));
-
-
-        // ENTRA IN QUESTO IF SOLO SE E' LA PRIMA VOLTA CHE VIENE AVVIATA L'APPLICAZIONI
-        if(result==1){
-            DBManager dbManager;
-
-            Log.i("b","inizio creazione db");
-
-            for (int i=0;i<NUMERO_NODI;i++) {
-                String codice = DatabaseStrings.codice[i];
-           /*     String posizione_x = String.valueOf(DatabaseStrings.posizione_x[i]);
-                String posizione_y = String.valueOf(DatabaseStrings.posizione_y[i]);
-                String quota = String.valueOf(DatabaseStrings.quota[i]);
-
-          */
-                int posizione_x = DatabaseStrings.posizione_x[i];
-                int posizione_y = DatabaseStrings.posizione_y[i];
-                int quota = DatabaseStrings.quota[i];
-                Log.i("Login:", codice);
-
-                if (i == 34){
-                    DBManager.saveNodo(codice, posizione_x, posizione_y, quota);
-                }
-                else if(i==35){
-                    DBManager.saveNodo(codice, posizione_x, posizione_y, quota);
-                }
-                else if(i==36){
-                    DBManager.saveNodo(codice, posizione_x, posizione_y, quota);
-                }
-                else{
-                    DBManager.saveNodo(codice,posizione_x,posizione_y,quota);
-                }
-            }
-            for (int i=0;i<4;i++) {
-                DBManager.salvaNotifica(DatabaseStrings.nome_notifica[i], 0);
-            }
-            DBManager.saveBeacon("B0:B4:48:BD:93:82","155R4");
-           // provaStoriaUtente3(dbManager);
-        }
-    }
-/*
-    public void provaStoriaUtente3(DBManager dbManager){
-        int[] position=dbManager.getPosition("B0:B4:48:BD:93:82");
-
-        //DriverServer driverServer=new DriverServer(context);
-        String android_id = Settings.Secure.getString( this.getContentResolver(),
-                Settings.Secure.ANDROID_ID);
-
-        Log.d("Android","Android ID : "+android_id);
-
-        if(loginUtils.getUser()!=null){
-            mDriverServer.sendPosition(loginUtils.getUser(),position);
-        }
-    }
-*/
+    // Verifica se l'App è avviata per la prima volta
     public static boolean isFirst(Context context){
 
         final SharedPreferences reader = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
@@ -266,6 +203,7 @@ public class LoginActivity extends Activity {
         return first;
     }
 
+    // Mostra un dialog se il login ha successo o meno
     public void mostraDialog(Boolean flag) {
 
         // Se lo username non è presente sul server l'allert rimanda alla pagina di login, altrimenti rimane aperta l'acticity per la registrazione
@@ -284,6 +222,7 @@ public class LoginActivity extends Activity {
         }
     }
 
+    // Mostra un dialog in caso di errore di connessione
     public void mostraDialog(String err) {
         // Se lo username non è presente sul server l'allert rimanda alla pagina di login, altrimenti rimane aperta l'acticity per la registrazione
             AlertDialog.Builder errorAlert = new AlertDialog.Builder(context);

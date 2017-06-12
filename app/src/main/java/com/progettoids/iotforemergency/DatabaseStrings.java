@@ -1,9 +1,5 @@
 package com.progettoids.iotforemergency;
 
-/**
- * Created by matteotempesta on 02/03/17.
- */
-
 public class DatabaseStrings {
     /*
     CAMPI NODO

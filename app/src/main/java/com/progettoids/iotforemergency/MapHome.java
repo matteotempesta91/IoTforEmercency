@@ -55,6 +55,9 @@ public class MapHome extends AppCompatImageView {
         setScaleType(ScaleType.MATRIX);
         pixelPos = new int[]{0,0};
 
+        DriverServer mDriverServer = DriverServer.getInstance(null);
+        mDriverServer.mFromServer.mapHomeAlive(this);
+
         bmPos = BitmapFactory.decodeResource(getResources(), R.drawable.posizione);
         bmInc = BitmapFactory.decodeResource(getResources(), R.drawable.incendio);
         bmCrollo = BitmapFactory.decodeResource(getResources(), R.drawable.crollo);
@@ -166,6 +169,9 @@ public class MapHome extends AppCompatImageView {
         bmMap.recycle();
         bmNodi.recycle();
         setImageResource(android.R.color.transparent);
+        // Ricorda di notificare FromServer della chiusura della mappa
+        DriverServer mDriverServer = DriverServer.getInstance(null);
+        mDriverServer.mFromServer.mapHomeAlive(null);
     }
 
 // ------------------------------------ CONVERSIONE -------------------------------------------------------------
@@ -279,45 +285,53 @@ public class MapHome extends AppCompatImageView {
         //this.setImageBitmap(bmMap);
     }
 
-    // Disegna la notifica di pericolo sul nodo corrispondente
-    public void disegnaStatoNodo(int stato, int x, int y, int z) {
-        int[] pixelCoord = {0, 0};
+    // Disegna la notifica di pericolo sui nodi corrispondenti
+    public void updateStatoNodi() {
+        Cursor cr = DBManager.getStatoNodi();
         Canvas canvas = new Canvas(bmNodi);
-        // In base alla quota in cui si trova il nodo effettua la giusta onversione di coordinate da metri in pixel
-        switch (z) {
-            case 145:
-                pixelCoord = conversioneCoordQ145(x, y);
-                break;
-            case 150:
-                pixelCoord = conversioneCoordQ150(x, y);
-                break;
-            case 155:
-                pixelCoord = conversioneCoordQ155(x, y);
-                break;
-        }
-        // prende come riferimento il centro dell'icona anzichè l'angolo in alto a sinistra
-        pixelCoord[0] = pixelCoord[0] - bmInc.getWidth() / 2;
-        pixelCoord[1] = pixelCoord[1] - bmInc.getHeight() / 2;
+        while (cr.moveToNext()) {
+            int stato = cr.getInt(0);
+            int x = cr.getInt(1);
+            int y = cr.getInt(2);
+            int z = cr.getInt(3);
+            int[] pixelCoord = {0, 0};
+            // In base alla quota in cui si trova il nodo effettua la giusta onversione di coordinate da metri in pixel
+            switch (z) {
+                case 145:
+                    pixelCoord = conversioneCoordQ145(x, y);
+                    break;
+                case 150:
+                    pixelCoord = conversioneCoordQ150(x, y);
+                    break;
+                case 155:
+                    pixelCoord = conversioneCoordQ155(x, y);
+                    break;
+            }
+            // prende come riferimento il centro dell'icona anzichè l'angolo in alto a sinistra
+            pixelCoord[0] = pixelCoord[0] - bmInc.getWidth() / 2;
+            pixelCoord[1] = pixelCoord[1] - bmInc.getHeight() / 2;
 
-        // In base al tipo di notifica che riceve disegna l'icona dello stato del nodo (incendio, crollo, o affollamento) sulla mappa
-        switch (stato) {
-            case 0:                 // Nessun pericolo
-                int w = bmInc.getWidth();
-                int h = bmInc.getHeight();
-                int[] pix = new int[w*h];
-                Arrays.fill(pix, 0x0000);
-                bmNodi.setPixels(pix, 0, w, pixelCoord[0], pixelCoord[1], w, h);
-                break;
-            case 1:                 // Incendio
-                canvas.drawBitmap(bmInc, pixelCoord[0], pixelCoord[1], null);
-                break;
-            case 2:                 // Crollo
-                canvas.drawBitmap(bmCrollo, pixelCoord[0], pixelCoord[1], null);
-                break;
-            case 3:                 // Affollato
-                canvas.drawBitmap(bmAffollato, pixelCoord[0], pixelCoord[1], null);
-                break;
+            // In base al tipo di notifica che riceve disegna l'icona dello stato del nodo (incendio, crollo, o affollamento) sulla mappa
+            switch (stato) {
+                case 0:                 // Nessun pericolo
+                    int w = bmInc.getWidth();
+                    int h = bmInc.getHeight();
+                    int[] pix = new int[w*h];
+                    Arrays.fill(pix, 0x0000);
+                    bmNodi.setPixels(pix, 0, w, pixelCoord[0], pixelCoord[1], w, h);
+                    break;
+                case 1:                 // Incendio
+                    canvas.drawBitmap(bmInc, pixelCoord[0], pixelCoord[1], null);
+                    break;
+                case 2:                 // Crollo
+                    canvas.drawBitmap(bmCrollo, pixelCoord[0], pixelCoord[1], null);
+                    break;
+                case 3:                 // Affollato
+                    canvas.drawBitmap(bmAffollato, pixelCoord[0], pixelCoord[1], null);
+                    break;
+            }
         }
+        setBitmap();
     }
 
 //  -------------------------------------------------------------------------------------
@@ -462,21 +476,8 @@ public class MapHome extends AppCompatImageView {
             bmMap = bmPiano;
             bmNodi = Bitmap.createBitmap(bmPiano.getWidth(), bmPiano.getHeight(), bmPiano.getConfig());
             mappa = this.quota;
-            /* debug code
-            disegnaStatoNodo(1,143,473,145); // 145A3 (vicino le scale)
-            disegnaStatoNodo(2,90,480,145);  // 145RG1 (sinistra di G1 sotto le scale)
-            disegnaStatoNodo(3,133,465,145); // 145WC1
-            disegnaStatoNodo(3,119,465,145);
-            */
-            Cursor cr = DBManager.getStatoNodi();
-            while (cr.moveToNext()) {
-                int stato = cr.getInt(0);
-                int x = cr.getInt(1);
-                int y = cr.getInt(2);
-                int z = cr.getInt(3);
-                disegnaStatoNodo(stato, x, y, z);
-            }
-            setBitmap();
+            // Include il refresh della mappa
+            updateStatoNodi();
         }
     }
 }

@@ -12,11 +12,14 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class FromServer {
+
     private final Handler sender = new Handler();
     private int dataBeacon, dataNodi, dataParam, oldDataBeacon, oldDataNodi, oldDataParam;
     private Parametri mParametri;
-    String emergenza;
+    private String emergenza;
     private DriverServer mDriverServer;
+    // Permette di aggiornare la mappa, se questa è attiva
+    private MapHome mMapHome;
 
     private Runnable getNotifiche = new Runnable() {
         @Override
@@ -26,9 +29,17 @@ public class FromServer {
         }
     };
 
-    public FromServer(DriverServer ds) {
+    private Runnable getStatoNodi =  new Runnable() {
+        @Override
+        public void run() {
+            ricezioneStatoNodi();
+            sender.postDelayed(getStatoNodi, mParametri.T_STATO_NODI);
+        }
+    };
+
+    public FromServer(DriverServer ds, Parametri pa) {
         mDriverServer = ds;
-        mParametri = Parametri.getInstance();
+        mParametri = pa;
         startUpdate(true);
     }
 
@@ -38,6 +49,15 @@ public class FromServer {
             sender.postDelayed(getNotifiche, mParametri.T_NOTIFICHE);
         } else {
             sender.removeCallbacks(getNotifiche);
+        }
+    }
+
+    // Attiva e disattiva richiesta notifiche al server
+    public void startStatoNodi(boolean onOff) {
+        if (onOff) {
+            sender.postDelayed(getStatoNodi, mParametri.T_STATO_NODI);
+        } else {
+            sender.removeCallbacks(getStatoNodi);
         }
     }
 
@@ -132,7 +152,7 @@ public class FromServer {
         mDriverServer.addToQueue(request);
     }
 
-    // Invia la get al server per la ricezione dei parametri
+    // Invia la get al server per la ricezione dei nodi
     public void ricezioneNodi() {
         String urlNodi = Parametri.URL_SERVER.concat("/tabella_nodo");
         JsonArrayRequest request = new JsonArrayRequest(
@@ -170,27 +190,43 @@ public class FromServer {
 
     // Invia la richiesta al server per ricevere i nodi il cui stato è diverso da zero
     public void ricezioneStatoNodi() {
-        String urlNotifiche = Parametri.URL_SERVER.concat("/notifiche");
+        String urlStatoNodi = Parametri.URL_SERVER.concat("/stato_nodi");
         JsonArrayRequest request = new JsonArrayRequest(
-                Request.Method.GET, urlNotifiche, null,
+                Request.Method.GET, urlStatoNodi, null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
                         try {
-                            Log.i("PROVA GET", response.getJSONObject(0).toString());
+                            for (int i=0; i<response.length(); i++) {
+                                JSONObject ele = response.getJSONObject(i);
+                                String codice = ele.getString("codice");
+                                int stato = ele.getInt("stato");
+                                DBManager.updateStatoNodo(codice, stato);
+                            }
+                            if (mMapHome != null) {
+                                mMapHome.updateStatoNodi();
+                            }
                         }
                         catch (Exception e) {
-                            Log.i("RESPONSE GET","Exception "+e.toString());
+                            Log.i("Stato nodi","Exception "+e.toString());
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        DriverServer.errorHandler("Ricezione notifiche nodi",error);
+                        DriverServer.errorHandler("Stato nodi",error);
                     }
                 });
         mDriverServer.addToQueue(request);
     }
 
+    /**
+     * Se è attiva la mappa, questa si dichiara per essere aggiornata sullo stato nodi
+     * Nota: alla sua distruzione deve invocare questo stesso metodo con input null
+     * @param map l'oggetto stesso, null alla sua distruzione
+     */
+    public void mapHomeAlive(MapHome map) {
+        mMapHome = map;
+    }
 }
