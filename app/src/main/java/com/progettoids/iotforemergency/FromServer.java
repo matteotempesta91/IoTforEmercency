@@ -2,6 +2,8 @@ package com.progettoids.iotforemergency;
 
 import android.os.Handler;
 import android.util.Log;
+import android.widget.RelativeLayout;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -14,9 +16,8 @@ import org.json.JSONObject;
 public class FromServer {
 
     private final Handler sender = new Handler();
-    private int dataBeacon, dataNodi, dataParam, oldDataBeacon, oldDataNodi, oldDataParam;
+    private int dataBeacon, dataNodi, dataParam, oldDataBeacon, oldDataNodi, oldDataParam, emergenza;
     private Parametri mParametri;
-    private String emergenza;
     private DriverServer mDriverServer;
     // Permette di aggiornare la mappa, se questa è attiva
     private MapHome mMapHome;
@@ -74,28 +75,40 @@ public class FromServer {
                         oldDataParam = DBManager.getDataNotifica("parametri");
                         oldDataNodi = DBManager.getDataNotifica("nodi");
                         oldDataBeacon = DBManager.getDataNotifica("beacon");
+                        Log.i(this.toString(), "DATA Beacon DB: "+oldDataBeacon);
+                        Log.i(this.toString(), "DATA Nodi DB: "+oldDataNodi);
+                        Log.i(this.toString(), "DATA Parametri DB: "+oldDataParam);
                         try {
                             Log.i(this.toString(), "Ricezione Notifica Emergenza RESPONSE: "+response.toString());
-                            emergenza = response.getString("nome_emergenza");
+                            emergenza = response.getInt("nome_emergenza");
                             dataBeacon = response.getInt("tabella_beacon");
                             dataNodi = response.getInt("tabella_nodo");
                             dataParam = response.getInt("tabella_parametri");
+                            Log.i(this.toString(), "DATA Beacon Server: "+dataBeacon);
+                            Log.i(this.toString(), "DATA Nodi Server: "+dataNodi);
+                            Log.i(this.toString(), "DATA Parametri Server: "+dataParam);
 
-                            Log.i(this.toString(), "DATA Beacon: "+dataBeacon);
-                            Log.i(this.toString(), "DATA NODI: "+dataNodi);
-                            Log.i(this.toString(), "DATA Parametri: "+dataParam);
+                            DBManager.updateNotifiche("emergenza",emergenza);
+                            mMapHome.disegnaEmergenza(emergenza, mMapHome.layoutHome);
 
+                            // Confronta le date nel database con quelle del server,
+                            // se il server ha delle notifica con una data più recente aggiorna invia la get per ricevere l'aggiornamento
+                            // e aggiorna la data nel DB locale
                             if(dataBeacon > oldDataBeacon){
                                 Log.i(this.toString(), "Trovato Aggiornamento Beacon");
+                                ricezioneBeacon();
+                                DBManager.updateNotifiche("beacon",dataBeacon);
 
                             }
                             if(dataNodi > oldDataNodi){
                                 Log.i(this.toString(), "Trovato Aggiornamento Nodi");
                                 ricezioneNodi();
+                                DBManager.updateNotifiche("nodi",dataNodi);
                             }
                             if(dataParam > oldDataParam){
                                 Log.i(this.toString(), "Trovato Aggiornamento Parametri");
                                 ricezioneParametri();
+                                DBManager.updateNotifiche("parametri",dataParam);
                             }
                         }
                         catch (Exception e) {
@@ -183,6 +196,40 @@ public class FromServer {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         DriverServer.errorHandler("Ricezione tabella nodo",error);
+                    }
+                });
+        mDriverServer.addToQueue(request);
+    }
+
+    // Invia la get al server per la ricezione dei Beacon
+    public void ricezioneBeacon() {
+        String urlBeacon = Parametri.URL_SERVER.concat("/tabella_beacon");
+        JsonArrayRequest request = new JsonArrayRequest(
+                Request.Method.GET, urlBeacon, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.i(this.toString(),"ricezioneBeacon: Aggiornamento Nodi");
+                        // Cancella i valori memorizzati prececentemente sulla tabella nodi
+                        DBManager.deleteBeacon();
+                        try {
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject element = response.getJSONObject(i);
+                                String beaconID = element.getString("mac");
+                                String nodoID = element.getString("codice");
+                                DBManager.saveBeacon(beaconID, nodoID);
+                            }
+                            // aggiungere alert per riavviare l'app
+                        }
+                        catch (Exception e) {
+                            Log.i(this.toString(),"ricezioneBeacon EXCEPTION: "+e.toString());
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        DriverServer.errorHandler("Ricezione tabella Beacon",error);
                     }
                 });
         mDriverServer.addToQueue(request);

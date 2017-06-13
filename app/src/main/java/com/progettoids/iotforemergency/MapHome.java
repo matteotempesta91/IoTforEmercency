@@ -43,6 +43,7 @@ public class MapHome extends AppCompatImageView {
     private Bitmap bmMap, bmNodi, bmPos, bmInc, bmCrollo, bmAffollato;
     private int mappa;
     private int[] pixelPos;
+    public RelativeLayout layoutHome;
 
     public MapHome(final Context context, AttributeSet attr) {
         super(context, attr);
@@ -54,7 +55,7 @@ public class MapHome extends AppCompatImageView {
         setImageMatrix(matrix);
         setScaleType(ScaleType.MATRIX);
         pixelPos = new int[]{0,0};
-
+        layoutHome =(RelativeLayout)findViewById(R.id.activity_home);
         DriverServer mDriverServer = DriverServer.getInstance(null);
         mDriverServer.mFromServer.mapHomeAlive(this);
 
@@ -255,11 +256,14 @@ public class MapHome extends AppCompatImageView {
     }
 
     // Disegna la cornice_red intorno alla mappa in base allo stato di emergenza che riceve in ingresso
+    // lo stato è il tipo di emergenza, layout è il layout della home
     public void disegnaEmergenza(int stato, RelativeLayout layout) {
+    //public void disegnaEmergenza(int stato) {
         //Paint linePaint = new Paint();              // linePaint definisce lo stile della cornice_red
         //linePaint.setStrokeWidth(30);               // Spessore della cornice_red
         //linePaint.setColor( Color.GREEN );          // Colore di default della cornice_red = verde
         // Cambia il colore della cornice_red in base allo stato che riceve in ingresso
+        //RelativeLayout layout =(RelativeLayout)findViewById(R.id.activity_home);
         switch (stato) {
             case 1:
                 layout.setBackgroundResource(R.drawable.cornice_green);         // Colore per nessuna emergenza (verde)

@@ -70,10 +70,10 @@ public class HomeActivity extends Activity {
     @Override
     public void onPostCreate(Bundle savedInstance) {
         super.onPostCreate(savedInstance);
-        RelativeLayout layout =(RelativeLayout)findViewById(R.id.activity_home);
+        RelativeLayout layoutHome =(RelativeLayout)findViewById(R.id.activity_home);
 
         // Debug code
-        mapHome.disegnaEmergenza(2,layout);         // disegna la cornice per l'emergenza
+        mapHome.disegnaEmergenza(0,layoutHome);         // disegna la cornice per l'emergenza
        // mapHome.disegnaPosizione(133,480,145);
     }
 

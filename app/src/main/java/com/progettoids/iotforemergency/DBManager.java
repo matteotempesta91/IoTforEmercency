@@ -65,7 +65,7 @@ public class DBManager {
 
         try {
             db.insert(DatabaseStrings.TBL_NAME_BEACON, null, cv);
-            Log.i("DBManager", "Beacon salvato");
+            Log.i("DBManager", "Beacon" +mac+ "salvato");
         } catch (SQLiteException sqle) {
             Log.e("DBManager", "Errore sql saveBeacon");
         }
@@ -143,7 +143,7 @@ public class DBManager {
         SQLiteDatabase db = DBHelper.getInstance(null).getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(DatabaseStrings.FIELD_NOTIFICA_DATA, dataNotifica);
-        db.update(DatabaseStrings.TBL_NAME_BEACON, cv, DatabaseStrings.FIELD_BEACON_MAC
+        db.update(DatabaseStrings.TBL_NAME_NOTIFICA, cv, DatabaseStrings.FIELD_NOTIFICA_NOME
                 + "=" + "'" + nomeNotifica + "'", null);
         db.close();
     }

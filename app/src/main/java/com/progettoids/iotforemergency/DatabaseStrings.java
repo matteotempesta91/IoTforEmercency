@@ -61,7 +61,7 @@ public class DatabaseStrings {
             "nodi",
             "beacon",
             "parametri",
-            "noEmergenza"
+            "emergenza"
     };
 
     public static final int[] posizione_x = {
