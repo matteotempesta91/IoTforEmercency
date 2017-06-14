@@ -89,7 +89,9 @@ public class FromServer {
                             Log.i(this.toString(), "DATA Parametri Server: "+dataParam);
 
                             DBManager.updateNotifiche("emergenza",emergenza);
-                            mMapHome.disegnaEmergenza(emergenza, mMapHome.layoutHome);
+                            if (mMapHome != null) {
+                                mMapHome.disegnaEmergenza(emergenza);
+                            }
 
                             // Confronta le date nel database con quelle del server,
                             // se il server ha delle notifica con una data più recente aggiorna invia la get per ricevere l'aggiornamento

@@ -122,7 +122,7 @@ public class LoginActivity extends Activity {
         }
     }
 
-    // Invocato da driverServer solo se l'utente ospite è registrato sul server con successo
+    // Invocato da driverServer
     public void loginGuest() {
                 Bundle bundle = new Bundle();
                 bundle.putString("welcomeMsg", "Benvenuto Utente Guest");
@@ -201,6 +201,13 @@ public class LoginActivity extends Activity {
             editor.commit();
         }
         return first;
+    }
+
+    public static void setFirst(Context context){
+        final SharedPreferences reader = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
+            final SharedPreferences.Editor editor = reader.edit();
+            editor.putBoolean("is_first", true);
+            editor.commit();
     }
 
     // Mostra un dialog se il login ha successo o meno

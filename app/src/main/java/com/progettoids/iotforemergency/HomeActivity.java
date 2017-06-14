@@ -27,6 +27,7 @@ public class HomeActivity extends Activity {
     private Localizzatore locMe;
     private MapHome mapHome;
     private DriverServer mDriverServer;
+    public RelativeLayout layoutHome;
 
     // Id necessari per tracciare le richieste effettuate al sistema
     static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
@@ -70,10 +71,10 @@ public class HomeActivity extends Activity {
     @Override
     public void onPostCreate(Bundle savedInstance) {
         super.onPostCreate(savedInstance);
-        RelativeLayout layoutHome =(RelativeLayout)findViewById(R.id.activity_home);
+        layoutHome =(RelativeLayout)findViewById(R.id.activity_home);
 
         // Debug code
-        mapHome.disegnaEmergenza(0,layoutHome);         // disegna la cornice per l'emergenza
+        //mapHome.disegnaEmergenza(0);         // disegna la cornice per l'emergenza
        // mapHome.disegnaPosizione(133,480,145);
     }
 

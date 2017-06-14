@@ -223,6 +223,7 @@ public class DBManager {
                 +DatabaseStrings.TBL_NAME_NOTIFICA+" WHERE "+DatabaseStrings.FIELD_NOTIFICA_NOME+"='"+nomeNotifica+"';";
 
         Log.i("DBManager","getDataNotifica query:"+query);
+
         Cursor c = db.rawQuery(query, null);
         //dataFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
         while(c.moveToNext()){
@@ -268,11 +269,32 @@ public class DBManager {
         cv.put(DatabaseStrings.FIELD_T_POSIZIONE_EMERGENZA, param[8]);
         cv.put(DatabaseStrings.FIELD_MAX_TRY_BEACON, param[9]);
         cv.put(DatabaseStrings.FIELD_FILTRO_BLE, filtroBeacon);
-        //cv.put(DatabaseStrings.FIELD_ID_PARAM, 0);
-
         db.update(DatabaseStrings.TBL_NAME_PARAMETRI, cv, DatabaseStrings.FIELD_ID_PARAM
                + "=" + "'" + 0 + "'", null);
-        //db.insert(DatabaseStrings.TBL_NAME_PARAMETRI, null, cv);
+        db.close();
+    }
+
+    public static void saveParametri(int[] param, String filtroBeacon) {
+        SQLiteDatabase db = DBHelper.getInstance(null).getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(DatabaseStrings.FIELD_ID_PARAM, 0);
+        cv.put(DatabaseStrings.FIELD_T_NOTIFICHE, param[0]);
+        cv.put(DatabaseStrings.FIELD_T_STATO_NODI, param[1]);
+        cv.put(DatabaseStrings.FIELD_T_SCAN, param[2]);
+        cv.put(DatabaseStrings.FIELD_T_SCAN_EMERGENZA, param[3]);
+        cv.put(DatabaseStrings.FIELD_T_SCAN_PERIOD, param[4]);
+        cv.put(DatabaseStrings.FIELD_T_DATIAMB, param[5]);
+        cv.put(DatabaseStrings.FIELD_T_DATIAMB_EMERGENZA, param[6]);
+        cv.put(DatabaseStrings.FIELD_T_POSIZIONE, param[7]);
+        cv.put(DatabaseStrings.FIELD_T_POSIZIONE_EMERGENZA, param[8]);
+        cv.put(DatabaseStrings.FIELD_MAX_TRY_BEACON, param[9]);
+        cv.put(DatabaseStrings.FIELD_FILTRO_BLE, filtroBeacon);
+        try {
+            db.insert(DatabaseStrings.TBL_NAME_PARAMETRI, null, cv);
+            Log.i("DBManager", "Parametri salvati");
+        } catch (SQLiteException sqle) {
+            Log.e("DBManager", "Errore sql saveBeacon");
+        }
         db.close();
     }
 
@@ -295,8 +317,26 @@ public class DBManager {
      */
     public static Object[] loadParametri() {
         Object[] param = new Object[11];
-        // TODO
-        // load from DB
+        SQLiteDatabase db = DBHelper.getInstance(null).getReadableDatabase();
+        String query = "SELECT * FROM "
+                +DatabaseStrings.TBL_NAME_PARAMETRI+";";
+
+        Log.i("DBManager","loadParametri query:"+query);
+        Cursor c = db.rawQuery(query, null);
+        c.moveToNext();
+        param[0] = c.getInt(c.getColumnIndex(DatabaseStrings.FIELD_T_NOTIFICHE));
+        param[1] = c.getInt(c.getColumnIndex(DatabaseStrings.FIELD_T_STATO_NODI));
+        param[2] = c.getInt(c.getColumnIndex(DatabaseStrings.FIELD_T_SCAN));
+        param[3] = c.getInt(c.getColumnIndex(DatabaseStrings.FIELD_T_SCAN_EMERGENZA));
+        param[4] = c.getInt(c.getColumnIndex(DatabaseStrings.FIELD_T_SCAN_PERIOD));
+        param[5] = c.getInt(c.getColumnIndex(DatabaseStrings.FIELD_T_DATIAMB));
+        param[6] = c.getInt(c.getColumnIndex(DatabaseStrings.FIELD_T_DATIAMB_EMERGENZA));
+        param[7] = c.getInt(c.getColumnIndex(DatabaseStrings.FIELD_T_POSIZIONE));
+        param[8] = c.getInt(c.getColumnIndex(DatabaseStrings.FIELD_T_POSIZIONE_EMERGENZA));
+        param[9] = c.getInt(c.getColumnIndex(DatabaseStrings.FIELD_MAX_TRY_BEACON));
+        param[10] = c.getString(c.getColumnIndex(DatabaseStrings.FIELD_FILTRO_BLE));
+        c.close();
+        db.close();
         return param;
     }
 }

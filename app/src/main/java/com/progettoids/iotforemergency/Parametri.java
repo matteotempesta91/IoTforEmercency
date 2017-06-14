@@ -45,7 +45,7 @@ class Parametri {
      */
     private Parametri() {
         Object[] param = DBManager.loadParametri();
-
+/*
         // valori su app
         T_NOTIFICHE = 6000;
         T_STATO_NODI = 6000;
@@ -58,8 +58,8 @@ class Parametri {
         T_POSIZIONE_EMERGENZA = 12000;
         MAX_TRY_BEACON = 5;
         FILTRO_BLE_DEVICE = "CC2650 SensorTag";
+*/
 
-        /*
         T_NOTIFICHE = (int) param[0];
         T_STATO_NODI = (int) param[1];
         T_SCAN = (int) param[2];
@@ -71,7 +71,7 @@ class Parametri {
         T_POSIZIONE_EMERGENZA = (int) param[8];
         MAX_TRY_BEACON = (int) param[9];
         FILTRO_BLE_DEVICE = (String) param[10];
-         */
+
     }
 
     /**

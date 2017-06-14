@@ -21,6 +21,7 @@ public class DriverServer {
     public ToServer mToServer;
     public FromServer mFromServer;
     private Parametri mParametri;
+    private Boolean first;
     // Questo campo contiene il primo context: ovvero quello di loginActivity
     private Context contextLogin;
 
@@ -28,7 +29,7 @@ public class DriverServer {
         contextLogin = cont;                    // Viene inizializzato con il context di loginActivity
         queue = Volley.newRequestQueue(contextLogin);
         loginValido = false;
-        boolean first = LoginActivity.isFirst(cont);
+        first = LoginActivity.isFirst(cont);
         if (first) {
             firstUpdateDB();
         } else {
@@ -153,7 +154,7 @@ public class DriverServer {
     *   scarica dal server le tabelle necessarie al funzionamento dell'app.
     */
     private void firstUpdateDB() {
-        /*
+
         final ProgressDialog progDialog = new ProgressDialog(contextLogin);    // finestra di caricamente in attesa della risposta del server
         String urlGetDB = Parametri.URL_SERVER.concat("/database");
         JsonObjectRequest request = new JsonObjectRequest(
@@ -161,8 +162,61 @@ public class DriverServer {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.i("GET Response","ricevuta");
-                        // TODO
+                        Log.i(this.toString(),"firstUpdateDB RICEZIONE: "+response.toString());
+                        try {
+                            //decodifica il JSONArray contenente i JSONObject dei nodi
+                            JSONArray arrayNodi;
+                            arrayNodi = response.getJSONArray("tabella_nodo");
+                            for(int i =0;i<arrayNodi.length();i++) {
+                                JSONObject elementNodi = arrayNodi.getJSONObject(i);
+                                String codiceNodo = elementNodi.getString("codice");
+                                int x = elementNodi.getInt("posx");
+                                int y = elementNodi.getInt("posy");
+                                int z = elementNodi.getInt("posz");
+                                DBManager.saveNodo(codiceNodo, x, y, z);
+                            }
+
+                            //decodifica il JSONArray contenente i JSONObject dei beacon
+                            JSONArray arrayBeacon;
+                            arrayBeacon = response.getJSONArray("tabella_beacon");
+                            for(int i =0;i<arrayBeacon.length();i++) {
+                                JSONObject elementBeacon = arrayBeacon.getJSONObject(i);
+                                String codiceBeacon = elementBeacon.getString("mac");
+                                String codiceNodo = elementBeacon.getString("codice");
+                                DBManager.saveBeacon(codiceBeacon, codiceNodo);
+                            }
+
+                            //decodifica il JSONObject delle notifiche
+                            JSONObject notifiche = response.getJSONObject("tabella_notifica");
+                            int[] data = new int[4];
+                            data[0] = notifiche.getInt("tabella_nodo");
+                            data[1] = notifiche.getInt("tabella_beacon");
+                            data[2] = notifiche.getInt("tabella_parametri");
+                            data[3] = notifiche.getInt("nome_emergenza");
+
+                            for(int i=0;i<4;i++) {
+                                DBManager.saveNotifica(DatabaseStrings.nome_notifica[i], data[i]);
+                            }
+
+                            //decodifica il JSONObject dei parametri
+                            JSONObject parametriJson = response.getJSONObject("tabella_parametri");
+                            int[] parametri = new int[10];
+                            parametri[0] = parametriJson.getInt("t_notifiche");
+                            parametri[1] = parametriJson.getInt("t_nodo");
+                            parametri[2] = parametriJson.getInt("t_scan");
+                            parametri[3] = parametriJson.getInt("t_scan_emergenza");
+                            parametri[4] = parametriJson.getInt("t_scan_period");
+                            parametri[5] = parametriJson.getInt("t_datiamb");
+                            parametri[6] = parametriJson.getInt("t_datiamb_emergenza");
+                            parametri[7] = parametriJson.getInt("t_posizione");
+                            parametri[8] = parametriJson.getInt("t_posizione_emergenza");
+                            parametri[9] = parametriJson.getInt("max_try_beacon");
+                            String filtroBeacon = parametriJson.getString("filtro_ble");
+                            DBManager.saveParametri(parametri, filtroBeacon);
+                        } catch (Exception e)
+                        {
+                            Log.i("DriverServer",e.toString());
+                        }
                         progDialog.dismiss();
                         mParametri = Parametri.getInstance();
                         mToServer = new ToServer(mDriverServer, mParametri);
@@ -172,13 +226,16 @@ public class DriverServer {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        LoginActivity.setFirst(contextLogin);
                         progDialog.dismiss();
                         errorHandler("Get DataBase",error);
                     }
                 });
         addToQueue(request);
+        progDialog.setTitle("Aggiornamento in corso...");
+        progDialog.setMessage("Attendere prego");
         progDialog.show();
-        */
+/*
          // Debug code
         for (int i=0; i<63; i++) {
             String codice = DatabaseStrings.codice[i];
@@ -205,8 +262,8 @@ public class DriverServer {
         }
         DBManager.saveBeacon("B0:B4:48:BD:93:82","155R4");
         mParametri = Parametri.getInstance();
-        mToServer = new ToServer(mDriverServer, mParametri);
-        mFromServer = new FromServer(mDriverServer, mParametri);
+        mToServer = new ToServer(this, mParametri);
+        mFromServer = new FromServer(this, mParametri);
         //*/
     }
 
