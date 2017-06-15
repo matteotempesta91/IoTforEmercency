@@ -2,6 +2,7 @@ package com.progettoids.iotforemergency;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -229,13 +230,33 @@ public class LoginActivity extends Activity {
         }
     }
 
-    // Mostra un dialog in caso di errore di connessione
-    public void mostraDialog(String err) {
+    // Mostra un dialog in caso di errore di connessione, se in numero errore è 1 allora l'appviene riavviata
+    public void mostraDialog(String err, int numErr) {
         // Se lo username non è presente sul server l'allert rimanda alla pagina di login, altrimenti rimane aperta l'acticity per la registrazione
-            AlertDialog.Builder errorAlert = new AlertDialog.Builder(context);
-            errorAlert.setTitle("Errore di Connessione");
+        final AlertDialog.Builder errorAlert = new AlertDialog.Builder(context);
+        errorAlert.setTitle("Errore di Connessione");
+        if(numErr == 1) {
+            errorAlert.setMessage("Errore Critico: "+err);
+            errorAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    System.exit(0);
+                }
+            });
+        } else {
             errorAlert.setMessage(err);
-            AlertDialog alert = errorAlert.create();
-            alert.show();
+            errorAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+        }
+
+        AlertDialog alert = errorAlert.create();
+        //
+        alert.setCanceledOnTouchOutside(false);
+        alert.setCancelable(false);
+        alert.show();
     }
 }

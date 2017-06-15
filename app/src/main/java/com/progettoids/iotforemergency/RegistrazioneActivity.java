@@ -115,7 +115,7 @@ public class RegistrazioneActivity extends Activity {
         }
     }
 
-    public void mostraDialog(Boolean flag) {
+    public void mostraDialog(Boolean flag, String message) {
         AlertDialog.Builder miaAlert = new AlertDialog.Builder(context);
         // Se lo username non è presente sul server l'allert rimanda alla pagina di login, altrimenti rimane aperta l'acticity per la registrazione
         if (flag) {
@@ -129,7 +129,7 @@ public class RegistrazioneActivity extends Activity {
             });
         } else {
             miaAlert.setTitle("Errore Registrazione");
-            miaAlert.setMessage("Username già presente");
+            miaAlert.setMessage(message);
         }
         AlertDialog alert = miaAlert.create();
         alert.show();

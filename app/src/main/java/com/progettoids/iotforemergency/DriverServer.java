@@ -100,6 +100,7 @@ public class DriverServer {
                     public void onErrorResponse(VolleyError error) {
                         // Chiude la progress dialog quando il server risponde errore alla richiesta di login
                         progDialog.dismiss();
+                        ((LoginActivity)contextLogin).mostraDialog("Login non riuscito",0);
                         errorHandler("Login",error);
                     }
                 });
@@ -141,6 +142,7 @@ public class DriverServer {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progDialog.dismiss();
+                        ((LoginActivity)contextLogin).mostraDialog("Login Guest non riuscito",0);
                         errorHandler("Login Guest",error);
                     }
                 });
@@ -229,6 +231,7 @@ public class DriverServer {
                         LoginActivity.setFirst(contextLogin);
                         progDialog.dismiss();
                         errorHandler("Get DataBase",error);
+                        ((LoginActivity)contextLogin).mostraDialog("Database non reperibile, riavviare l'App",1);
                     }
                 });
         addToQueue(request);

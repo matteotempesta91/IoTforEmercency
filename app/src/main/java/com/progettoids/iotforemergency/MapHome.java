@@ -62,8 +62,8 @@ public class MapHome extends AppCompatImageView {
         bmCrollo = BitmapFactory.decodeResource(getResources(), R.drawable.crollo);
         bmAffollato = BitmapFactory.decodeResource(getResources(), R.drawable.affollamento);
 
-        LoadMap lmap = new LoadMap(150);
-        lmap.execute(getResources());
+        //LoadMap lmap = new LoadMap(150);
+        //lmap.execute(getResources());
 
         setOnTouchListener(new OnTouchListener() {
 
@@ -444,6 +444,15 @@ public class MapHome extends AppCompatImageView {
         right = width * saveScale - width - (2 * redundantXSpace * saveScale);
         bottom = height * saveScale - height - (2 * redundantYSpace * saveScale);
         setImageMatrix(matrix);
+    }
+
+    //Questo metodo serve per controllare se la posizione utente è stata inizializzata
+    public boolean posIsZero() {
+      boolean isZero=false;
+        if (pixelPos[0]==0 && pixelPos[1]==0){
+            isZero = true;
+        }
+        return  isZero;
     }
 //  ---------------------------------------------------------------
 

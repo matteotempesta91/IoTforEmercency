@@ -129,7 +129,7 @@ public class ToServer {
                         Log.i("POST Response",response.toString());
                         try {
                             registrato = response.getBoolean("check");
-                            ((RegistrazioneActivity)contRegistrazione).mostraDialog(registrato);  // usiamo contRegistrazione (RegistrazioneActivity) e non context che si riferisce a LoginActivity
+                            ((RegistrazioneActivity)contRegistrazione).mostraDialog(registrato,"Username già presente");  // usiamo contRegistrazione (RegistrazioneActivity) e non context che si riferisce a LoginActivity
                         } catch (Exception e) {
                             Log.i("POST Response Exception",e.toString()+"!");
                         }
@@ -140,6 +140,7 @@ public class ToServer {
                     public void onErrorResponse(VolleyError error) {
                         // Chiude la progress dialog quando il server risponde errore alla richiesta di registrazione di un nuovo utente
                         progDialog.dismiss();
+                        ((RegistrazioneActivity)contRegistrazione).mostraDialog(false,"Connessione al server non riuscita");
                         String err = error.getMessage();
                         Log.i("POST Response Error",err+"!");
                     }

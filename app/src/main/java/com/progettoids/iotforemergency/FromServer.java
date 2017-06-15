@@ -2,7 +2,6 @@ package com.progettoids.iotforemergency;
 
 import android.os.Handler;
 import android.util.Log;
-import android.widget.RelativeLayout;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
