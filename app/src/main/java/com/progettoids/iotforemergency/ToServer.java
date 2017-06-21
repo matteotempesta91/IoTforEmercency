@@ -55,7 +55,7 @@ public class ToServer {
     // Invio dati ambientali al server
     public void inviaDatiAmb(ArrayList<String[]> elencoBeacon) {
 
-        String urlDA = Parametri.URL_SERVER.concat("/dati");
+        String urlDA = Parametri.URL_SERVER.concat("/beacon");
         JSONArray elencoB = new JSONArray();
         JSONObject datiambientaliJson = new JSONObject();
         // JSONObject dato = new JSONObject();
@@ -103,7 +103,7 @@ public class ToServer {
      */
     public void inviaRegistrazione(String[] registrazione, final Context contRegistrazione) {
         final ProgressDialog progDialog = new ProgressDialog(contRegistrazione);    // finestra di caricamente in attesa della risposta del server
-        String urlReg = Parametri.URL_SERVER.concat("/registrazione");                   // Aggiunge alla root dell'url l'indirizzo per la richiesta al server
+        String urlReg = Parametri.URL_SERVER.concat("/user/"+registrazione[3]+"/registrazione");                   // Aggiunge alla root dell'url l'indirizzo per la richiesta al server
 // ----------------------------------- CREAZIONE JSON -----------------------------------
         JSONObject json = new JSONObject();
         JSONObject registrazioneJson = new JSONObject();
@@ -158,7 +158,7 @@ public class ToServer {
         Log.i("DriverServer:","inviaPos: Invio in corso........................................................");
         JSONObject json = new JSONObject();
         JSONObject posizioneUtenteJson = new JSONObject();
-        String urlPos = Parametri.URL_SERVER.concat("/posizione");
+        String urlPos = Parametri.URL_SERVER.concat("/user/"+id_utente+"/posizione");
         try{
             posizioneUtenteJson.put("id_utente", id_utente);
             posizioneUtenteJson.put("id_nodo",id_nodo);

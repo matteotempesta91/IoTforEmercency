@@ -54,6 +54,8 @@ public class LoginActivity extends Activity {
         editUser=(EditText)findViewById(R.id.username);
         editPass=(EditText)findViewById(R.id.password);
         ricordami=(CheckBox)findViewById(R.id.Ricordami);
+        final SharedPreferences reader = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = reader.edit();
 
         // carica dati utente salvati se presenti
         File path = context.getCacheDir();
@@ -89,6 +91,8 @@ public class LoginActivity extends Activity {
                     {
                         Log.i("mDriverServer","not null");
                     }
+                    editor.putString("id_utente", editUser.getText().toString());
+                    editor.commit();
                     mDriverServer.verificaLogin(editUser.getText().toString(),editPass.getText().toString());
 
                     // salva i dati solo se checkbox è segnato

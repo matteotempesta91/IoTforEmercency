@@ -62,8 +62,8 @@ public class MapHome extends AppCompatImageView {
         bmCrollo = BitmapFactory.decodeResource(getResources(), R.drawable.crollo);
         bmAffollato = BitmapFactory.decodeResource(getResources(), R.drawable.affollamento);
 
-        //LoadMap lmap = new LoadMap(150);
-        //lmap.execute(getResources());
+        LoadMap lmap = new LoadMap(0);
+        lmap.execute(getResources());
 
         setOnTouchListener(new OnTouchListener() {
 
@@ -471,6 +471,9 @@ public class MapHome extends AppCompatImageView {
             Resources res = (Resources) params[0];
             Bitmap bmPiano = null;
             switch (quota) {
+                case 0:
+                    bmPiano = BitmapFactory.decodeResource(res, R.drawable.nomap);
+                    break;
                 case 145:
                     bmPiano = BitmapFactory.decodeResource(res, R.drawable.map145);
                     break;

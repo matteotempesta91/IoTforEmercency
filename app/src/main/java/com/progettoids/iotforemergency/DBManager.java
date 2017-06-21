@@ -222,7 +222,7 @@ public class DBManager {
         String query = "SELECT "+DatabaseStrings.FIELD_NOTIFICA_DATA+" FROM "
                 +DatabaseStrings.TBL_NAME_NOTIFICA+" WHERE "+DatabaseStrings.FIELD_NOTIFICA_NOME+"='"+nomeNotifica+"';";
 
-        Log.i("DBManager","getDataNotifica query:"+query);
+        //Log.i("DBManager","getDataNotifica query:"+query);
 
         Cursor c = db.rawQuery(query, null);
         //dataFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");

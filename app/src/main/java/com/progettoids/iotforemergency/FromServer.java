@@ -63,7 +63,7 @@ public class FromServer {
 
     // Invia la richiesta al server per ricevere la notifiche di emergenza e dello stato delle tabelle
     public void ricezioneNotifica() {
-        String urlNotifiche = Parametri.URL_SERVER.concat("/notifiche");
+        String urlNotifiche = Parametri.URL_SERVER.concat("/database/tabella_notifica");
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET, urlNotifiche, null,
                 new Response.Listener<JSONObject>() {
@@ -74,18 +74,18 @@ public class FromServer {
                         oldDataParam = DBManager.getDataNotifica("parametri");
                         oldDataNodi = DBManager.getDataNotifica("nodi");
                         oldDataBeacon = DBManager.getDataNotifica("beacon");
-                        Log.i(this.toString(), "DATA Beacon DB: "+oldDataBeacon);
-                        Log.i(this.toString(), "DATA Nodi DB: "+oldDataNodi);
-                        Log.i(this.toString(), "DATA Parametri DB: "+oldDataParam);
+                  //      Log.i("FromServer", "DATA Beacon DB: "+oldDataBeacon);
+                  //      Log.i("FromServer", "DATA Nodi DB: "+oldDataNodi);
+                  //      Log.i("FromServer", "DATA Parametri DB: "+oldDataParam);
                         try {
                             Log.i(this.toString(), "Ricezione Notifica Emergenza RESPONSE: "+response.toString());
                             emergenza = response.getInt("nome_emergenza");
                             dataBeacon = response.getInt("tabella_beacon");
                             dataNodi = response.getInt("tabella_nodo");
                             dataParam = response.getInt("tabella_parametri");
-                            Log.i(this.toString(), "DATA Beacon Server: "+dataBeacon);
-                            Log.i(this.toString(), "DATA Nodi Server: "+dataNodi);
-                            Log.i(this.toString(), "DATA Parametri Server: "+dataParam);
+                  //          Log.i(this.toString(), "DATA Beacon Server: "+dataBeacon);
+                  //          Log.i(this.toString(), "DATA Nodi Server: "+dataNodi);
+                  //          Log.i(this.toString(), "DATA Parametri Server: "+dataParam);
 
                             DBManager.updateNotifiche("emergenza",emergenza);
                             if (mMapHome != null) {
@@ -113,7 +113,7 @@ public class FromServer {
                             }
                         }
                         catch (Exception e) {
-                            Log.i(this.toString(),"Ricezione Notifica Emergenza EXCEPTION "+e.toString());
+                            Log.i("FromServer","Ricezione Notifica Emergenza EXCEPTION "+e.toString());
                         }
                     }
                 },
@@ -128,14 +128,14 @@ public class FromServer {
 
     // Invia la get al server per la ricezione dei parametri
     public void ricezioneParametri() {
-        String urlParametri = Parametri.URL_SERVER.concat("/tabella_parametri");
+        String urlParametri = Parametri.URL_SERVER.concat("/database/tabella_parametri");
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET, urlParametri, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.i(this.toString(),"ricezioneParametri: "+response.toString());
-                        Log.i(this.toString(),"ricezioneParametri: Aggiornamento Parametri");
+                        Log.i("FromServer","ricezioneParametri: "+response.toString());
+                        Log.i("FromServer","ricezioneParametri: Aggiornamento Parametri");
                         try {
                             String filtroBeacon = response.getString("filtro_ble");
                             int[] parametri = new int[10];
@@ -153,7 +153,7 @@ public class FromServer {
                             // aggiungere allert per riavviare l'app
                         }
                         catch (Exception e) {
-                            Log.i(this.toString(),"Ricezione Parametri EXCEPTION "+e.toString());
+                            Log.i("FromServer","Ricezione Parametri EXCEPTION "+e.toString());
                         }
                     }
                 },
@@ -168,7 +168,7 @@ public class FromServer {
 
     // Invia la get al server per la ricezione dei nodi
     public void ricezioneNodi() {
-        String urlNodi = Parametri.URL_SERVER.concat("/tabella_nodo");
+        String urlNodi = Parametri.URL_SERVER.concat("/database/tabella_nodo");
         JsonArrayRequest request = new JsonArrayRequest(
                 Request.Method.GET, urlNodi, null,
                 new Response.Listener<JSONArray>() {
@@ -204,7 +204,7 @@ public class FromServer {
 
     // Invia la get al server per la ricezione dei Beacon
     public void ricezioneBeacon() {
-        String urlBeacon = Parametri.URL_SERVER.concat("/tabella_beacon");
+        String urlBeacon = Parametri.URL_SERVER.concat("/database/tabella_beacon");
         JsonArrayRequest request = new JsonArrayRequest(
                 Request.Method.GET, urlBeacon, null,
                 new Response.Listener<JSONArray>() {
@@ -238,7 +238,7 @@ public class FromServer {
 
     // Invia la richiesta al server per ricevere i nodi il cui stato è diverso da zero
     public void ricezioneStatoNodi() {
-        String urlStatoNodi = Parametri.URL_SERVER.concat("/stato_nodi");
+        String urlStatoNodi = Parametri.URL_SERVER.concat("/database/stato_nodi");
         JsonArrayRequest request = new JsonArrayRequest(
                 Request.Method.GET, urlStatoNodi, null,
                 new Response.Listener<JSONArray>() {

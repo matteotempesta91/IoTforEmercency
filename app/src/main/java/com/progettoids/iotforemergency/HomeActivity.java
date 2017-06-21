@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Build;
@@ -28,6 +29,7 @@ public class HomeActivity extends Activity {
     private MapHome mapHome;
     private DriverServer mDriverServer;
     public RelativeLayout layoutHome;
+    private Context context;
 
     // Id necessari per tracciare le richieste effettuate al sistema
     static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
@@ -41,6 +43,7 @@ public class HomeActivity extends Activity {
         txtWelcome = (TextView)findViewById(R.id.welcome);
         Bundle bundle = this.getIntent().getExtras();
         txtWelcome.setText(bundle.getString("welcomeMsg"));
+        context = this;
         logout();
 
         mapHome = (MapHome)findViewById(R.id.IMAGEID);
@@ -146,9 +149,12 @@ public class HomeActivity extends Activity {
 
     public void logout(){
         btnLogout = (Button)findViewById(R.id.logout);
+        final SharedPreferences reader = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
+        final String username = reader.getString("id_utente", null);
         btnLogout.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mDriverServer.inviaLogout(username, context);
                 bleList.stopAll();
                 locMe.stopFinder();
                 finish();
@@ -193,5 +199,23 @@ public class HomeActivity extends Activity {
             AlertDialog alert = builder.create();
             alert.show();
         }
+    }
+
+    // Mostra un dialog in caso di errore di connessione
+    public void mostraDialog(String err) {
+        // Se lo username non è presente sul server l'allert rimanda alla pagina di login, altrimenti rimane aperta l'acticity per la registrazione
+        final AlertDialog.Builder errorAlert = new AlertDialog.Builder(context);
+        errorAlert.setTitle("Errore di Connessione");
+
+        errorAlert.setMessage(err);
+        errorAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+        });
+
+        AlertDialog alert = errorAlert.create();
+        alert.show();
     }
 }

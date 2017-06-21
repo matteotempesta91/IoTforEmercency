@@ -62,7 +62,7 @@ public class DriverServer {
     // e chiama mostraDialog() per mostrare all'utente il risultato del login e consentire di aprire l'activity home
     public void verificaLogin(String username, String password) {
         final ProgressDialog progDialog = new ProgressDialog(contextLogin);    // finestra di caricamente in attesa della risposta del server
-        String urlLogin = Parametri.URL_SERVER.concat("/login");
+        String urlLogin = Parametri.URL_SERVER.concat("/user/"+username+"/login");
         JSONObject json = new JSONObject();
         JSONObject loginJson = new JSONObject();
         try{
@@ -115,7 +115,7 @@ public class DriverServer {
 
     public void inviaLoginGuest(String idUtenteGuest) {
         final ProgressDialog progDialog = new ProgressDialog(contextLogin);    // finestra di caricamente in attesa della risposta del server
-        String urlReg = Parametri.URL_SERVER.concat("/loginGuest");                       // Aggiunge alla root dell'url l'indirizzo per la richiesta al server
+        String urlGuest = Parametri.URL_SERVER.concat("/user/"+idUtenteGuest+"/loginGuest");                       // Aggiunge alla root dell'url l'indirizzo per la richiesta al server
 
 // -------------------------------------------- CREAZIONE JSON LOGINGUEST -----------------------------------------
         JSONObject json = new JSONObject();
@@ -129,7 +129,7 @@ public class DriverServer {
 // -----------------------------------------------------------------------------------------------------------------
 
         JsonObjectRequest request = new JsonObjectRequest(
-                Request.Method.POST, urlReg, json,
+                Request.Method.POST, urlGuest, json,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -151,6 +151,28 @@ public class DriverServer {
         progDialog.setMessage("Attendere prego");
         progDialog.show();
     }
+
+    public void inviaLogout(String username, final Context contextHome){
+        String urlLogout = Parametri.URL_SERVER.concat("/user/"+username);
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.DELETE, urlLogout, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                                                Log.i("POST Response",response.toString());
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        ((HomeActivity)contextHome).mostraDialog("Logout non riuscito");
+                        errorHandler("Logout",error);
+                    }
+                });
+        addToQueue(request);
+    }
+
+
 
     /** Questo metodo è eseguito solo dopo la prima installazione,
     *   scarica dal server le tabelle necessarie al funzionamento dell'app.
