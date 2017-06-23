@@ -1,9 +1,12 @@
 package com.progettoids.iotforemergency;
 
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -54,6 +57,7 @@ public class MapHome extends AppCompatImageView {
         setImageMatrix(matrix);
         setScaleType(ScaleType.MATRIX);
         pixelPos = new int[]{0,0};
+        mappa = -1; // non impedisce il reset in disegnaPosizione se quota=0
         DriverServer mDriverServer = DriverServer.getInstance(null);
         mDriverServer.mFromServer.mapHomeAlive(this);
 
@@ -62,8 +66,13 @@ public class MapHome extends AppCompatImageView {
         bmCrollo = BitmapFactory.decodeResource(getResources(), R.drawable.crollo);
         bmAffollato = BitmapFactory.decodeResource(getResources(), R.drawable.affollamento);
 
-        LoadMap lmap = new LoadMap(0);
-        lmap.execute(getResources());
+        // Recupero l'ultima posizione nota se presente
+        final SharedPreferences reader = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
+        int x = reader.getInt("pos_x", 0);
+        int y = reader.getInt("pos_y", 0);
+        int z = reader.getInt("pos_z", 0);
+        // Se 0 0 0 => pos sconosciuta
+        disegnaPosizione(x,y,z);
 
         setOnTouchListener(new OnTouchListener() {
 
@@ -291,8 +300,12 @@ public class MapHome extends AppCompatImageView {
 
     // Disegna la notifica di pericolo sui nodi corrispondenti
     public void updateStatoNodi() {
-        Cursor cr = DBManager.getStatoNodi();
+        Cursor cr = DBManager.getStatoNodi(mappa);
+        // Svuota il layer nodi
+        if (bmNodi != null) { bmNodi.recycle(); }
+        bmNodi = Bitmap.createBitmap(bmMap.getWidth(), bmMap.getHeight(), bmMap.getConfig());
         Canvas canvas = new Canvas(bmNodi);
+        // Riempie il layer nodi
         while (cr.moveToNext()) {
             int stato = cr.getInt(0);
             int x = cr.getInt(1);
@@ -317,7 +330,8 @@ public class MapHome extends AppCompatImageView {
 
             // In base al tipo di notifica che riceve disegna l'icona dello stato del nodo (incendio, crollo, o affollamento) sulla mappa
             switch (stato) {
-                case 0:                 // Nessun pericolo
+                case 0:
+                    // se si vuole prevedere cambi di stato a 0, questo case elimina l'immagine del nodo dal layer
                     int w = bmInc.getWidth();
                     int h = bmInc.getHeight();
                     int[] pix = new int[w*h];
@@ -489,8 +503,23 @@ public class MapHome extends AppCompatImageView {
 
         @Override
         protected void onPostExecute(Bitmap bmPiano) {
-            bmMap = bmPiano;
-            bmNodi = Bitmap.createBitmap(bmPiano.getWidth(), bmPiano.getHeight(), bmPiano.getConfig());
+            if (quota == 0) {
+                Bitmap bmScritta = Bitmap.createBitmap(bmPiano.getWidth(), bmPiano.getHeight(), bmPiano.getConfig());
+                Paint paint = new Paint();
+                Canvas mcanvas = new Canvas(bmScritta);
+                mcanvas.drawBitmap(bmPiano, 0, 0, null);
+                paint.setColor(Color.BLACK);
+                paint.setTextSize(70);
+                paint.setTextAlign(Paint.Align.LEFT);
+                mcanvas.drawText("    Ricerca Posizione in Corso",
+                        0, bmPiano.getHeight() / 2, paint);
+                mcanvas.drawText("Attendere...", bmPiano.getWidth() / 3, bmPiano.getHeight() / 2 + 72, paint);
+                bmMap = bmScritta;
+                pixelPos[0] = bmPiano.getWidth()/2 - bmPos.getWidth()/2;
+                pixelPos[1] = bmPiano.getHeight()/2 - bmPos.getHeight() - 72;
+            } else {
+                bmMap = bmPiano;
+            }
             mappa = this.quota;
             // Include il refresh della mappa
             updateStatoNodi();

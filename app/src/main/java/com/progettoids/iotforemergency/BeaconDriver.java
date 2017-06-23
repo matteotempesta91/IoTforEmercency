@@ -11,9 +11,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.util.Log;
-
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 import static java.lang.Math.pow;
 
@@ -35,7 +33,6 @@ public class BeaconDriver extends AsyncTask<Object, Void, Object[]> {
     // Status variables
     private boolean attesa = true;
     private boolean sensOn = false;
-    private int letture = 0;
     private String error;
 
     public BeaconDriver(Context context) {
@@ -169,9 +166,8 @@ public class BeaconDriver extends AsyncTask<Object, Void, Object[]> {
                             // Humidostato
                             case ("f000aa21") :
                                 double hum = shortUnsignedAtOffset(car, 2).doubleValue();
-                                hum = hum - (hum % 4);
-
-                                hum = (-6f) + 125f * (hum / 65535f);
+                                // nota: se il beacon si sta scaricando, il sensore non funziona propriamente
+                                hum = (hum / 65536)*100;
                                 sensorData[2] = hum;
                                 // Lettura sensore Pressione
                                 UUID mbarServiceUuid = UUID.fromString("f000aa40-0451-4000-b000-000000000000");
@@ -186,7 +182,6 @@ public class BeaconDriver extends AsyncTask<Object, Void, Object[]> {
                                 Integer middleByte = car.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 3 + 1);
                                 Integer upperByte = car.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 3 + 2);
                                 // costruisce il dato
-                                //Integer data = (upperByte << 16) + (middleByte << 8) + lowerByte;
                                 Integer data = (upperByte << 16) + (middleByte << 8) + lowerByte;
 
                                 sensorData[3] = data/100.0d;
@@ -202,15 +197,13 @@ public class BeaconDriver extends AsyncTask<Object, Void, Object[]> {
                                 rawData = shortUnsignedAtOffset(car,0).intValue();
                                 m = rawData & 0x0FFF;
                                 e = (rawData & 0xF000) >> 12;
-
                                 sensorData[4] = m * (0.01 * pow(2.0,e));
 
+                                // letti tutti i dati termina l'attesa
+                                attesa = false;
+                                break;
 
                         }
-                        if (letture > 15 ) {
-                            attesa = false;
-                        }
-                        letture++;
                     }
                     else {
                         attesa = false;
@@ -275,6 +268,7 @@ public class BeaconDriver extends AsyncTask<Object, Void, Object[]> {
             // Attesa resta true finchè non sono disponibili tutti i dati ambientali
             for (int i=0; attesa && i < Parametri.getInstance().MAX_TRY_BEACON;  i++) {
                 try {
+                    // Permette ai sensori di acquisire un pool di dati minimo
                     Thread.sleep(2500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -296,17 +290,16 @@ public class BeaconDriver extends AsyncTask<Object, Void, Object[]> {
             gattBLE.close();
             // Lettura beacon successivo
             ((BeaconListener)param[0]).signal();
-
             return sensorData;
         }
 
     // Questo codice è eseguito nel thread chiamente al termine del task
     @Override
     protected void onPostExecute(Object[] sensorData) {
-            // ogni tanto il context è null ...
             if (context != null && error == null && !attesa) {
                 salvataggioDatiDB(gattBLE.getDevice().getAddress().toString());
-
+                /*
+                // Debug Code: mostra un allert con i dati letti
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
                 builder.setMessage("Sensore: " + gattBLE.getDevice().toString() +
@@ -319,6 +312,7 @@ public class BeaconDriver extends AsyncTask<Object, Void, Object[]> {
                         .setTitle("Dati sensore letti");
                 AlertDialog dialog = builder.create();
                 dialog.show();
+                */
             } else { Log.i("context ", "null"); }
         }
 

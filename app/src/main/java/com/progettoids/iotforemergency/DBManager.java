@@ -186,6 +186,17 @@ public class DBManager {
     }
 
     /**
+     * Resetta lo stato dei nodi a zero ad ogni aggiornamento degli stati
+     */
+    public static void resetStatoNodi() {
+        SQLiteDatabase db = DBHelper.getInstance(null).getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(DatabaseStrings.FIELD_NODO_STATO, 0);
+        db.update(DatabaseStrings.TBL_NAME_NODO, cv, null, null);
+        db.close();
+    }
+
+    /**
      * Aggiorna lo stato del nodo ricevuto dal server nel DB locale
      * @param codice del nodo interessato
      * @param stato aggiornato del suddetto
@@ -235,16 +246,17 @@ public class DBManager {
     }
 
     /**
-     * Restituisce i nodi che hanno lo stato diverso da 0. Campi letti: posizione,x,y,z,stato
+     * Restituisce i nodi che hanno lo stato diverso da 0, al piano interessato
+     * Campi letti: posizione,x,y,z,stato
      * @return
      */
-    public static Cursor getStatoNodi() {
-
+    public static Cursor getStatoNodi(int  quota) {
         SQLiteDatabase db = DBHelper.getInstance(null).getReadableDatabase();
         String query1 = "SELECT " + DatabaseStrings.FIELD_NODO_STATO+","
                 +DatabaseStrings.FIELD_NODO_POSIZIONE_X+","+DatabaseStrings.FIELD_NODO_POSIZIONE_Y
                 +","+DatabaseStrings.FIELD_NODO_POSIZIONE_Z + " FROM " + DatabaseStrings.TBL_NAME_NODO
-                + " WHERE " + DatabaseStrings.FIELD_NODO_STATO + "<>'" + 0 + "';";
+                + " WHERE " + DatabaseStrings.FIELD_NODO_STATO + "<>'" + 0 + "' AND "
+                + DatabaseStrings.FIELD_NODO_POSIZIONE_Z + "=" + quota + ";";
         Cursor c = db.rawQuery(query1, null);
         return c;
     }

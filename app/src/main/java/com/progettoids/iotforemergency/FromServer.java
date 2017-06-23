@@ -87,6 +87,11 @@ public class FromServer {
                   //          Log.i(this.toString(), "DATA Nodi Server: "+dataNodi);
                   //          Log.i(this.toString(), "DATA Parametri Server: "+dataParam);
 
+                            if (emergenza == 0) {
+                                startStatoNodi(false);
+                            } else {
+                                startStatoNodi(true);
+                            }
                             DBManager.updateNotifiche("emergenza",emergenza);
                             if (mMapHome != null) {
                                 mMapHome.disegnaEmergenza(emergenza);
@@ -245,6 +250,7 @@ public class FromServer {
                     @Override
                     public void onResponse(JSONArray response) {
                         try {
+                            DBManager.resetStatoNodi();
                             for (int i=0; i<response.length(); i++) {
                                 JSONObject ele = response.getJSONObject(i);
                                 String codice = ele.getString("codice");

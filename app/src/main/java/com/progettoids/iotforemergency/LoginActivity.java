@@ -57,6 +57,9 @@ public class LoginActivity extends Activity {
         final SharedPreferences reader = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor = reader.edit();
 
+        // Aggiunge le variabili per ricordare l'ultima posizione anche alla distruzione della GUI Home
+        Localizzatore.addPosContext(context);
+
         // carica dati utente salvati se presenti
         File path = context.getCacheDir();
         final File memo = new File(path, "memo");

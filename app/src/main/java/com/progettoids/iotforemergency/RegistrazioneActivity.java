@@ -20,7 +20,6 @@ public class RegistrazioneActivity extends Activity {
     private EditText editNome, editCognome, editCF, editUsername, editPassword, editPassword2;
     private DriverServer mdriverServer;
     private String[] datiReg;
-    private Boolean registrazioneOk;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

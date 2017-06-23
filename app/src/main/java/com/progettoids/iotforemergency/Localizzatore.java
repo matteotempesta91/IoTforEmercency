@@ -10,10 +10,11 @@ public class Localizzatore {
     private int x, y, z;
     private BeaconListener bleList;
     private MapHome mHome;
-    private Context context;
     private Handler finder;
     private DriverServer mDriverServer;
     private Parametri mParametri;
+    private Context context;
+    private String id_utente;
 
     public Localizzatore(Context context, BeaconListener ble, MapHome maphome) {
         this.context = context;
@@ -22,10 +23,16 @@ public class Localizzatore {
         finder = new Handler();
         mDriverServer = DriverServer.getInstance(context);
         mParametri = Parametri.getInstance();
+
+        // PRENDO L'ID COME VARIABILE GLOBALE
+        final SharedPreferences reader = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
+        id_utente= reader.getString("id_utente", null);
+
+        // Recupero l'ultima posizione nota se presente
+        x = reader.getInt("pos_x", 0);
+        y = reader.getInt("pos_y", 0);
+        z = reader.getInt("pos_z", 0);
         // Se 0 0 0 => pos sconosciuta
-        x=0;
-        y=0;
-        z=0;
     }
 
     // Runnable per localizzare l'user, eseguito periodicamente fino a stop
@@ -42,10 +49,6 @@ public class Localizzatore {
                     z = pos[2];
                     mHome.disegnaPosizione(x, y, z);
                     mHome.setBitmap();
-
-                    // PRENDO L'ID COME VARIABILE GLOBALE
-                    final SharedPreferences reader = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
-                    final String id_utente= reader.getString("id_utente", null);
 
                     // creazione file json per l'invio della posizione al server
                     // DriverServer driverServer=new DriverServer(context);
@@ -65,5 +68,25 @@ public class Localizzatore {
     // Ferma la localizzazione
     public void stopFinder() {
         finder.removeCallbacks(findMe);
+        // Quando viene arrestata la localizzazione, salve l'ultima posizione nota
+        // questo permette di risparmiare tempo nel visualizzare l'interfaccia mapHome
+        final SharedPreferences reader = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = reader.edit();
+        editor.putInt("pos_x", x);
+        editor.putInt("pos_y", y);
+        editor.putInt("pos_z", z);
+        editor.commit();
+    }
+
+    // Aggiunge le variabli di posizione nel context
+    // per non perderne traccia alla distruzione della GUI
+    // Nota: deve essere chiamato fuori dalla mapHome, altrimenti la posizione è resettata ad ogni creazione della GUI
+    public static void addPosContext(Context context) {
+        final SharedPreferences reader = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = reader.edit();
+        editor.putInt("pos_x", 0);
+        editor.putInt("pos_y", 0);
+        editor.putInt("pos_z", 0);
+        editor.commit();
     }
 }
