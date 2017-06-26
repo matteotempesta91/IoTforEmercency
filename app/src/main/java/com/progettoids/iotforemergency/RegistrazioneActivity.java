@@ -69,8 +69,8 @@ public class RegistrazioneActivity extends Activity {
             txtCognome.setTextColor(Color.parseColor("#73C400"));
             control++;
         }
-        //   if(!Pattern.matches("[a-zA-Z0-9]*", editCF.getText().toString())||editCF.getText().toString().length()!=16){
-        if(!Pattern.matches("[a-zA-Z0-9]*", editCF.getText().toString())){
+        if(!Pattern.matches("[a-zA-Z0-9]*", editCF.getText().toString())||editCF.getText().toString().length()!=16){
+        //if(!Pattern.matches("[a-zA-Z0-9]*", editCF.getText().toString())){
             txtCF.setText("Codice fiscale non valido");
             txtCF.setTextColor(Color.parseColor("#db524c"));
         }else{

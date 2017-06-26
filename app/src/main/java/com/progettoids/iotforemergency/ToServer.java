@@ -155,33 +155,36 @@ public class ToServer {
 
     // Invia la posizione dell'utente al server
     public void inviaPos(String id_utente, String id_nodo) {
-        Log.i("DriverServer:","inviaPos: Invio in corso........................................................");
-        JSONObject json = new JSONObject();
-        JSONObject posizioneUtenteJson = new JSONObject();
-        String urlPos = Parametri.URL_SERVER.concat("/user/"+id_utente+"/posizione");
-        try{
-            posizioneUtenteJson.put("id_utente", id_utente);
-            posizioneUtenteJson.put("id_nodo",id_nodo);
-            json.put("posizione_utente",posizioneUtenteJson);
-        }catch(JSONException e){
-            e.printStackTrace();
-            Log.i("DriverServer", "Creazione PosizioneUtenteJson Exception: "+e.toString());
+        // Se ci si trova in modalità offline l'id è 0000
+        if (!id_utente.equals("0000")) {
+            Log.i("DriverServer:", "inviaPos: Invio in corso........................................................");
+            JSONObject json = new JSONObject();
+            JSONObject posizioneUtenteJson = new JSONObject();
+            String urlPos = Parametri.URL_SERVER.concat("/user/" + id_utente + "/posizione");
+            try {
+                posizioneUtenteJson.put("id_utente", id_utente);
+                posizioneUtenteJson.put("id_nodo", id_nodo);
+                json.put("posizione_utente", posizioneUtenteJson);
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.i("DriverServer", "Creazione PosizioneUtenteJson Exception: " + e.toString());
+            }
+            JsonObjectRequest request = new JsonObjectRequest(
+                    Request.Method.PUT, urlPos, json,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.i("POST Response", response.toString());
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            DriverServer.errorHandler("Invio Posizione", error);
+                        }
+                    });
+            mDriverServer.addToQueue(request);
         }
-        JsonObjectRequest request = new JsonObjectRequest(
-                Request.Method.PUT, urlPos, json,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.i("POST Response",response.toString());
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        DriverServer.errorHandler("Invio Posizione",error);
-                    }
-                });
-        mDriverServer.addToQueue(request);
     }
 
 }

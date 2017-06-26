@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.app.AlertDialog;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -46,6 +47,12 @@ public class LoginActivity extends Activity {
                 mDriverServer.inviaLoginGuest(getMacAddr());
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        System.exit(0);
     }
 
     // Pulsante login
@@ -131,19 +138,27 @@ public class LoginActivity extends Activity {
     }
 
     // Invocato da driverServer
-    public void loginGuest() {
-                Bundle bundle = new Bundle();
-                bundle.putString("welcomeMsg", "Benvenuto Utente Guest");
-                Intent openHomeGuest = new Intent(LoginActivity.this, HomeActivity.class);
-                openHomeGuest.putExtras(bundle);
-                startActivity(openHomeGuest);
-                // SALVA L'ID UTENTE GUEST COME VARIABILE GLOBALE
-                final SharedPreferences reader = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
-                final SharedPreferences.Editor editor = reader.edit();
-                String macAdrress=getMacAddr();
-                Log.i("macAddress:",macAdrress);
-                editor.putString("id_utente", macAdrress);
-                editor.commit();
+    public void loginGuest(boolean riuscito) {
+        Bundle bundle = new Bundle();
+        String macAdrress;
+        if (riuscito) {
+            bundle.putString("welcomeMsg", "Benvenuto Utente Guest");
+            macAdrress=getMacAddr();
+            Log.i("macAddress:",macAdrress);
+        } else {
+            bundle.putString("welcomeMsg", "Modalità Offline");
+            bundle.putString("offline", "Si sta usando la modalità offline \n Uscire e rientrare per riprovare");
+            // Settare a 0000 l'id permetterà di distinguere la modlaità offline in ogni parte del software
+            macAdrress="0000";
+        }
+        Intent openHomeGuest = new Intent(LoginActivity.this, HomeActivity.class);
+        openHomeGuest.putExtras(bundle);
+        startActivity(openHomeGuest);
+        // SALVA L'ID UTENTE GUEST COME VARIABILE GLOBALE
+        final SharedPreferences reader = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = reader.edit();
+        editor.putString("id_utente", macAdrress);
+        editor.commit();
     }
 
     // Recupera il macAddress del dispositivo wifi del telefono e lo associa all'utente guest

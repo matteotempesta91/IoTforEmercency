@@ -53,8 +53,7 @@
             android:layout_centerHorizontal="true"
             android:ems="10"
             android:hint="Nome"
-            android:inputType="textPersonName"
-            android:text="Mario" />
+            android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/editCognome"
@@ -64,8 +63,7 @@
             android:layout_below="@+id/txtCognome"
             android:ems="10"
             android:hint="Cognome"
-            android:inputType="textPersonName"
-            android:text="Rossi" />
+            android:inputType="textPersonName" />
 
         <TextView
             android:text="Codice fiscale*"
@@ -86,8 +84,7 @@
             android:layout_below="@+id/txtCodFis"
             android:ems="10"
             android:hint="Codice fiscale"
-            android:inputType="textPersonName"
-            android:text="CodFis" />
+            android:inputType="textPersonName" />
 
         <TextView
             android:text="Username*"
@@ -107,8 +104,7 @@
             android:layout_below="@+id/txtUsername"
             android:ems="10"
             android:hint="Username"
-            android:inputType="textPersonName"
-            android:text="Mariolino97" />
+            android:inputType="textPersonName" />
 
         <TextView
             android:text="Password*"
@@ -128,8 +124,7 @@
             android:layout_below="@+id/txtPass1"
             android:ems="10"
             android:hint="Password"
-            android:inputType="textPassword"
-            android:text="pass" />
+            android:inputType="textPassword" />
 
         <TextView
             android:text="Ripetere Password*"
@@ -149,8 +144,7 @@
             android:hint="Ripetere Password"
             android:ems="10"
             android:layout_below="@+id/txtPass2"
-            android:layout_alignStart="@+id/editUsername"
-            android:text="pass" />
+            android:layout_alignStart="@+id/editUsername" />
 
         <Button
             android:text="Registrati"

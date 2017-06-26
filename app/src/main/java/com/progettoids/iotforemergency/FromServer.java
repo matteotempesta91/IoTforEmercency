@@ -16,6 +16,7 @@ public class FromServer {
 
     private final Handler sender = new Handler();
     private int dataBeacon, dataNodi, dataParam, oldDataBeacon, oldDataNodi, oldDataParam, emergenza;
+    private boolean lockStatoNodi;
     private Parametri mParametri;
     private DriverServer mDriverServer;
     // Permette di aggiornare la mappa, se questa è attiva
@@ -38,6 +39,7 @@ public class FromServer {
     };
 
     public FromServer(DriverServer ds, Parametri pa) {
+        lockStatoNodi = false;
         mDriverServer = ds;
         mParametri = pa;
         startUpdate(true);
@@ -54,10 +56,12 @@ public class FromServer {
 
     // Attiva e disattiva richiesta notifiche al server
     public void startStatoNodi(boolean onOff) {
-        if (onOff) {
+        if (onOff && !lockStatoNodi) {
             sender.postDelayed(getStatoNodi, mParametri.T_STATO_NODI);
-        } else {
+            lockStatoNodi = true;
+        } else if (!onOff) {
             sender.removeCallbacks(getStatoNodi);
+            lockStatoNodi = false;
         }
     }
 

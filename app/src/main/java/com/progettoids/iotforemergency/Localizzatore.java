@@ -89,4 +89,12 @@ public class Localizzatore {
         editor.putInt("pos_z", 0);
         editor.commit();
     }
+
+    // Elimina l'ultima posizione nota e ferma la ricerca
+    public void forgetMe() {
+        x=0;
+        y=0;
+        z=0;
+        stopFinder();
+    }
 }

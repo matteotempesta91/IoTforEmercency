@@ -16,14 +16,13 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class HomeActivity extends Activity {
-    private TextView txtWelcome;
-    private Button btnLogout;
     private BeaconListener bleList;
     private Localizzatore locMe;
     private MapHome mapHome;
@@ -40,7 +39,7 @@ public class HomeActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         mDriverServer = DriverServer.getInstance(this);
-        txtWelcome = (TextView)findViewById(R.id.welcome);
+        TextView txtWelcome = (TextView)findViewById(R.id.welcome);
         Bundle bundle = this.getIntent().getExtras();
         txtWelcome.setText(bundle.getString("welcomeMsg"));
         context = this;
@@ -75,7 +74,11 @@ public class HomeActivity extends Activity {
     public void onPostCreate(Bundle savedInstance) {
         super.onPostCreate(savedInstance);
         layoutHome =(RelativeLayout)findViewById(R.id.activity_home);
-
+        Bundle bundle = this.getIntent().getExtras();
+        String offline = bundle.getString("offline");
+        if (offline != null) {
+            mostraDialog(offline);
+        }
         // Debug code
         //mapHome.disegnaEmergenza(0);         // disegna la cornice per l'emergenza
        // mapHome.disegnaPosizione(133,480,145);
@@ -94,6 +97,26 @@ public class HomeActivity extends Activity {
         // Cancella il ricevitore dalle notifiche di stato
         unregisterReceiver(mReceiver);
         mDriverServer.mToServer.startAmb(false);
+    }
+
+    // Gestisce la Back Key affinché l'app venga minimizzata
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+        boolean esito;
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                Log.i("HomeActivity","minimizza");
+                Intent startMain = new Intent(Intent.ACTION_MAIN);
+                startMain.addCategory(Intent.CATEGORY_HOME);
+                startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(startMain);
+                esito = true;
+                break;
+            default:
+                esito = super.onKeyDown(keyCode, event);
+                break;
+        }
+        return esito;
     }
 
     // Gestisce il risultato della richiesta dei permessi
@@ -148,7 +171,7 @@ public class HomeActivity extends Activity {
     };
 
     public void logout(){
-        btnLogout = (Button)findViewById(R.id.logout);
+        Button btnLogout = (Button)findViewById(R.id.logout);
         final SharedPreferences reader = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
         final String username = reader.getString("id_utente", null);
         btnLogout.setOnClickListener( new View.OnClickListener() {
@@ -156,7 +179,8 @@ public class HomeActivity extends Activity {
             public void onClick(View v) {
                 mDriverServer.inviaLogout(username, context);
                 bleList.stopAll();
-                locMe.stopFinder();
+                // Re-inizializza le variabili che memorizzano la posizione
+                locMe.forgetMe();
                 finish();
             }
         });

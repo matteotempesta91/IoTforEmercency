@@ -135,15 +135,15 @@ public class DriverServer {
                     public void onResponse(JSONObject response) {
                         progDialog.dismiss();
                         Log.i("POST Response",response.toString());
-                        ((LoginActivity)contextLogin).loginGuest();
+                        ((LoginActivity)contextLogin).loginGuest(true);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progDialog.dismiss();
-                        ((LoginActivity)contextLogin).mostraDialog("Login Guest non riuscito",0);
                         errorHandler("Login Guest",error);
+                        ((LoginActivity)contextLogin).loginGuest(false);
                     }
                 });
         addToQueue(request);
@@ -152,27 +152,28 @@ public class DriverServer {
         progDialog.show();
     }
 
-    public void inviaLogout(String username, final Context contextHome){
-        String urlLogout = Parametri.URL_SERVER.concat("/user/"+username);
-        JsonObjectRequest request = new JsonObjectRequest(
-                Request.Method.DELETE, urlLogout, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                                                Log.i("POST Response",response.toString());
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        ((HomeActivity)contextHome).mostraDialog("Logout non riuscito");
-                        errorHandler("Logout",error);
-                    }
-                });
-        addToQueue(request);
+    public void inviaLogout(String id_utente, final Context contextHome){
+        // Se ci si trova in modalità offline l'id è 0000
+        if (!id_utente.equals("0000")) {
+            String urlLogout = Parametri.URL_SERVER.concat("/user/" + id_utente);
+            JsonObjectRequest request = new JsonObjectRequest(
+                    Request.Method.DELETE, urlLogout, null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.i("POST Response", response.toString());
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            ((HomeActivity) contextHome).mostraDialog("Logout non riuscito");
+                            errorHandler("Logout", error);
+                        }
+                    });
+            addToQueue(request);
+        }
     }
-
-
 
     /** Questo metodo è eseguito solo dopo la prima installazione,
     *   scarica dal server le tabelle necessarie al funzionamento dell'app.
