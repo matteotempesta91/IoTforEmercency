@@ -10,9 +10,9 @@
     android:paddingRight="10dp"
     android:paddingTop="10dp"
     android:background="@drawable/cornice_green"
-    tools:context="com.progettoids.iotforemergency.HomeActivity">
+    tools:context="com.progettoids.iotforemergency.GUI.HomeActivity">
 
-    <com.progettoids.iotforemergency.MapHome
+    <com.progettoids.iotforemergency.gui.MapHome
         android:id="@+id/IMAGEID"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

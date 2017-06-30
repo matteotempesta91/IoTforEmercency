@@ -1,6 +1,6 @@
 package com.progettoids.iotforemergency;
 
-import java.sql.Driver;
+import com.progettoids.iotforemergency.gestionedati.DriverServer;
 
 /**
  * Created by marco on 17/01/2017.
