@@ -2,19 +2,14 @@ package com.progettoids.iotforemergency.gestionedati;
 
 import android.os.Handler;
 import android.util.Log;
-
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import com.progettoids.iotforemergency.gestionedati.Parametri;
 import com.progettoids.iotforemergency.db.DBManager;
-import com.progettoids.iotforemergency.gestionedati.DriverServer;
 import com.progettoids.iotforemergency.gui.MapHome;
 
 public class FromServer {
@@ -43,7 +38,7 @@ public class FromServer {
         }
     };
 
-    public FromServer(DriverServer ds, Parametri pa) {
+    FromServer(DriverServer ds, Parametri pa) {
         lockStatoNodi = false;
         mDriverServer = ds;
         mParametri = pa;
@@ -71,7 +66,7 @@ public class FromServer {
     }
 
     // Invia la richiesta al server per ricevere la notifiche di emergenza e dello stato delle tabelle
-    public void ricezioneNotifica() {
+    private void ricezioneNotifica() {
         String urlNotifiche = Parametri.URL_SERVER.concat("/database/tabella_notifica");
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET, urlNotifiche, null,
@@ -142,7 +137,7 @@ public class FromServer {
     }
 
     // Invia la get al server per la ricezione dei parametri
-    public void ricezioneParametri() {
+    private void ricezioneParametri() {
         String urlParametri = Parametri.URL_SERVER.concat("/database/tabella_parametri");
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET, urlParametri, null,
@@ -182,7 +177,7 @@ public class FromServer {
     }
 
     // Invia la get al server per la ricezione dei nodi
-    public void ricezioneNodi() {
+    private void ricezioneNodi() {
         String urlNodi = Parametri.URL_SERVER.concat("/database/tabella_nodo");
         JsonArrayRequest request = new JsonArrayRequest(
                 Request.Method.GET, urlNodi, null,
@@ -218,7 +213,7 @@ public class FromServer {
     }
 
     // Invia la get al server per la ricezione dei Beacon
-    public void ricezioneBeacon() {
+    private void ricezioneBeacon() {
         String urlBeacon = Parametri.URL_SERVER.concat("/database/tabella_beacon");
         JsonArrayRequest request = new JsonArrayRequest(
                 Request.Method.GET, urlBeacon, null,
@@ -252,7 +247,7 @@ public class FromServer {
     }
 
     // Invia la richiesta al server per ricevere i nodi il cui stato è diverso da zero
-    public void ricezioneStatoNodi() {
+    private void ricezioneStatoNodi() {
         String urlStatoNodi = Parametri.URL_SERVER.concat("/database/stato_nodi");
         JsonArrayRequest request = new JsonArrayRequest(
                 Request.Method.GET, urlStatoNodi, null,

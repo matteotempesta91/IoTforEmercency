@@ -5,10 +5,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
-
-import com.progettoids.iotforemergency.db.DBHelper;
-import com.progettoids.iotforemergency.db.DatabaseStrings;
-
 import java.util.ArrayList;
 
 /**
@@ -21,8 +17,8 @@ public class DBManager {
     /**
      * Salva un nuovo nodo nella tabella
      * @param codice : ID unico del nodo
-     * @param posizione_x
-     * @param posizione_y
+     * @param posizione_x posizione x
+     * @param posizione_y posizione y
      * @param quota : o posizione z
      */
     public static void saveNodo(String codice, int posizione_x, int posizione_y, int quota) {
@@ -100,7 +96,7 @@ public class DBManager {
      */
     public static ArrayList<String[]> getdatiambientali(){
 
-        Cursor crs = null;
+        Cursor crs;
         SQLiteDatabase db = DBHelper.getInstance(null).getWritableDatabase();
         String query1 = "SELECT * FROM " + DatabaseStrings.TBL_NAME_BEACON +
                 " WHERE " + DatabaseStrings.FIELD_BEACON_TEMPERATURA + " !=-300;";
@@ -252,7 +248,7 @@ public class DBManager {
     /**
      * Restituisce i nodi che hanno lo stato diverso da 0, al piano interessato
      * Campi letti: posizione,x,y,z,stato
-     * @return
+     * @return cursore della lista risultante dalla query
      */
     public static Cursor getStatoNodi(int  quota) {
         SQLiteDatabase db = DBHelper.getInstance(null).getReadableDatabase();

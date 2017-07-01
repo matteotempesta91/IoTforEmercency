@@ -25,7 +25,7 @@ import static java.lang.Math.pow;
  * I parametri sono: BeaconListener invocatore, BluetoothDevice su cui leggere.
  * Restituisce un array di tali dati.
  */
-public class BeaconDriver extends AsyncTask<Object, Void, Object[]> {
+class BeaconDriver extends AsyncTask<Object, Void, Object[]> {
 
     private static final int STATE_DISCONNECTED = 0;
     private static final int STATE_CONNECTED = 2;
@@ -39,7 +39,7 @@ public class BeaconDriver extends AsyncTask<Object, Void, Object[]> {
     private boolean sensOn = false;
     private String error;
 
-    public BeaconDriver(Context context) {
+    BeaconDriver(Context context) {
             super();
             this.context = context;
             sensorData = new Object[7];
@@ -85,7 +85,7 @@ public class BeaconDriver extends AsyncTask<Object, Void, Object[]> {
                                 UUID mmovServiceUuid = UUID.fromString("f000aa80-0451-4000-b000-000000000000");
                                 UUID mmovConfigUuid = UUID.fromString("f000aa82-0451-4000-b000-000000000000");
                                 BluetoothGattService mov = gatt.getService(mmovServiceUuid);
-                                BluetoothGattCharacteristic config = null;
+                                BluetoothGattCharacteristic config;
                                 //sensore accelerometro
                                 config = mov.getCharacteristic(mmovConfigUuid);
                                 config.setValue(new byte[]{0x38,0});
@@ -198,7 +198,7 @@ public class BeaconDriver extends AsyncTask<Object, Void, Object[]> {
                                 break;
                             case ("f000aa71") :
                                 Integer rawData,e,m;
-                                rawData = shortUnsignedAtOffset(car,0).intValue();
+                                rawData = shortUnsignedAtOffset(car, 0);
                                 m = rawData & 0x0FFF;
                                 e = (rawData & 0xF000) >> 12;
                                 sensorData[4] = m * (0.01 * pow(2.0,e));
@@ -218,7 +218,7 @@ public class BeaconDriver extends AsyncTask<Object, Void, Object[]> {
         }
 
     // Metodo per salvare i dati sul DataBase
-    public void salvataggioDatiDB(String mac) {
+    private void salvataggioDatiDB(String mac) {
 
         SQLiteDatabase db = DBHelper.getInstance(null).getWritableDatabase();
         //+":"+String.valueOf(((double[]) sensorData[1])[1])+":"+String.valueOf(((double[]) sensorData[1])[2]));
@@ -299,7 +299,7 @@ public class BeaconDriver extends AsyncTask<Object, Void, Object[]> {
     @Override
     protected void onPostExecute(Object[] sensorData) {
             if (context != null && error == null && !attesa) {
-                salvataggioDatiDB(gattBLE.getDevice().getAddress().toString());
+                salvataggioDatiDB(gattBLE.getDevice().getAddress());
                 /*
                 // Debug Code: mostra un allert con i dati letti
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -327,7 +327,7 @@ public class BeaconDriver extends AsyncTask<Object, Void, Object[]> {
 
             BluetoothGattService temp = gatt.getService(mtempServiceUuid);
 
-            BluetoothGattCharacteristic config = null;
+            BluetoothGattCharacteristic config;
             // Nel caso il service non esiste, ritorna null
 
             // Sensore temperatura

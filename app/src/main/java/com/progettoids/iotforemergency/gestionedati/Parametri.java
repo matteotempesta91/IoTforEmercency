@@ -9,12 +9,12 @@ public class Parametri {
     private int StatoEmergenza = 0;
 
     // Url del server
-    public static final String URL_SERVER = "http://www.bandaappignano.altervista.org/Project/web/app_dev.php";
+    static final String URL_SERVER = "http://www.bandaappignano.altervista.org/Project/web/app_dev.php";
 
     // Timers per le operazioni di aggiornamento di stato, stato nodi, scansione bluetooth,
     // invio dati ambientali rilevati e posizione.
-    public final int T_NOTIFICHE;
-    public final int T_STATO_NODI;
+    final int T_NOTIFICHE;
+    final int T_STATO_NODI;
     private final int T_SCAN;
     private final int T_SCAN_EMERGENZA;
     public final int T_SCAN_PERIOD;
@@ -80,7 +80,7 @@ public class Parametri {
      * Imposta lo stato di emergenza
      * @param emergenza intero fra 0 e 3 (in questo caso si distingue solo != 0)
      */
-    public void setEmergenza(int emergenza) {
+    void setEmergenza(int emergenza) {
         StatoEmergenza = emergenza;
     }
 
@@ -100,7 +100,7 @@ public class Parametri {
      * Restituisce il timer in base allo stato di emergenza
      * @return timer appropriato
      */
-    public int timerDatiAmb() {
+    int timerDatiAmb() {
         int timer = T_DATIAMB;
         if (StatoEmergenza!=0) {
             timer = T_DATIAMB_EMERGENZA;
@@ -112,7 +112,7 @@ public class Parametri {
      * Restituisce il timer in base allo stato di emergenza
      * @return timer appropriato
      */
-    public int timerPos() {
+    int timerPos() {
         int timer = T_POSIZIONE;
         if (StatoEmergenza!=0) {
             timer = T_POSIZIONE_EMERGENZA;

@@ -11,8 +11,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.progettoids.iotforemergency.db.DBManager;
-import com.progettoids.iotforemergency.gestionedati.DriverServer;
-import com.progettoids.iotforemergency.gestionedati.Parametri;
 import com.progettoids.iotforemergency.gui.RegistrazioneActivity;
 
 import org.json.JSONArray;
@@ -35,14 +33,17 @@ public class ToServer {
             //creazione json ed invio dei dati ambientali di tutti i beacon trovati
             ArrayList<String[]> datiArrayList = DBManager.getdatiambientali();
             // Invia i dati ambientali solo se ci sono
-            if(!datiArrayList.isEmpty()) {
-                inviaDatiAmb(datiArrayList);
+            if (datiArrayList != null) {
+                if (!datiArrayList.isEmpty()) {
+                    inviaDatiAmb(datiArrayList);
+                }
             }
             sender.postDelayed(sendDatiAmb, mParametri.timerDatiAmb());
         }
     };
 
-    public ToServer(DriverServer ds, Parametri pa) {
+    // package private
+    ToServer(DriverServer ds, Parametri pa) {
         mDriverServer = ds;
         mParametri = pa;
     }
@@ -57,7 +58,7 @@ public class ToServer {
     }
 
     // Invio dati ambientali al server
-    public void inviaDatiAmb(ArrayList<String[]> elencoBeacon) {
+    private void inviaDatiAmb(ArrayList<String[]> elencoBeacon) {
 
         String urlDA = Parametri.URL_SERVER.concat("/beacon");
         JSONArray elencoB = new JSONArray();
@@ -163,8 +164,8 @@ public class ToServer {
         progDialog.show();
     }
 
-    // Invia la posizione dell'utente al server
-    public void inviaPos(String id_utente, String id_nodo) {
+    // Invia la posizione dell'utente al server (package private)
+    void inviaPos(String id_utente, String id_nodo) {
         // Se ci si trova in modalità offline l'id è 0000
         if (!id_utente.equals("0000")) {
             Log.i("DriverServer:", "inviaPos: Invio in corso........................................................");

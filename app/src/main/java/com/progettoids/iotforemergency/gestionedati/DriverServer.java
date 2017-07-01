@@ -10,13 +10,11 @@ import com.android.volley.*;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.progettoids.iotforemergency.gestionedati.Parametri;
-
-//import com.progettoids.iotforemergency.Parametri;
 import com.progettoids.iotforemergency.db.DBManager;
 import com.progettoids.iotforemergency.db.DatabaseStrings;
-import com.progettoids.iotforemergency.gui.HomeActivity;
 import com.progettoids.iotforemergency.gui.LoginActivity;
+
+import java.util.Arrays;
 
 public class DriverServer {
 
@@ -26,7 +24,6 @@ public class DriverServer {
     public ToServer mToServer;
     public FromServer mFromServer;
     private Parametri mParametri;
-    private Boolean first;
     // Questo campo contiene il primo context: ovvero quello di loginActivity
     private Context contextLogin;
 
@@ -34,7 +31,7 @@ public class DriverServer {
         contextLogin = cont;                    // Viene inizializzato con il context di loginActivity
         queue = Volley.newRequestQueue(contextLogin);
         loginValido = false;
-        first = LoginActivity.isFirst(cont);
+        Boolean first = LoginActivity.isFirst(cont);
         if (first) {
             firstUpdateDB();
         } else {
@@ -56,10 +53,10 @@ public class DriverServer {
     }
 
     // Aggiunge all'unica coda il messaggio da inviare al server
-    public synchronized void addToQueue(JsonArrayRequest req) {
+    synchronized void addToQueue(JsonArrayRequest req) {
         queue.add(req);
     }
-    public synchronized void addToQueue(JsonObjectRequest req) {
+    synchronized void addToQueue(JsonObjectRequest req) {
         queue.add(req);
     }
 
@@ -157,7 +154,7 @@ public class DriverServer {
         progDialog.show();
     }
 
-    public void inviaLogout(String id_utente, final Context contextHome){
+    public void inviaLogout(String id_utente){
         // Se ci si trova in modalità offline l'id è 0000
         if (!id_utente.equals("0000")) {
             String urlLogout = Parametri.URL_SERVER.concat("/user/" + id_utente);
@@ -269,7 +266,7 @@ public class DriverServer {
     }
 
     // errorHandler gestisce la risposta quando arriva un errore dal server, prende in input il nome del metodo in cui viene chiamato e l'errore del server
-    public static void errorHandler(String chiamata, VolleyError error){
+    static void errorHandler(String chiamata, VolleyError error){
         // Salva il messaggio e la causa dell'errore, se sono null significa che il server non è in grado di rispondere perchè lo si sta aggiornando
         String msgError = error.getMessage()+" "+error.getCause();
         if(msgError.equals("null null"))
@@ -281,7 +278,7 @@ public class DriverServer {
         if(error.networkResponse!=null)
         {
             Log.i("POST Response Error",String.valueOf(error.networkResponse.statusCode)+" "
-                    +error.networkResponse.data+" !");
+                    + Arrays.toString(error.networkResponse.data) +" !");
         }
     }
 }

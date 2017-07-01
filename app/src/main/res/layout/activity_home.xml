@@ -10,7 +10,7 @@
     android:paddingRight="10dp"
     android:paddingTop="10dp"
     android:background="@drawable/cornice_green"
-    tools:context="com.progettoids.iotforemergency.GUI.HomeActivity">
+    tools:context="com.progettoids.iotforemergency.gui.HomeActivity">
 
     <com.progettoids.iotforemergency.gui.MapHome
         android:id="@+id/IMAGEID"
@@ -25,7 +25,7 @@
         android:id="@+id/logout"
         android:textColor="@android:color/background_light"
         android:backgroundTint="#db524c"
-        tools:textSize="10sp"
+        tools:textSize="12sp"
         android:layout_width="wrap_content"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="14dp"
@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="11dp"
         android:id="@+id/welcome"
-        tools:textSize="10sp"
+        tools:textSize="12sp"
         android:layout_alignBaseline="@+id/logout"
         android:layout_alignBottom="@+id/logout"
         android:layout_toStartOf="@+id/logout" />

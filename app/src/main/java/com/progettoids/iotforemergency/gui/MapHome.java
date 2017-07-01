@@ -61,8 +61,11 @@ public class MapHome extends AppCompatImageView {
         m = new float[9];
         setImageMatrix(matrix);
         setScaleType(ScaleType.MATRIX);
-        pixelPos = new int[]{0,0};
+        setMaxZoom(4f);
+
+        pixelPos = new int[]{0,0,0};
         mappa = -1; // non impedisce il reset in disegnaPosizione se quota=0
+        // Si registra per ricevere update dal server
         DriverServer mDriverServer = DriverServer.getInstance(null);
         mDriverServer.mFromServer.mapHomeAlive(this);
 
@@ -187,55 +190,59 @@ public class MapHome extends AppCompatImageView {
         mDriverServer.mFromServer.mapHomeAlive(null);
     }
 
-// ------------------------------------ CONVERSIONE -------------------------------------------------------------
+// ------------------------------------ CONVERSIONE E SELEZIONE MAPPA -----------------------------------------
 
 // Conversioni dalle coordinate in metri con cui sono memorizzate le posizioni sul database
 // alle coordinate in pixel per disegnare sulle mappe bitmap
 // (l'origine del sistema di riferimento in pixel è in alto a sinistra,
 // l'origine del sistema di riferimento in metri è in basso a sinistra)
-    private int[] conversioneCoordQ155(int x, int y) {
-        // dimensione immagine 1184 1600
-        // 15A5     X=91m  242px
-        //          Y=484m 154px
-        int[] coord = new int[2];
-        float scala = 6.4f;             // 345px/54m [pixel/metri] è il fattore di scala tra le coordinate in metri del file excell e i pixel dell'immagine bitmap
-        float offX = (91 - 242 / scala);    // (91m-242px/scala) è la distanza rispetto a X in metri tra l'origine dell'immagine bitmap e l'origine delle coordinate del file excell
-        float offY = (154 / scala + 484);   // (154px/scala+484m) è la distanza rispetto a Y in metri tra l'origine dell'immagine bitmap e l'origine delle coordinate del file excell (507.2 metri)
-        float convX = (x - offX) * scala;
-        float convY = (offY - y) * scala;
-        coord[0] = (int) convX;
-        coord[1] = (int) convY;
-        return coord;
-    }
-
-    private int[] conversioneCoordQ150(int x, int y) {
-        // dim immagine 990x1572
-        // G2      X=485px Y=270px
-        //          X=129m  Y=465m
-        int[] coord = new int[2];
-        float scala = 6.4f;             // 345px/54m [pixel/metri] è il fattore di scala tra le coordinate in metri del file excell e i pixel dell'immagine bitmap
-        float offX = (129 - 485 / scala);   // (129metri-485px/scala) = -53.2 metri è la distanza rispetto a X in metri tra l'origine dell'immagine bitmap e l'origine delle coordinate del file excell
-        //(bmMap.getWidth()-bm145.getWidth())/2 è stato introdotto perchè l'immagine è leggermente traslata verso destra per far si che sia centrata
-        float offY = (270 / scala) + 465;   // (270/scala)+465 è la distanza rispetto a Y in metri tra l'origine dell'immagine bitmap e l'origine delle coordinate del file excell (507.2 metri)
-        float convX = (x - offX) * scala;
-        float convY = (offY - y) * scala;
-        coord[0] = (int) convX;
-        coord[1] = (int) convY;
-        return coord;
-    }
-
-    private int[] conversioneCoordQ145(int x, int y) {      // X perfetta, la Y dovrebbe stare un po' più in basso
-        // dim immagine 926x1600
-        // 145A5 jpg X = 255px; excell X = 91m
-        //           Y = 150px; excell Y =484m
-        // 145S3 jpg X = 600px; excell X = 145m
-        // OFFSET Y (150px/6.46)+484m*6.4 = 507.4m
-        //Bitmap bm145 = bmVarie[0];
-        int[] coord = new int[2];
-        float scala = 6.4f;             // 345px/54m [pixel/metri] è il fattore di scala tra le coordinate in metri del file excell e i pixel dell'immagine bitmap
-        float offX = (91 - 255 / scala);    // (91metri-255px/scala) = 51.2 metri è la distanza rispetto a X in metri tra l'origine dell'immagine bitmap e l'origine delle coordinate del file excell ()
-        //(bmMap.getWidth()-bm145.getWidth())/2 è stato introdotto perchè l'immagine è leggermente traslata verso destra per far si che sia centrata
-        float offY = (150 / scala) + 484;   // (150px/scala)+484m = 507.4 metri è la distanza rispetto a Y in metri tra l'origine dell'immagine bitmap e l'origine delle coordinate del file excell (507.2 metri)
+// per aggiungere una mappa, specificare id risorsa, scala e offset delle coordinate
+    private int[] mappeEconversione(int x, int y, int quota) {
+        int[] coord = new int[3];
+        float scala, offX, offY;
+        switch (quota) {
+            case 145:
+                /*
+                *dim immagine 926x1600
+                *145A5 jpg X = 255px; excell X = 91m
+                *          Y = 150px; excell Y =484m
+                *145S3 jpg X = 600px; excell X = 145m
+                *OFFSET Y (150px/6.46)+484m*6.4 = 507.4m
+                */
+                scala = 6.4f;             // 345px/54m [pixel/metri] è il fattore di scala tra le coordinate in metri del file excell e i pixel dell'immagine bitmap
+                offX = (91 - 255 / scala);    // (91metri-255px/scala) = 51.2 metri è la distanza rispetto a X in metri tra l'origine dell'immagine bitmap e l'origine delle coordinate del file excell ()
+                offY = (150 / scala) + 484;   // (150px/scala)+484m = 507.4 metri è la distanza rispetto a Y in metri tra l'origine dell'immagine bitmap e l'origine delle coordinate del file excell (507.2 metri)
+                coord[2] = R.drawable.map145;
+                break;
+            case 150:
+                /*
+                * dim immagine 990x1572
+                * G2      X=485px Y=270px
+                *          X=129m  Y=465m
+                */
+                scala = 6.4f;             // 345px/54m [pixel/metri] è il fattore di scala tra le coordinate in metri del file excell e i pixel dell'immagine bitmap
+                offX = (129 - 485 / scala);   // (129metri-485px/scala) = -53.2 metri è la distanza rispetto a X in metri tra l'origine dell'immagine bitmap e l'origine delle coordinate del file excell
+                offY = (270 / scala) + 465;   // (270/scala)+465 è la distanza rispetto a Y in metri tra l'origine dell'immagine bitmap e l'origine delle coordinate del file excell (507.2 metri)
+                coord[2] = R.drawable.map150;
+                break;
+            case 155:
+                /*
+                * dimensione immagine 1184 1600
+                * 15A5     X=91m  242px
+                *          Y=484m 154px
+                */
+                scala = 6.4f;             // 345px/54m [pixel/metri] è il fattore di scala tra le coordinate in metri del file excell e i pixel dell'immagine bitmap
+                offX = (91 - 242 / scala);    // (91m-242px/scala) è la distanza rispetto a X in metri tra l'origine dell'immagine bitmap e l'origine delle coordinate del file excell
+                offY = (154 / scala + 484);   // (154px/scala+484m) è la distanza rispetto a Y in metri tra l'origine dell'immagine bitmap e l'origine delle coordinate del file excell (507.2 metri)
+                coord[2] = R.drawable.map155;
+                break;
+            default:
+                scala = 1;
+                offX = 0;
+                offY = 0;
+                coord[2] = R.drawable.nomap;
+                break;
+        }
         float convX = (x - offX) * scala;             // 70.06 sono i metri di offset della x, 6.39 è il fattore di scala per passare da metri a pixel
         float convY = (offY - y) * scala;
         coord[0] = (int) convX;
@@ -244,27 +251,18 @@ public class MapHome extends AppCompatImageView {
     }
 
 // ------------------------------------------------------------------------------------------------------------
+
     public void disegnaPosizione(int x, int y, int quota) {
+        pixelPos = mappeEconversione(x, y, quota);
         // La mappa è ricaricata solo se necessario
         if (quota != mappa) {
             LoadMap lmap = new LoadMap(quota);
-            lmap.execute(getResources());
-        }
-        switch (quota) {
-            case 145:
-                pixelPos = conversioneCoordQ145(x, y);
-                break;
-            case 150:
-                pixelPos = conversioneCoordQ150(x, y);
-                break;
-            case 155:
-                pixelPos = conversioneCoordQ155(x, y);
-                break;
+            Object[] params = {getResources(), pixelPos[2]};
+            lmap.execute(params);
         }
         //per centrare il bitmap dell'icona
         pixelPos[0] = pixelPos[0] - bmPos.getWidth() / 2;
         pixelPos[1] = pixelPos[1] - bmPos.getHeight();
-        //canvas.drawBitmap(bmPos, pos[0], pos[1], null); //720px 435px su gimp origine in alto a sinistra su canvas 690,390
     }
 
     // Disegna la cornice_red intorno alla mappa in base allo stato di emergenza che riceve in ingresso
@@ -316,19 +314,8 @@ public class MapHome extends AppCompatImageView {
             int x = cr.getInt(1);
             int y = cr.getInt(2);
             int z = cr.getInt(3);
-            int[] pixelCoord = {0, 0};
-            // In base alla quota in cui si trova il nodo effettua la giusta onversione di coordinate da metri in pixel
-            switch (z) {
-                case 145:
-                    pixelCoord = conversioneCoordQ145(x, y);
-                    break;
-                case 150:
-                    pixelCoord = conversioneCoordQ150(x, y);
-                    break;
-                case 155:
-                    pixelCoord = conversioneCoordQ155(x, y);
-                    break;
-            }
+            int[] pixelCoord;
+            pixelCoord = mappeEconversione(x, y, z);
             // prende come riferimento il centro dell'icona anzichè l'angolo in alto a sinistra
             pixelCoord[0] = pixelCoord[0] - bmInc.getWidth() / 2;
             pixelCoord[1] = pixelCoord[1] - bmInc.getHeight() / 2;
@@ -475,7 +462,7 @@ public class MapHome extends AppCompatImageView {
     }
 //  ---------------------------------------------------------------
 
-    // Inner asyncTask per caricare la Mappa
+    // Inner asyncTask per caricare la Mappa senza bloccare l'app
     private class LoadMap extends AsyncTask<Object, Void, Bitmap> {
         int quota;
 
@@ -488,26 +475,9 @@ public class MapHome extends AppCompatImageView {
         protected Bitmap doInBackground(Object... params) {
 
             Resources res = (Resources) params[0];
-            Bitmap bmPiano = null;
-            switch (quota) {
-                case 0:
-                    bmPiano = BitmapFactory.decodeResource(res, R.drawable.nomap);
-                    break;
-                case 145:
-                    bmPiano = BitmapFactory.decodeResource(res, R.drawable.map145);
-                    break;
-                case 150:
-                    bmPiano = BitmapFactory.decodeResource(res, R.drawable.map150);
-                    break;
-                case 155:
-                    bmPiano = BitmapFactory.decodeResource(res, R.drawable.map155);
-                    break;
-            }
-            return bmPiano;
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap bmPiano) {
+            int mapResId = (int) params[1];
+            Bitmap bmPiano;
+            bmPiano = BitmapFactory.decodeResource(res, mapResId);
             if (quota == 0) {
                 Bitmap bmScritta = Bitmap.createBitmap(bmPiano.getWidth(), bmPiano.getHeight(), bmPiano.getConfig());
                 Paint paint = new Paint();
@@ -519,12 +489,18 @@ public class MapHome extends AppCompatImageView {
                 mcanvas.drawText("    Ricerca Posizione in Corso",
                         0, bmPiano.getHeight() / 2, paint);
                 mcanvas.drawText("Attendere...", bmPiano.getWidth() / 3, bmPiano.getHeight() / 2 + 72, paint);
-                bmMap = bmScritta;
+                bmPiano = bmScritta;
+            }
+            return bmPiano;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bmPiano) {
+            if (quota == 0) {
                 pixelPos[0] = bmPiano.getWidth()/2 - bmPos.getWidth()/2;
                 pixelPos[1] = bmPiano.getHeight()/2 - bmPos.getHeight() - 72;
-            } else {
-                bmMap = bmPiano;
             }
+            bmMap = bmPiano;
             mappa = this.quota;
             // Include il refresh della mappa
             updateStatoNodi();

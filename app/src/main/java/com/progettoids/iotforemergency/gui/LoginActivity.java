@@ -104,7 +104,7 @@ public class LoginActivity extends Activity {
                         Log.i("mDriverServer","not null");
                     }
                     editor.putString("id_utente", editUser.getText().toString());
-                    editor.commit();
+                    editor.apply();
                     mDriverServer.verificaLogin(editUser.getText().toString(),editPass.getText().toString());
 
                     // salva i dati solo se checkbox è segnato
@@ -159,7 +159,7 @@ public class LoginActivity extends Activity {
         final SharedPreferences reader = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor = reader.edit();
         editor.putString("id_utente", macAdrress);
-        editor.commit();
+        editor.apply();
     }
 
     // Recupera il macAddress del dispositivo wifi del telefono e lo associa all'utente guest
@@ -185,6 +185,7 @@ public class LoginActivity extends Activity {
                 return res1.toString();
             }
         } catch (Exception ex) {
+            Log.i("loginaActivity","errore " + ex.toString());
         }
         return "02:00:00:00:00:00";
     }
@@ -223,7 +224,7 @@ public class LoginActivity extends Activity {
         if(first){
             final SharedPreferences.Editor editor = reader.edit();
             editor.putBoolean("is_first", false);
-            editor.commit();
+            editor.apply();
         }
         return first;
     }
@@ -232,7 +233,7 @@ public class LoginActivity extends Activity {
         final SharedPreferences reader = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
             final SharedPreferences.Editor editor = reader.edit();
             editor.putBoolean("is_first", true);
-            editor.commit();
+            editor.apply();
     }
 
     // Mostra un dialog se il login ha successo o meno

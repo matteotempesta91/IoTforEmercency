@@ -9,9 +9,7 @@ import android.bluetooth.le.ScanResult;
 import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
-
 import com.progettoids.iotforemergency.gestionedati.Parametri;
-import com.progettoids.iotforemergency.beacondriver.BeaconDriver;
 
 import java.util.ArrayList;
 
@@ -23,7 +21,7 @@ public class BeaconListener {
     private BluetoothLeScanner scanner; // nota: il BLE deve essere on per creare uno scanner
     private Handler scanH = new Handler();
     private boolean statoScan;
-    private ArrayList<ScanResult> fari = new ArrayList<ScanResult>();
+    private ArrayList<ScanResult> fari = new ArrayList<>();
     private int refresh = 0;
     private Parametri mParametri;
 
@@ -117,14 +115,14 @@ public class BeaconListener {
         BluetoothDevice foundDev = result.getDevice();
         String nomeDev;
         try {
-            nomeDev = foundDev.getName().toString();
+            nomeDev = foundDev.getName();
         } catch (Exception ex) {
             nomeDev = "SenzaNome";
         }
         // Vengono considerati solo i dispositivi bluetooth con nome definito nel filtro
         if (nomeDev.equals(mParametri.FILTRO_BLE_DEVICE)) {  // Mac nostro: B0:B4:48:BD:93:82
             for (ScanResult faroNoto : fari) {
-                if (foundDev.getAddress().toString().equals(faroNoto.getDevice().getAddress().toString())) {
+                if (foundDev.getAddress().equals(faroNoto.getDevice().getAddress())) {
                     presente = true;
                 }
             }
@@ -144,21 +142,25 @@ public class BeaconListener {
         }
         if (rilevati > 1) {
             for (ScanResult faroNoto : fari) {
-                if (faroNoto.getRssi() > vicino.getRssi()) {
-                    vicino = faroNoto;
+                if (vicino != null) {
+                    if (faroNoto.getRssi() > vicino.getRssi()) {
+                        vicino = faroNoto;
+                    }
+                } else {
+                    Log.i("beaconListener", "Errore closestBle");
                 }
             }
         }
         String macAdrs = "NN";
         if (vicino != null) {
-            macAdrs = vicino.getDevice().getAddress().toString();
+            macAdrs = vicino.getDevice().getAddress();
         }
         return macAdrs;
     }
 
     // Semaforo binario per sincronizzare letture da più sensori
     private boolean lock = false;
-    private ArrayList<BluetoothDevice> daLeggere = new ArrayList<BluetoothDevice>();
+    private ArrayList<BluetoothDevice> daLeggere = new ArrayList<>();
     private BeaconDriver bDrive;
 
     // Verifica se il ble è occupato e mette in coda
@@ -174,7 +176,7 @@ public class BeaconListener {
     }
 
     // Riceve il segnale di via libera dal task che ha terminato
-    public void signal() {
+    void signal() {
         bDrive = null;
         if (!daLeggere.isEmpty()) {
             BluetoothDevice beacon = daLeggere.get(0);

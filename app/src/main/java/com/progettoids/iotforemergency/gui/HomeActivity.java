@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
 import android.util.Log;
@@ -124,7 +125,7 @@ public class HomeActivity extends Activity {
     // Gestisce il risultato della richiesta dei permessi
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+                                           @NonNull String permissions[], @NonNull int[] grantResults) {
         // se l'array è vuoto, la richiesta è stata annullata
         if (grantResults.length > 0) {
             switch (requestCode) {
@@ -179,7 +180,7 @@ public class HomeActivity extends Activity {
         btnLogout.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDriverServer.inviaLogout(username, context);
+                mDriverServer.inviaLogout(username);
                 bleList.stopAll();
                 // Re-inizializza le variabili che memorizzano la posizione
                 locMe.forgetMe();

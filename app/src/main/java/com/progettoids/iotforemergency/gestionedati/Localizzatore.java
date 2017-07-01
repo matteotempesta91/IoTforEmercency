@@ -4,11 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.util.Log;
-
-import com.progettoids.iotforemergency.gestionedati.Parametri;
 import com.progettoids.iotforemergency.beacondriver.BeaconListener;
 import com.progettoids.iotforemergency.db.DBManager;
-import com.progettoids.iotforemergency.gestionedati.DriverServer;
 import com.progettoids.iotforemergency.gui.MapHome;
 
 public class Localizzatore {
@@ -81,7 +78,7 @@ public class Localizzatore {
         editor.putInt("pos_x", x);
         editor.putInt("pos_y", y);
         editor.putInt("pos_z", z);
-        editor.commit();
+        editor.apply();
     }
 
     // Aggiunge le variabli di posizione nel context
@@ -93,7 +90,7 @@ public class Localizzatore {
         editor.putInt("pos_x", 0);
         editor.putInt("pos_y", 0);
         editor.putInt("pos_z", 0);
-        editor.commit();
+        editor.apply();
     }
 
     // Elimina l'ultima posizione nota e ferma la ricerca
