@@ -61,11 +61,12 @@ public class ToServer {
 
         String urlDA = Parametri.URL_SERVER.concat("/beacon");
         JSONArray elencoB = new JSONArray();
-        JSONObject datiambientaliJson = new JSONObject();
+        JSONObject datiambientaliJson;
         // JSONObject dato = new JSONObject();
 
         try{
             for (String[] datiambientali : elencoBeacon) {
+                datiambientaliJson = new JSONObject();
                 datiambientaliJson.put("mac_beacon", datiambientali[0]);
                 datiambientaliJson.put("temperatura", datiambientali[1]);
                 datiambientaliJson.put("accelerazione_x", datiambientali[2]);
@@ -88,7 +89,12 @@ public class ToServer {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        Log.i("Driver Server","InviaDatiAmbientali RESPONSE:"+response.toString());
+                        try {
+                            JSONObject risp = response.getJSONObject(0);
+                            Log.i("Driver Server", "InviaDatiAmbientali RESPONSE:" + risp.toString());
+                        } catch (Exception ex) {
+                            Log.i("DriverServer", "Errore response invio dati");
+                        }
                     }
                 },
                 new Response.ErrorListener() {

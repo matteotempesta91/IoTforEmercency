@@ -97,13 +97,14 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**
-     *  ??
+     *  Necessario per soddisfare l'interfaccia dell'sqLiteOpenerHelper
+     *  upgrade non previsto
      * @param sqLiteDatabase
      * @param i
      * @param i1
      */
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
+        // Do nothing
     }
 }

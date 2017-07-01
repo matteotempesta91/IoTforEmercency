@@ -220,7 +220,6 @@ public class BeaconDriver extends AsyncTask<Object, Void, Object[]> {
     // Metodo per salvare i dati sul DataBase
     public void salvataggioDatiDB(String mac) {
 
-        Log.i("punto 1 ->", "Help");
         SQLiteDatabase db = DBHelper.getInstance(null).getWritableDatabase();
         //+":"+String.valueOf(((double[]) sensorData[1])[1])+":"+String.valueOf(((double[]) sensorData[1])[2]));
         ContentValues cv = new ContentValues();
@@ -237,7 +236,6 @@ public class BeaconDriver extends AsyncTask<Object, Void, Object[]> {
 
         Log.i("Indirizzo Mac ->", mac);
         db.update(DatabaseStrings.TBL_NAME_BEACON, cv, DatabaseStrings.FIELD_BEACON_MAC + "=" + "'" + mac + "'", null);
-        Log.i("punto2 _->", "Goooooo");
     }
 
     // Recupera i UNSIGNED dati dalla characteristic

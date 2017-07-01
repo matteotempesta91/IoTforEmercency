@@ -17,12 +17,11 @@ import java.util.ArrayList;
 
 public class BeaconListener {
 
-    final BluetoothManager bluetoothManager;
-    final Context context;
+    private final BluetoothManager bluetoothManager;
+    private final Context context;
     private android.bluetooth.le.ScanCallback mScanCB; //qui ci sono i risultati della scansione
     private BluetoothLeScanner scanner; // nota: il BLE deve essere on per creare uno scanner
-    private Handler goScanH = new Handler();
-    private Handler altScanH = new Handler();
+    private Handler scanH = new Handler();
     private boolean statoScan;
     private ArrayList<ScanResult> fari = new ArrayList<ScanResult>();
     private int refresh = 0;
@@ -35,7 +34,7 @@ public class BeaconListener {
             scanner.stopScan(mScanCB);
             statoScan = false;
             Log.i("Scanning", "Stop");
-            goScanH.postDelayed(start, mParametri.timerScan());
+            scanH.postDelayed(start, mParametri.timerScan());
         }
     };
 
@@ -53,7 +52,7 @@ public class BeaconListener {
             scanner.startScan(mScanCB);
             statoScan = true;
             Log.i("Scanning", "Start");
-            altScanH.postDelayed(stop, mParametri.T_SCAN_PERIOD);
+            scanH.postDelayed(stop, mParametri.T_SCAN_PERIOD);
         }
     };
 
@@ -99,10 +98,10 @@ public class BeaconListener {
         if (scanner != null) {
             Log.i("Scanning", enable.toString());
             if (enable) {
-                goScanH.post(start);
+                scanH.post(start);
             } else {
-                goScanH.removeCallbacks(start);
-                altScanH.removeCallbacks(stop);
+                scanH.removeCallbacks(start);
+                scanH.removeCallbacks(stop);
                 //verifica quando non scansiona ed il bluetooth è acceso (nel caso l'utente lo spenga manualmente)
                 if (statoScan && blAdapter.getState() == BluetoothAdapter.STATE_ON) {
                     scanner.stopScan(mScanCB);

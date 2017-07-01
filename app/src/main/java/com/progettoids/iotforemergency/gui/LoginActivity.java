@@ -98,12 +98,9 @@ public class LoginActivity extends Activity {
                 if(controlloCampi())
                 {
                     // Controlla se Username e Password sono presenti nel server
-                    if(mDriverServer == null)
-                    {
+                    if(mDriverServer == null) {
                         Log.i("mDriverServer","is NULL");
-                    }
-                    else
-                    {
+                    } else {
                         Log.i("mDriverServer","not null");
                     }
                     editor.putString("id_utente", editUser.getText().toString());
@@ -124,8 +121,7 @@ public class LoginActivity extends Activity {
                             alert.show();
                         }
                     }
-                } else
-                {
+                } else {
                     AlertDialog.Builder miaAlert = new AlertDialog.Builder(context);
                     miaAlert.setTitle("Login Error");
                     miaAlert.setMessage("Carattere inserito non valido");
@@ -208,14 +204,15 @@ public class LoginActivity extends Activity {
 
     // Verifica che nei campi login e pwd non siano presenti caratteri illeciti
     public boolean controlloCampi() {
-        if(Pattern.matches("[a-zA-Z0-9_-]*", editUser.getText().toString())&&Pattern.matches("[a-zA-Z0-9_-]*", editPass.getText().toString()))
-        {
-            return true;
+        boolean ret = false;
+        String user = editUser.getText().toString();
+        String pass = editPass.getText().toString();
+        if ( !user.equals("") && !pass.equals("")) {
+            if (Pattern.matches("[a-zA-Z0-9_-]*", user) && Pattern.matches("[a-zA-Z0-9_-]*", pass)) {
+                ret = true;
+            }
         }
-        else
-        {
-            return false;
-        }
+        return ret;
     }
 
     // Verifica se l'App è avviata per la prima volta

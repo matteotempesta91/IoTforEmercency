@@ -172,7 +172,6 @@ public class DriverServer {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            ((HomeActivity) contextHome).mostraDialog("Logout non riuscito");
                             errorHandler("Logout", error);
                         }
                     });
@@ -266,36 +265,7 @@ public class DriverServer {
         progDialog.setTitle("Aggiornamento in corso...");
         progDialog.setMessage("Attendere prego");
         progDialog.show();
-/*
-         // Debug code
-        for (int i=0; i<63; i++) {
-            String codice = DatabaseStrings.codice[i];
-            int posizione_x = DatabaseStrings.posizione_x[i];
-            int posizione_y = DatabaseStrings.posizione_y[i];
-            int quota = DatabaseStrings.quota[i];
-            Log.i("Login:", codice);
 
-            if (i == 34){
-                DBManager.saveNodo(codice, posizione_x, posizione_y, quota);
-            }
-            else if(i==35){
-                DBManager.saveNodo(codice, posizione_x, posizione_y, quota);
-            }
-            else if(i==36){
-                DBManager.saveNodo(codice, posizione_x, posizione_y, quota);
-            }
-            else{
-                DBManager.saveNodo(codice,posizione_x,posizione_y,quota);
-            }
-        }
-        for (int i=0;i<4;i++) {
-            DBManager.saveNotifica(DatabaseStrings.nome_notifica[i], 0);
-        }
-        DBManager.saveBeacon("B0:B4:48:BD:93:82","155R4");
-        mParametri = Parametri.getInstance();
-        mToServer = new ToServer(this, mParametri);
-        mFromServer = new FromServer(this, mParametri);
-        //*/
     }
 
     // errorHandler gestisce la risposta quando arriva un errore dal server, prende in input il nome del metodo in cui viene chiamato e l'errore del server

@@ -84,9 +84,6 @@ public class HomeActivity extends Activity {
         if (offline != null) {
             mostraDialog(offline);
         }
-        // Debug code
-        //mapHome.disegnaEmergenza(0);         // disegna la cornice per l'emergenza
-       // mapHome.disegnaPosizione(133,480,145);
     }
 
     @Override
@@ -174,7 +171,7 @@ public class HomeActivity extends Activity {
             }
         }
     };
-
+    // Definisce le azioni da eseguire all'attivazione del pulsante di logout
     public void logout(){
         Button btnLogout = (Button)findViewById(R.id.logout);
         final SharedPreferences reader = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE);

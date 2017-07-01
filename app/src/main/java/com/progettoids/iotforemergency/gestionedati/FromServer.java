@@ -101,6 +101,7 @@ public class FromServer {
                             } else {
                                 startStatoNodi(true);
                             }
+                            mParametri.setEmergenza(emergenza);
                             DBManager.updateNotifiche("emergenza",emergenza);
                             if (mMapHome != null) {
                                 mMapHome.disegnaEmergenza(emergenza);

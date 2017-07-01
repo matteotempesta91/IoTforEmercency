@@ -13,8 +13,6 @@ import java.nio.CharBuffer;
 public class Login {
     private String user;
     private String pwd;
-    DriverServer driverServer;
-
     // salva i dati nella cartella cache locale
     public void saveLogin(Context context, File memo, String user, String pwd) throws Exception {
         try {
