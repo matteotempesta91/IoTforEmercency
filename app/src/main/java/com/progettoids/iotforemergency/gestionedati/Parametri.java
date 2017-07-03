@@ -9,6 +9,7 @@ public class Parametri {
     private int StatoEmergenza = 0;
 
     // Url del server
+    //static final String URL_SERVER = "http://www.prova24.altervista.org/Project/web/app_dev.php";
     static final String URL_SERVER = "http://www.bandaappignano.altervista.org/Project/web/app_dev.php";
 
     // Timers per le operazioni di aggiornamento di stato, stato nodi, scansione bluetooth,

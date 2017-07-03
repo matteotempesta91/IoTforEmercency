@@ -148,7 +148,7 @@ public class LoginActivity extends Activity {
             Log.i("macAddress:",macAdrress);
         } else {
             bundle.putString("welcomeMsg", "Modalità Offline");
-            bundle.putString("offline", "Si sta usando la modalità offline \n Uscire e rientrare per riprovare");
+            bundle.putString("offline", "Si sta usando la modalità offline \n Uscire e rientrare per riprovare ad accedere al server");
             // Settare a 0000 l'id permetterà di distinguere la modlaità offline in ogni parte del software
             macAdrress="0000";
         }

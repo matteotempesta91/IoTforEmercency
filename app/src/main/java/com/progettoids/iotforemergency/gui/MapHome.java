@@ -257,6 +257,7 @@ public class MapHome extends AppCompatImageView {
         // La mappa è ricaricata solo se necessario
         if (quota != mappa) {
             LoadMap lmap = new LoadMap(quota);
+            // Il task asincrono che carica la mappa prendendo in ingresso le risorse dell'app e l'id della mappa voluta
             Object[] params = {getResources(), pixelPos[2]};
             lmap.execute(params);
         }

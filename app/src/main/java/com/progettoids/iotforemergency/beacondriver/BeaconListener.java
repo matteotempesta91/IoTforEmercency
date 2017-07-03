@@ -29,7 +29,9 @@ public class BeaconListener {
     private final Runnable stop = new Runnable() {
         @Override
         public void run() {
-            scanner.stopScan(mScanCB);
+            if (bluetoothManager.getAdapter().isEnabled()) {
+                scanner.stopScan(mScanCB);
+            }
             statoScan = false;
             Log.i("Scanning", "Stop");
             scanH.postDelayed(start, mParametri.timerScan());
@@ -46,9 +48,10 @@ public class BeaconListener {
                 fari.clear();
             }
             refresh++;
-
-            scanner.startScan(mScanCB);
-            statoScan = true;
+            if (bluetoothManager.getAdapter().isEnabled()) {
+                scanner.startScan(mScanCB);
+                statoScan = true;
+            }
             Log.i("Scanning", "Start");
             scanH.postDelayed(stop, mParametri.T_SCAN_PERIOD);
         }
@@ -117,10 +120,11 @@ public class BeaconListener {
         try {
             nomeDev = foundDev.getName();
         } catch (Exception ex) {
-            nomeDev = "SenzaNome";
+            Log.i("BeaconListener","Errore getName");
+            nomeDev = "NN";
         }
         // Vengono considerati solo i dispositivi bluetooth con nome definito nel filtro
-        if (nomeDev.equals(mParametri.FILTRO_BLE_DEVICE)) {  // Mac nostro: B0:B4:48:BD:93:82
+        if (mParametri.FILTRO_BLE_DEVICE.equals(nomeDev)) {
             for (ScanResult faroNoto : fari) {
                 if (foundDev.getAddress().equals(faroNoto.getDevice().getAddress())) {
                     presente = true;

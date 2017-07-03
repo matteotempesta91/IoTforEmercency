@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -52,6 +53,8 @@ public class RegistrazioneActivity extends Activity {
         TextView txtUsername =  (TextView) findViewById(R.id.txtUsername);
         TextView txtPassword =  (TextView) findViewById(R.id.txtPass1);
         TextView txtPassword2 = (TextView) findViewById(R.id.txtPass2);
+        TextView txtErrPriva  = (TextView) findViewById(R.id.textErrPrivacy);
+        CheckBox privacy =      (CheckBox) findViewById(R.id.checkBox);
         int control =           0;
 
         if(!Pattern.matches("[a-zA-Z]*", editNome.getText().toString())||editNome.getText().toString().equals("")){
@@ -110,7 +113,15 @@ public class RegistrazioneActivity extends Activity {
                 control++;
             }
         }
-        if(control==6){
+
+        if (!privacy.isChecked()) {
+            txtErrPriva.setText("Accettare il trattamento dei dati");
+            txtErrPriva.setTextColor(Color.parseColor("#db524c"));
+        } else {
+            control++;
+            txtErrPriva.setText("");
+        }
+        if(control==7){
             // Crea l'istanza di driver server che invia i dati al server e controlla se lo username è già presente nel DB
             mdriverServer=DriverServer.getInstance(context);
             mdriverServer.mToServer.inviaRegistrazione(datiReg, context);
